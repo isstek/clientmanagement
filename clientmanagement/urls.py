@@ -1,4 +1,4 @@
-"""clientmanagement URL Configuration
+"""visualanalyticsplatform URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -14,8 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+from core import views as core_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', core_views.main, name='main'),
+    path('test', core_views.performance_test, name='performance_test'),
+    path('testframe', core_views.performance_test_frame, name='performance_test_frame'),
+    path('testmodule/', include('core.testmodule.urls'))
 ]

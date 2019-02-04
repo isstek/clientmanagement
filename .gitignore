@@ -105,3 +105,7 @@ venv.bak/
 
 #Private folders
 /private
+
+#ignore not needed folders, but keep the folders
+clientmanagement/logs/*
+!clientmanagement/logs/.keep
