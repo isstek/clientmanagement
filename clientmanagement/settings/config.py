@@ -1,5 +1,5 @@
 import os
-from core.settings.base import BASE_DIR
+from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
 LOG_SIZE = 1000000000

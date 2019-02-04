@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import core
+import clientmanagement
 from os.path import join, dirname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core.testmodule',
+    'clientmanagement.testmodule',
 ]
 
 MIDDLEWARE = [
@@ -45,13 +45,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'clientmanagement.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                join(dirname(core.__file__), 'templates'),
+                join(dirname(clientmanagement.__file__), 'templates'),
         ],
         'OPTIONS': {
             'context_processors': [
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
+WSGI_APPLICATION = 'clientmanagement.wsgi.application'
 
 
 # Database
@@ -124,6 +124,6 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    join(dirname(core.__file__), 'static'),
-    # "/data/vap/core/static"
+    join(dirname(clientmanagement.__file__), 'static'),
+    # "/data/vap/clientmanagement/static"
 )

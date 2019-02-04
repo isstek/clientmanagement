@@ -1,0 +1,178 @@
+"""
+Core Django views for VAR project
+"""
+import json
+import logging
+
+from datetime import datetime
+from urllib.parse import urlencode, urlparse, parse_qs
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import render_to_response
+from django.utils.cache import patch_response_headers
+import os
+import pandas as pd
+from django.shortcuts import render
+from django.conf import settings
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+
+def initRequest(request):
+    """
+    A function to check and verify request
+    :param request:
+    :return:
+    """
+
+    url = request.get_full_path()
+    u = urlparse(url)
+    query = parse_qs(u.query)
+    query.pop('timestamp', None)
+    try:
+        u = u._replace(query=urlencode(query, True))
+    except UnicodeEncodeError:
+        data = {
+            'errormessage': 'Error appeared while encoding URL!'
+        }
+        return False, render_to_response(json.dumps(data), content_type='text/html')
+
+    ## Set default page lifetime in the http header, for the use of the front end cache
+    request.session['max_age_minutes'] = 10
+
+    ## Create a dict in session for storing request params
+    requestParams = {}
+    request.session['requestParams'] = requestParams
+
+    if request.method == 'POST':
+        for p in request.POST:
+            pval = request.POST[p]
+            pval = pval.replace('+', ' ')
+            request.session['requestParams'][p.lower()] = pval
+    else:
+        for p in request.GET:
+            pval = request.GET[p]
+            pval = pval.replace('+', ' ')
+
+            ## Here check if int or date type params can be placed
+
+            request.session['requestParams'][p.lower()] = pval
+
+    return True, None
+
+
+def main(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = {}
+    if request.method == 'POST' and 'formt' in request.POST:
+        if request.POST['formt'] == 'newfile':
+            try:
+                data = form_reactions.new_csv_file_upload(request)
+            except Exception as exc:
+                logger.error(
+                    '!views.performance_test_frame!: Couldn\'t perform an upload of a new CSV file. \n' + str(exc))
+        elif request.POST['formt'] == 'filefromserver':
+            try:
+                data = form_reactions.csv_file_from_server(request)
+            except Exception as exc:
+                logger.error(
+                    '!views.performance_test_frame!: Couldn\'t load the a CSV file from the server. \n' + str(exc))
+        elif request.POST['formt'] == 'cluster':
+            try:
+                data = form_reactions.clusterize(request)
+            except Exception as exc:
+                logger.error('!views.performance_test_frame!: Couldn\'t perform a clusterization. \n' + str(exc))
+        elif request.POST['formt'] == 'rebuild':
+            try:
+                data = form_reactions.predict_cluster(request)
+                return JsonResponse(data)
+            except Exception as exc:
+                logger.error('!views.performance_test_frame!: Couldn\'t calculate a prediction. \n' + str(exc))
+                return JsonResponse({})
+
+    else:
+        data = {
+            'dataset': [],
+            'dim_names': [],
+            'index': '',
+            'new_file': False,
+            'norm_dataset': [],
+            'real_dataset': [],
+            'stats': [],
+            'corr_matrix': [],
+            'aux_dataset': [],
+            'aux_names': []
+        }
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    try:
+        data['dataset_files'] = form_reactions.list_csv_data_files(form_reactions.DATASET_FILES_PATH)
+    except:
+        logger.error('Could not read the list of datasets file')
+    return render(request, 'main.html', data, content_type='text/html')
+
+
+def performance_test(request):
+    data = {}
+    try:
+        data['dataset_files'] = form_reactions.list_csv_data_files(form_reactions.TEST_DATASET_FILES_PATH)
+    except:
+        logger.error('Could not read the list of datasets file')
+    return render(request, 'test.html', data, content_type='text/html')
+
+
+def performance_test_frame(request):
+    start_time = datetime.now()
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+
+    if request.method == 'POST' and 'formt' in request.POST:
+        if request.POST['formt'] == 'newfile':
+            try:
+                data = form_reactions.new_csv_file_upload(request)
+            except Exception as exc:
+                logger.error(
+                    '!views.performance_test_frame!: Couldn\'t perform an upload of a new CSV file. ' + str(exc))
+        if request.POST['formt'] == 'filefromserver':
+            try:
+                data = form_reactions.csv_test_file_from_server(request)
+            except Exception as exc:
+                logger.error(
+                    '!views.performance_test_frame!: Couldn\'t load the a CSV file from the server. ' + str(exc))
+        if request.POST['formt'] == 'cluster':
+            try:
+                data = form_reactions.clusterize(request)
+            except Exception as exc:
+                logger.error('!views.performance_test_frame!: Couldn\'t perform a clusterization. ' + str(exc))
+        if request.POST['formt'] == 'rebuild':
+            try:
+                data = form_reactions.predict_cluster(request)
+                return JsonResponse(data)
+            except Exception as exc:
+                logger.error('!views.performance_test_frame!: Couldn\'t calculate a prediction. ' + str(exc))
+                return JsonResponse({})
+
+    else:
+        data = {
+            'dataset': [],
+            'dim_names': [],
+            'index': '',
+            'new_file': False,
+            'norm_dataset': [],
+            'real_dataset': [],
+            'stats': [],
+            'corr_matrix': [],
+            'aux_dataset': [],
+            'aux_names': []
+        }
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    try:
+        data['dataset_files'] = form_reactions.list_csv_data_files(form_reactions.TEST_DATASET_FILES_PATH)
+    except:
+        logger.error('Could not read the list of datasets file')
+    end_time = datetime.now()
+    data['servertime'] = round((end_time - start_time).total_seconds() * 1000)
+    return render(request, 'testframe.html', data, content_type='text/html')

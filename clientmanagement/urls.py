@@ -16,13 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from core import views as core_views
+from clientmanagement import views as clientmanagement_views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', core_views.main, name='main'),
-    path('test', core_views.performance_test, name='performance_test'),
-    path('testframe', core_views.performance_test_frame, name='performance_test_frame'),
-    path('testmodule/', include('core.testmodule.urls'))
+    path('', clientmanagement_views.main, name='main'),
+    path('test', clientmanagement_views.performance_test, name='performance_test'),
+    path('testframe', clientmanagement_views.performance_test_frame, name='performance_test_frame'),
+    path('testmodule/', include('clientmanagement.testmodule.urls'))
 ]

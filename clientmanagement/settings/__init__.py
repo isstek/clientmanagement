@@ -8,14 +8,14 @@
 """
 
 # Load base configuration for the whole application
-from core.settings.base import *
+from clientmanagement.settings.base import *
 
 # Load dev env config
-from core.settings.config import *
+from clientmanagement.settings.config import *
 
 # Load any settings for local development
 try:
-    from core.settings.local import *
+    from clientmanagement.settings.local import *
 except ImportError:
     pass
 
