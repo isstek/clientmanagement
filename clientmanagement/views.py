@@ -8,15 +8,24 @@ from datetime import datetime
 from urllib.parse import urlencode, urlparse, parse_qs
 from django.http import HttpResponse
 from django.http import JsonResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.utils.cache import patch_response_headers
 import os
 import pandas as pd
 from django.shortcuts import render
 from django.conf import settings
+from clientmanagement import userfunctions
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
+
+def initRequestLogin(request):
+    if userfunctions.checkUser(request):
+        return initRequest(request)
+    else:
+        return False, loginpage(request)
 
 
 def initRequest(request):
@@ -62,117 +71,139 @@ def initRequest(request):
     return True, None
 
 
-def main(request):
+def homepage(request):
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data = {}
+    data['PAGE_TITLE'] = 'CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'index.html', data, content_type='text/html')
+
+def loginpage(request):
     valid, response = initRequest(request)
     if not valid:
         return response
     data = {}
-    if request.method == 'POST' and 'formt' in request.POST:
-        if request.POST['formt'] == 'newfile':
-            try:
-                data = form_reactions.new_csv_file_upload(request)
-            except Exception as exc:
-                logger.error(
-                    '!views.performance_test_frame!: Couldn\'t perform an upload of a new CSV file. \n' + str(exc))
-        elif request.POST['formt'] == 'filefromserver':
-            try:
-                data = form_reactions.csv_file_from_server(request)
-            except Exception as exc:
-                logger.error(
-                    '!views.performance_test_frame!: Couldn\'t load the a CSV file from the server. \n' + str(exc))
-        elif request.POST['formt'] == 'cluster':
-            try:
-                data = form_reactions.clusterize(request)
-            except Exception as exc:
-                logger.error('!views.performance_test_frame!: Couldn\'t perform a clusterization. \n' + str(exc))
-        elif request.POST['formt'] == 'rebuild':
-            try:
-                data = form_reactions.predict_cluster(request)
-                return JsonResponse(data)
-            except Exception as exc:
-                logger.error('!views.performance_test_frame!: Couldn\'t calculate a prediction. \n' + str(exc))
-                return JsonResponse({})
-
-    else:
-        data = {
-            'dataset': [],
-            'dim_names': [],
-            'index': '',
-            'new_file': False,
-            'norm_dataset': [],
-            'real_dataset': [],
-            'stats': [],
-            'corr_matrix': [],
-            'aux_dataset': [],
-            'aux_names': []
-        }
+    if (request.method == 'POST') and ('username' in request.POST) and ('password' in request.POST):
+        try:
+            user = userfunctions.loginUser(request, request.POST['username'], request.POST['password'])
+            data['USER'] = user
+            if ('last_URL' in request.POST):
+                return redirect(request.POST['last_URL'])
+            else:
+                return redirect('/')
+        except Exception as exc:
+            logger.error('!views.loginpage!: Could not perform log in the client. \n' + str(exc))
+    data['PAGE_TITLE'] = 'Login to CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
-    try:
-        data['dataset_files'] = form_reactions.list_csv_data_files(form_reactions.DATASET_FILES_PATH)
-    except:
-        logger.error('Could not read the list of datasets file')
-    return render(request, 'main.html', data, content_type='text/html')
+    return render(request, 'login.html', data, content_type='text/html')
 
-
-def performance_test(request):
-    data = {}
-    try:
-        data['dataset_files'] = form_reactions.list_csv_data_files(form_reactions.TEST_DATASET_FILES_PATH)
-    except:
-        logger.error('Could not read the list of datasets file')
-    return render(request, 'test.html', data, content_type='text/html')
-
-
-def performance_test_frame(request):
-    start_time = datetime.now()
+def logout(request):
     valid, response = initRequest(request)
     if not valid:
         return response
+    userfunctions.logoutUser(request)
+    return redirect('/')
 
-    if request.method == 'POST' and 'formt' in request.POST:
-        if request.POST['formt'] == 'newfile':
-            try:
-                data = form_reactions.new_csv_file_upload(request)
-            except Exception as exc:
-                logger.error(
-                    '!views.performance_test_frame!: Couldn\'t perform an upload of a new CSV file. ' + str(exc))
-        if request.POST['formt'] == 'filefromserver':
-            try:
-                data = form_reactions.csv_test_file_from_server(request)
-            except Exception as exc:
-                logger.error(
-                    '!views.performance_test_frame!: Couldn\'t load the a CSV file from the server. ' + str(exc))
-        if request.POST['formt'] == 'cluster':
-            try:
-                data = form_reactions.clusterize(request)
-            except Exception as exc:
-                logger.error('!views.performance_test_frame!: Couldn\'t perform a clusterization. ' + str(exc))
-        if request.POST['formt'] == 'rebuild':
-            try:
-                data = form_reactions.predict_cluster(request)
-                return JsonResponse(data)
-            except Exception as exc:
-                logger.error('!views.performance_test_frame!: Couldn\'t calculate a prediction. ' + str(exc))
-                return JsonResponse({})
 
-    else:
-        data = {
-            'dataset': [],
-            'dim_names': [],
-            'index': '',
-            'new_file': False,
-            'norm_dataset': [],
-            'real_dataset': [],
-            'stats': [],
-            'corr_matrix': [],
-            'aux_dataset': [],
-            'aux_names': []
-        }
+def usermanagement(request):
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data = {}
+    if (request.method == 'POST') and ('action' in request.POST):
+        if (request.POST['action'] == 'deleteuser') and ('target' in request.POST):
+            success, message = userfunctions.deleteUserID(request.POST['target'])
+            data['success'] = success
+            data['message'] = message
+            data['username'] = request.POST['target']
+            return JsonResponse(data)
+    
+    data['userlist'] = userfunctions.getUserList()
+    data['PAGE_TITLE'] = 'manage users CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
-    try:
-        data['dataset_files'] = form_reactions.list_csv_data_files(form_reactions.TEST_DATASET_FILES_PATH)
-    except:
-        logger.error('Could not read the list of datasets file')
-    end_time = datetime.now()
-    data['servertime'] = round((end_time - start_time).total_seconds() * 1000)
-    return render(request, 'testframe.html', data, content_type='text/html')
+    return render(request, 'user/usermanagement.html', data, content_type='text/html')
+
+
+def createuser(request):
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data = {}
+
+    if (request.method == 'POST') and ('action' in request.POST):
+        if (request.POST['action'] == 'validate') and ('target' in request.POST):
+            if('value' in request.POST):
+                if (request.POST['target']=='username'):
+                    success, message = userfunctions.checkUsernameExists(request.POST['value'])
+                    return JsonResponse({'success': success, 'message': message})
+                elif(request.POST['target']=='email'):
+                    success, message = userfunctions.checkEmailExists(request.POST['value'])
+                    return JsonResponse({'success': success, 'message': message})
+                elif(request.POST['target']=='password'):
+                    success, message = userfunctions.checkPasswordComplexity(request.POST['value'])
+                    return JsonResponse({'success': success, 'message': message})
+                return JsonResponse({'success': False, 'message': 'Could not verify login'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Could not verify login'})
+        if (request.POST['action'] == 'createacc') and ('username' in request.POST) and ('password' in request.POST) and ('email' in request.POST) and \
+                    ('firstname' in request.POST) and ('lastname' in request.POST):
+            if (userfunctions.validateNewUser(request.POST['username'], request.POST['password'], request.POST['email'], request.POST['firstname'], request.POST['lastname'])):
+                try:
+                    user = userfunctions.createUser(request.POST['username'], request.POST['password'], request.POST['email'], request.POST['firstname'], request.POST['lastname'])
+                    if user is not None:
+                        return redirect('/usermanagement')
+                except Exception as exc:
+                    logger.error('!views.createuser!: Could not create user. \n' + str(exc))
+            data['username']=request.POST['username']
+            data['password']=request.POST['password']
+            data['email']=request.POST['email']
+            data['firstname']=request.POST['firstname']
+            data['lastname']=request.POST['lastname']
+            data['creationfailed']=True
+            
+    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'user/createuser.html', data, content_type='text/html')
+
+
+def changeuser(request):
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data = {}
+    print(request.POST)
+    if (request.method == 'POST') and ('action' in request.POST):
+        if (request.POST['action'] == 'validate') and ('target' in request.POST)and ('curusername' in request.POST):
+            if('value' in request.POST):
+                if (request.POST['target']=='username'):
+                    success, message = userfunctions.checkUsernameExists(request.POST['value'])
+                    return JsonResponse({'success': success, 'message': message})
+                elif(request.POST['target']=='email'):
+                    success, message = userfunctions.checkEmailExists(request.POST['value'], request.POST['curusername'])
+                    return JsonResponse({'success': success, 'message': message})
+                elif(request.POST['target']=='password'):
+                    success, message = userfunctions.checkPasswordComplexity(request.POST['value'])
+                    return JsonResponse({'success': success, 'message': message})
+                return JsonResponse({'success': False, 'message': 'Could not verify login'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Could not verify login'})
+        if (request.POST['action'] == 'createacc') and ('username' in request.POST) and ('password' in request.POST) and ('email' in request.POST) and \
+                    ('firstname' in request.POST) and ('lastname' in request.POST):
+            if (userfunctions.validateNewUser(request.POST['username'], request.POST['password'], request.POST['email'], request.POST['firstname'], request.POST['lastname'])):
+                try:
+                    user = userfunctions.createUser(request.POST['username'], request.POST['password'], request.POST['email'], request.POST['firstname'], request.POST['lastname'])
+                    if user is not None:
+                        return redirect('/usermanagement')
+                except Exception as exc:
+                    logger.error('!views.createuser!: Could not create user. \n' + str(exc))
+    
+    data['username']=request.user.username
+    data['email']=request.user.email
+    data['firstname']=request.user.first_name
+    data['lastname']=request.user.last_name
+            
+    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'user/changeuser.html', data, content_type='text/html')

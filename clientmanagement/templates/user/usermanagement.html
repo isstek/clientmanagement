@@ -1,0 +1,82 @@
+{% extends "_basenorm.html" %} {% load staticfiles %} {% block extra_css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" /> {% endblock %} {% block extra_javascript %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+<script src="{% static 'js/base/dialogs.js' %}"></script>
+<script src="{% static 'js/base/ajax.js' %}"></script>
+<script>
+    function userDeleted(data) {
+        console.log(data);
+        modalTextDial('User deleted successfully', 'User ' + data['message'] + ' was deleted successfully');
+        document.userstable.row('#' + data['username']).remove().draw();
+    }
+
+    function userNotDeleted(data) {
+        console.log(data);
+        modalTextDial('Failed to delete the user', data['message'], 'alert');
+    }
+
+    function deleteUser(ID, username, fullname) {
+        confirmDial('Delete user', 'Are you sure you want to delete ' + fullname + ' (' + username + ')', function() {
+            sendPostAjax('/usermanagement', {
+                'action': 'deleteuser',
+                'target': ID
+            }, function(data) {
+                userDeleted(data);
+            }, function(data) {
+                userNotDeleted(data)
+            })
+        })
+    }
+</script>
+{% endblock %} {% block body %} {% csrf_token %}
+<h3>Welcome to the Infotek Client Management System</h3>
+<table id='userstable'>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Username</th>
+            <th>e-mail</th>
+            <th>Can edit users</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for u in userlist %}
+        <tr id="{{ u.id }}">
+            <td>{{ u.id }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.first_name }}</td>
+            <td>{{ u.last_name }}</td>
+            <td>{{ u.email }}</td>
+            <td></td>
+            <td>
+                <a class="button alert" onclick="deleteUser('{{ u.id }}', '{{ u.username }}', '{{ u.get_full_name }}'); return false;">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="row align-middle" data-equalizer>
+    <div class='columns'></div>
+    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+        <a href='/createuser' class="button round centered-block-element">Create new user account</a>
+    </div>
+    <div class='columns'></div>
+</div><br>
+<div class="row align-middle" data-equalizer>
+    <div class='columns'></div>
+    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+        <a href='/' class="button round centered-block-element">Main menu</a>
+    </div>
+    <div class='columns'></div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        document.userstable = $('#userstable').DataTable();
+    });
+</script>
+{% endblock %}

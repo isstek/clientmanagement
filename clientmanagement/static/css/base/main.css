@@ -1,0 +1,45 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    /* background-color: #999999; */
+}
+
+.wrapper {
+    flex: 1 0 auto;
+}
+
+.logo {
+    max-height: 100px;
+}
+
+.centered-element {
+    text-align: center;
+}
+
+.centered-block-element {
+    display: block;
+    margin: 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    /* text-align: center; */
+}
+
+button.round,
+.button.round {
+    border-radius: 1000px;
+}
+
+.top-bar,
+.top-bar ul,
+.is-dropdown-submenu {
+    background-color: inherit;
+    border: inherit;
+}

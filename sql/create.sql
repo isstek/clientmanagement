@@ -1,0 +1,1 @@
+CREATE SCHEMA `clientmanagement` DEFAULT CHARACTER SET utf8 ;

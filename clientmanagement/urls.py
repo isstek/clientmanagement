@@ -21,8 +21,11 @@ from clientmanagement import views as clientmanagement_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', clientmanagement_views.main, name='main'),
-    path('test', clientmanagement_views.performance_test, name='performance_test'),
-    path('testframe', clientmanagement_views.performance_test_frame, name='performance_test_frame'),
+    path('', clientmanagement_views.homepage, name='homepage'),
+    path('login', clientmanagement_views.loginpage, name='loginpage'),
+    path('logout', clientmanagement_views.logout, name='logout'),
+    path('usermanagement', clientmanagement_views.usermanagement, name='usermanagement'),
+    path('createuser', clientmanagement_views.createuser, name='createuser'),
+    path('changeuser', clientmanagement_views.changeuser, name='changeuser'),
     path('testmodule/', include('clientmanagement.testmodule.urls'))
 ]
