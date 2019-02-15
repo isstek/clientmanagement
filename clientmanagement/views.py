@@ -189,7 +189,7 @@ def changeuser(request):
                 return JsonResponse({'success': False, 'message': 'Could not verify login'})
             else:
                 return JsonResponse({'success': False, 'message': 'Could not verify login'})
-        if (request.POST['action'] == 'createacc') and ('username' in request.POST) and ('password' in request.POST) and ('email' in request.POST) and \
+        elif (request.POST['action'] == 'changeemail') and ('username' in request.POST) and ('password' in request.POST) and ('email' in request.POST) and \
                     ('firstname' in request.POST) and ('lastname' in request.POST):
             if (userfunctions.validateNewUser(request.POST['username'], request.POST['password'], request.POST['email'], request.POST['firstname'], request.POST['lastname'])):
                 try:
@@ -198,6 +198,18 @@ def changeuser(request):
                         return redirect('/usermanagement')
                 except Exception as exc:
                     logger.error('!views.createuser!: Could not create user. \n' + str(exc))
+        elif (request.POST['action'] == 'changeemail') and ('email' in request.POST):
+            try:
+                success, message = userfunctions.checkEmailExists(request.POST['email'], request.POST['curusername'])
+                if success:
+                    if 'id' in request.POST:
+                        success = userfunctions.changeEmail( request.POST['email'], request.POST['id'])
+                    else:
+                        success = userfunctions.changeEmail(request.POST['email'], request.user.id)
+                    if user is not None:
+                        return redirect('/changeuser')
+            except Exception as exc:
+                logger.error('!views.createuser!: Could not create user. \n' + str(exc))
     
     data['username']=request.user.username
     data['email']=request.user.email

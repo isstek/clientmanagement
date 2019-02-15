@@ -10,18 +10,48 @@ def createUser(username, password, email, firstname, lastname, stuff=True):
     return user
 
 
-def resetPassword(username, newpassword):
-    user = User.objects.get(username=username)
-    user.set_password(newpassword)
-    user.save()
-    return True
+def resetPassword(userid, newpassword):
+    try:
+        user = User.objects.get(id=userid)
+        user.set_password(newpassword)
+        user.save()
+        return True
+    except User.DoesNotExist:
+        return False
+    except Exception as e: 
+        return False
 
 
 def changePassword(username, oldpassword, newpassword):
     user = authenticate(username=username, password=oldpassword)
     if user is not None:
-        return resetPassword(username, newpassword)
+        return resetPassword(user.id, newpassword)
     else:
+        return False
+
+
+def changeEmail(userid, email):
+    try:
+        u = User.objects.get(id = userid)
+        u.email = email
+        u.save()
+        return True
+    except User.DoesNotExist:
+        return False
+    except Exception as e: 
+        return False
+
+
+def changeName(userid, firstname, lastname):
+    try:
+        u = User.objects.get(id = userid)
+        u.first_name = firstname
+        u.last_name = lastname
+        u.save()
+        return True
+    except User.DoesNotExist:
+        return False
+    except Exception as e: 
         return False
 
 
@@ -57,7 +87,7 @@ def deleteUserID(ID):
         u.delete()
         return True, fullname
     except User.DoesNotExist:
-        return False, 'Username '+username+' does not exist'
+        return False, 'This user does not exist'
     except Exception as e: 
         return False, 'An error occurred ' + e.message
 

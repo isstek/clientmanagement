@@ -89,7 +89,8 @@
         </div><br>
         <form action="/changeuser" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormEmail()">
             {% csrf_token %}
-            <input type='hidden' name='action' value='{{ action }}'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
+            <input type='hidden' name='action' value='changeemail'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
+            <input type='hidden' name='curusername' value='{{ username }}'>
             <div class="row align-middle" data-equalizer>
                 <div class="columns small-4 text-right" data-equalizer-watch><label for='email'>
                     E-mail*:</label></div>
@@ -106,7 +107,8 @@
         </form><br>
         <form action="/changeuser" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormName()">
             {% csrf_token %}
-            <input type='hidden' name='action' value='{{ action }}'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
+            <input type='hidden' name='action' value='changename'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
+            <input type='hidden' name='curusername' value='{{ username }}'>
             <div class="row align-middle" data-equalizer>
                 <div class="columns small-4 text-right" data-equalizer-watch><label for='firstname'>
             First name*:</label></div>
@@ -129,7 +131,8 @@
         </form><br>
         <form action="/changeuser" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormPassword()">
             {% csrf_token %}
-            <input type='hidden' name='action' value='{{ action }}'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
+            <input type='hidden' name='action' value='changepassword'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
+            <input type='hidden' name='curusername' value='{{ username }}'>
             <div class="row align-middle" data-equalizer>
                 <div class="columns small-4 text-right" data-equalizer-watch><label for='password'>
                 Password*:</label></div>
