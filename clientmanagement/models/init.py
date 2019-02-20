@@ -1,1 +1,0 @@
-from clientmanagement.models import *

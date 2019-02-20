@@ -18,4 +18,3 @@ try:
     from clientmanagement.settings.local import *
 except ImportError:
     pass
-
