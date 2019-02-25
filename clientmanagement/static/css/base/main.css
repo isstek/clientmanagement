@@ -43,3 +43,16 @@ button.round,
     background-color: inherit;
     border: inherit;
 }
+
+.nomargin {
+    margin: 0px;
+}
+
+.margin-sides {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.inlineblock {
+    display: inline-block;
+}

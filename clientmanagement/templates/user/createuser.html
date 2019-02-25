@@ -30,7 +30,7 @@
 <script src="{% static 'js/base/ajax.js' %}"></script>
 <script>
     function checkField(inputelement, errorelement, async = true) {
-        sendPostAjax('/createuser', {
+        sendPostAjax("{% url 'createuser' %}", {
             'action': 'validate',
             'target': inputelement.id,
             'value': inputelement.value
@@ -71,7 +71,7 @@
 <h4 class="text-center">Create a new user</h4>
 <div class="row align-self-middle text-center">
     <div class="columns small-12">
-        <form action="/createuser" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateForm()">
+        <form action="{% url 'createuser' %}" method="POST" enctype="multipart/form-data" class="text-center" onsubmit="return validateForm()">
             {% csrf_token %}
             <input type='hidden' name='action' value='createacc'>
             <div class="row align-middle" data-equalizer>

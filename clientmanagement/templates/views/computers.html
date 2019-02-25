@@ -1,0 +1,27 @@
+{% if computers %}
+<table id='userstable'>
+    <thead>
+        <tr>
+            <th>Computer Name</th>
+            <th>OS</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for computer in computers %} 
+        {% include "views/onecomputerrow.html" with computer=computer %}
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h5>This client has no computers entered yet</h5>
+{% endif %}
+
+<div class="row align-middle" data-equalizer>
+    <div class='columns'></div>
+    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+        <a href="{% url 'computer' clientid=clid %}" class="button round centered-block-element">Add new computer</a>
+    </div>
+    <div class='columns'></div>
+</div>

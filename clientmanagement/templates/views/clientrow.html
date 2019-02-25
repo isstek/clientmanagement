@@ -1,0 +1,7 @@
+<tr id="{{ obj.id }}">
+    <td>{{ name }}</td>
+    <td>{{ phonenumber }}</td>
+    <td>
+        <a class="button round nomargin margin-sides" href="{% url 'oneclient' clientid=obj.id %}">View client</a>
+    </td>
+</tr>

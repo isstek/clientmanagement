@@ -28,5 +28,9 @@ urlpatterns = [
     path('usermanagement', clientmanagement_views.usermanagement, name='usermanagement'),
     path('createuser', clientmanagement_views.createuser, name='createuser'),
     path('changeuser', clientmanagement_views.changeuser, name='changeuser'),
+    path('client', models_views.clientForm, name='newclient'),
+    path('clients/', clientmanagement_views.allclientsview, name='allclients'),
+    path('clients/<int:clientid>', clientmanagement_views.clientview, name='oneclient'),
+    path('clients/<int:clientid>/computer', models_views.computerForm, name='computer'),
     path('testmodule/', include('clientmanagement.testmodule.urls'))
 ]

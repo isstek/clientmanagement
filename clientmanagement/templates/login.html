@@ -9,7 +9,7 @@
 <h2 class="text-center">Welcome to the Infotek Client Management System</h2>
 <div class="row align-self-middle text-center">
     <div class="columns small-12">
-        <form action="login" method="POST" enctype='multipart/form-data' class="log-in-form text-center">
+        <form action="{% url 'loginpage' %}" method="POST" enctype='multipart/form-data' class="log-in-form text-center">
             {% csrf_token %}
             <h4 class="text-center">Log in to the system</h4>
             <div class="row" data-equalizer>
@@ -27,9 +27,9 @@
             <div class="row">
                 <div class="columns small-12"><button class="button round">Log in</button></div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="columns small-12"><a href="#">Forgot your password?</a></div>
-            </div>
+            </div> -->
         </form>
     </div>
 </div>

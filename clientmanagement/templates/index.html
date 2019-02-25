@@ -1,9 +1,8 @@
 {% extends "_basenarrow.html" %} {% load staticfiles %} {% block extra_css %}{% endblock %} {% block body %} {% csrf_token %}
-<h2>Welcome to the Infotek Client Management System</h2><br>
-{% comment %} <div class="row text-center">
+<h2>Welcome to the Infotek Client Management System</h2><br> {% comment %}
+<div class="row text-center">
     <div class="columns"></div>
-    <div class="columns small-8 medium-6 large-4"> <a href='/usermanagement' class="button round centered-block-element">User management</a>
+    <div class="columns small-8 medium-6 large-4"> <a href="{% url 'usermanagement' %}" class="button round centered-block-element">User management</a>
     </div>
     <div class="columns"></div>
-</div> {% endcomment %}
-{% endblock %}
+</div> {% endcomment %} {% endblock %}

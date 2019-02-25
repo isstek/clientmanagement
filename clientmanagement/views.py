@@ -8,13 +8,14 @@ from datetime import datetime
 from urllib.parse import urlencode, urlparse, parse_qs
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.urls import reverse
 from django.shortcuts import render_to_response, redirect
 from django.utils.cache import patch_response_headers
 import os
-import pandas as pd
 from django.shortcuts import render
 from django.conf import settings
 from clientmanagement import userfunctions
+from clientmanagement import modelgetters
 
 
 # Get an instance of a logger
@@ -173,7 +174,6 @@ def changeuser(request):
     if not valid:
         return response
     data = {}
-    print(request.POST)
     if (request.method == 'POST') and ('action' in request.POST):
         if (request.POST['action'] == 'validate') and ('target' in request.POST)and ('curusername' in request.POST):
             if('value' in request.POST):
@@ -219,3 +219,31 @@ def changeuser(request):
     data['PAGE_TITLE'] = 'create user CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'user/changeuser.html', data, content_type='text/html')
+
+
+
+
+
+
+def clientview(request, clientid):
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data = modelgetters.form_client_data(clientid)
+    if data is None:
+        return redirect('/')            
+    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'views/client.html', data, content_type='text/html')
+
+
+def allclientsview(request):
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data = {'allclients': modelgetters.form_all_clients_data()}
+    if data is None:
+        return redirect('/')            
+    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'views/allclients.html', data, content_type='text/html')

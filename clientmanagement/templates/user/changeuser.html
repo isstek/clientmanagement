@@ -30,7 +30,7 @@
 <script src="{% static 'js/base/ajax.js' %}"></script>
 <script>
     function checkField(inputelement, errorelement, async = true) {
-        sendPostAjax('/changeuser', {
+        sendPostAjax("{% url 'changeuser' %}", {
             'action': 'validate',
             'target': inputelement.id,
             'value': inputelement.value,
@@ -87,7 +87,7 @@
                 {{ username }}
             </div>
         </div><br>
-        <form action="/changeuser" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormEmail()">
+        <form action="{% url 'changeuser' %}" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormEmail()">
             {% csrf_token %}
             <input type='hidden' name='action' value='changeemail'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
             <input type='hidden' name='curusername' value='{{ username }}'>
@@ -105,7 +105,7 @@
                 </div>
             </div>
         </form><br>
-        <form action="/changeuser" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormName()">
+        <form action="{% url 'changeuser' %}" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormName()">
             {% csrf_token %}
             <input type='hidden' name='action' value='changename'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
             <input type='hidden' name='curusername' value='{{ username }}'>
@@ -129,7 +129,7 @@
                 </div>
             </div>
         </form><br>
-        <form action="/changeuser" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormPassword()">
+        <form action="{% url 'changeuser' %}" method="POST" enctype='multipart/form-data' class="text-center" onsubmit="return validateFormPassword()">
             {% csrf_token %}
             <input type='hidden' name='action' value='changepassword'> {% if changeid %} <input type='hidden' name='id' value='{{ changeid }}'> {% endif %}
             <input type='hidden' name='curusername' value='{{ username }}'>
