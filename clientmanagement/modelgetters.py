@@ -27,6 +27,7 @@ def form_client_data(clientid):
     data['clientphonenumber'] = cur_client.phone
     data['clientaddress'] = cur_client.address
     data['clientcomputers'] = form_client_computers_data(cur_client)
+    data['clientpeople'] = form_client_people_data(cur_client)
     return data
 
 
@@ -37,6 +38,15 @@ def form_client_computers_data(client):
     except Exception as err:
         return []
     return comps
+
+
+def form_client_people_data(client): 
+    data=[]
+    try:
+        people = client.employees.all().order_by('firstname', 'lastname')
+    except Exception as err:
+        return []
+    return people
 
 
 def form_computer_data(computerid):

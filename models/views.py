@@ -10,8 +10,10 @@ from django import forms
 
 from models import clientform
 from models import computerform
+from models import personform
 from models import client
 from models import computers
+from models import person
 # Create your views here.
 
 
@@ -59,6 +61,7 @@ def clientForm(request):
                 data['clid'] = request.POST['clid']
                 data['minititle'] = 'Change Client "'+curcl.name+'"'
                 data['submbutton'] = 'Change client'
+                data['PAGE_TITLE'] = 'Change Client: CMS infotek'
             else:
                 return redirect(reverse('allclients'))
         else:
@@ -68,8 +71,8 @@ def clientForm(request):
         data['action']='add'
         data['minititle'] = 'New Client'
         data['submbutton'] = 'Add client'
+        data['PAGE_TITLE'] = 'New Client: CMS infotek'
     data['form'] = form
-    data['PAGE_TITLE'] = 'New Client: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'forms/client.html', data, content_type='text/html')
 
@@ -112,7 +115,7 @@ def computerForm(request, clientid):
                     curcomp=computers.Computer.objects.get(id=request.POST['compid'])
                 except Exception:
                     return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-                form = computerform.ComputerForm(request.POST)
+                form = computerform.ComputerForm(request.POST, instance=curcomp)
                 if form.is_valid():
                     model = form.save(commit=False)
                     model.save()
@@ -129,6 +132,72 @@ def computerForm(request, clientid):
         form = computerform.ComputerForm(initial={'company': b})
         data['action']='add'
         data['PAGE_TITLE'] = 'New Computer: CMS infotek'
+        data['minititle'] = 'Add computer'
+        data['submbutton'] = 'Add computer'
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S") 
     return render(request, 'forms/computer.html', data, content_type='text/html')
+
+
+def personForm(request, clientid):    
+    valid, response = main_views.initRequestLogin(request)
+    if not valid:
+        return response
+    data={}
+    data['PAGE_TITLE'] = 'Change Person: CMS infotek'
+    try:
+        b=client.Client.objects.get(id=clientid)
+    except Exception as exc:
+        return redirect(reverse('allclients'))
+    if (request.method == 'POST') and ('action' in request.POST):
+        if (request.POST['action']=='add'):
+            form = personform.PersonForm(request.POST)
+            if form.is_valid():
+                model = form.save(commit=False)
+                model.save()
+                worksat=person.WorksAt.objects.create(person=model, client=b, maincontact=True)
+                worksat.save()
+                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+            else:
+                data['action']='add'
+        elif (request.POST['action']=='change'):
+            if('perid' in request.POST):
+                try:
+                    curpers=person.Person.objects.get(id=request.POST['perid'])
+                except Exception:
+                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+                form = personform.PersonForm(instance=curpers)
+                data['action'] = 'changed'
+                data['perid'] = request.POST['perid']
+                data['minititle'] = 'Change Person "'+curpers.name()+'"'
+                data['submbutton'] = 'Change person'
+            else:
+                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+        elif (request.POST['action']=='changed'):
+            if('perid' in request.POST):
+                try:
+                    curpers=person.Person.objects.get(id=request.POST['perid'])
+                except Exception:
+                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+                form = personform.PersonForm(request.POST, instance=curpers)
+                if form.is_valid():
+                    model = form.save(commit=False)
+                    model.save()
+                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+                data['action'] = 'changed'
+                data['perid'] = request.POST['perid']
+                data['minititle'] = 'Change Person "'+curpers.name()+'"'
+                data['submbutton'] = 'Change person'
+            else:
+                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+        else:
+            return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+    else:
+        form = personform.PersonForm()
+        data['action']='add'
+        data['PAGE_TITLE'] = 'New Person: CMS infotek'
+        data['minititle'] = 'Add Person'
+        data['submbutton'] = 'Add person'
+    data['form'] = form
+    data['built'] = datetime.now().strftime("%H:%M:%S") 
+    return render(request, 'forms/person.html', data, content_type='text/html')

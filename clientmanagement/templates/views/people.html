@@ -1,0 +1,26 @@
+{% if people %}
+<table id='peopletable'>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Annoyance level</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in people %} {% include "views/onepersonrow.html" with person=person %} {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h5>This client has no one entered yet</h5>
+{% endif %}
+
+<div class="row align-middle" data-equalizer>
+    <div class='columns'></div>
+    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+        <a href="{% url 'person' clientid=clid %}" class="button round centered-block-element">Add a new person</a>
+    </div>
+    <div class='columns'></div>
+</div>

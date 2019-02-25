@@ -56,3 +56,7 @@ button.round,
 .inlineblock {
     display: inline-block;
 }
+
+.alert {
+    color: red;
+}

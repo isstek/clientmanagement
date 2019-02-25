@@ -1,5 +1,5 @@
 {% if computers %}
-<table id='userstable'>
+<table id='computerstable'>
     <thead>
         <tr>
             <th>Computer Name</th>
@@ -9,9 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for computer in computers %} 
-        {% include "views/onecomputerrow.html" with computer=computer %}
-        {% endfor %}
+        {% for computer in computers %} {% include "views/onecomputerrow.html" with computer=computer %} {% endfor %}
     </tbody>
 </table>
 {% else %}

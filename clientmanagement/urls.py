@@ -32,5 +32,6 @@ urlpatterns = [
     path('clients/', clientmanagement_views.allclientsview, name='allclients'),
     path('clients/<int:clientid>', clientmanagement_views.clientview, name='oneclient'),
     path('clients/<int:clientid>/computer', models_views.computerForm, name='computer'),
+    path('clients/<int:clientid>/person', models_views.personForm, name='person'),
     path('testmodule/', include('clientmanagement.testmodule.urls'))
 ]

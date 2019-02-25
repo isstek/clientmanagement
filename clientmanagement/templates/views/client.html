@@ -17,6 +17,14 @@
     </li>
 
 
+    <li class="accordion-item" data-accordion-item>
+        <a href="#" class="accordion-title">People</a>
+        <div class="accordion-content" data-tab-content>
+            {% include "views/people.html" with people=clientpeople clid=clientid %}
+        </div>
+    </li>
+
+
 
 </ul>
 {% endblock %}

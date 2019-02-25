@@ -16,7 +16,7 @@
             {% csrf_token %}
             <input type="hidden" name="action" value="change">
             <input type="hidden" name="compid" value="{{ computer.id }}">
-            <a id="b{{computer.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change computer info</a>
+            <a id="comb{{computer.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change computer info</a>
         </form>
         <a class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
