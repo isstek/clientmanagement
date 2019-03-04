@@ -2,7 +2,7 @@ import os
 from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
-LOG_SIZE = 1000000000
+LOG_SIZE = 10000000
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
