@@ -80,7 +80,7 @@ LOGGING = {
         'level':'DEBUG',
         'class':'logging.handlers.RotatingFileHandler',
         'filename': LOG_ROOT + "/logfile",
-        'maxBytes': 10000000,
+        'maxBytes': 1000000,
         'backupCount': 5,
         'formatter': 'verbose',
     },
