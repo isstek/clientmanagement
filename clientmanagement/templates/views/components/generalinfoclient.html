@@ -5,6 +5,6 @@
 <form action="{% url 'newclient' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="action" value="change">
-    <input type="hidden" name="clid" value="{{ clientid }}">
+    <input type="hidden" name="targetid" value="{{ clientid }}">
     <button type="submit" class="button round">Change client</button>
 </form>

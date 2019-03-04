@@ -1,0 +1,10 @@
+<tr id="{{ printer.id }}">
+    <td>{{ printer.printername }}</td>
+    <td>{{ printer.get_manufacturer_display}}</td>
+    <td>{{ printer.get_printertype_display}}</td>
+    <td>{{ printer.description }}</td>
+    <td>
+        <button class="button round nomargin margin-sides" data-open="modal-printername-{{ printer.id }}">View full info</a>
+        {% include "views/modals/printermodal.html" with printer=printer modalpre="modal-printername-" %}
+    </td>
+</tr>

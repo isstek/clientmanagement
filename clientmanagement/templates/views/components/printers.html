@@ -1,0 +1,26 @@
+{% if printers %}
+<table id='printerstable'>
+    <thead>
+        <tr>
+            <th>Printer Name</th>
+            <th>Manufacturer</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for printer in printers %} {% include "views/oneitemrow/printerrow.html" with printer=printer %} {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h5>This client has no printers entered yet</h5>
+{% endif %}
+
+<div class="row align-middle" data-equalizer>
+    <div class='columns'></div>
+    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+        <a href="{% url 'clientprinter' clientid=clid %}" class="button round centered-block-element">Add new printer</a>
+    </div>
+    <div class='columns'></div>
+</div>

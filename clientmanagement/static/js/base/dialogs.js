@@ -1,4 +1,4 @@
-function confirmDial(title, message, callback) {
+function confirmDial(title, message, callback, parameters) {
     // create your modal template    
     var modal = '<div class="reveal small" id="confirmation">' +
         '<h4>' + title + '</h4>' +
@@ -19,7 +19,7 @@ function confirmDial(title, message, callback) {
         confirmation.close();
         $('#confirmation').remove();
         // calling the function to process
-        callback.call();
+        callback(parameters);
     });
     $(document).on('closed.zf.reveal', '#confirmation', function() {
         // remove from dom when closed

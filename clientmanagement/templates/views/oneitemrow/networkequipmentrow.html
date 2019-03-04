@@ -1,0 +1,21 @@
+<tr id="{{ equip.id }}">
+    <td>
+        {% if equip.computer %}Computer{% elif equip.printer %}Printer{% elif equip.router %}Router{% elif equip.othernetworkequipment %}{{ equip.othernetworkequipment.equipmenttype }}{% endif %}
+    </td>
+    <td>{% if equip.ip_address %}{{ equip.ip_address }}{% endif %}</td>
+    <td>{% if equip.mac_address %}{{ equip.mac_address }}{% endif %}</td>
+    <td>{{ equip.get_ip_type_display}}</td>
+    <td>{{ equip.description }}</td>
+    <td>
+        {% if equip.computer %}
+        <button class="button round nomargin margin-sides" data-open="modal-netequip-computer-{{ equip.computer.id }}">View full info</a>
+        {% include "views/modals/computermodal.html" with computer=equip.computer modalpre="modal-netequip-computer-"  clid=clid %}
+        {% elif equip.printer %}
+            <button class="button round nomargin margin-sides" data-open="modal-netequip-printer-{{ equip.printer.id }}">View full info</a>
+            {% include "views/modals/printermodal.html" with printer=equip.printer modalpre="modal-netequip-printer-" clid=clid %}
+        {% elif equip.othernetworkequipment %}
+            <button class="button round nomargin margin-sides" data-open="modal-netequip-otherneteq-{{ equip.othernetworkequipment.id }}">View full info</a>
+            {% include "views/modals/othernetequip.html" with equipment=equip.othernetworkequipment modalpre="modal-netequip-otherneteq-" clid=clid %}
+        {% endif %}
+    </td>
+</tr>

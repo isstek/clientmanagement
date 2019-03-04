@@ -122,7 +122,7 @@ def usermanagement(request):
             return JsonResponse(data)
     
     data['userlist'] = userfunctions.getUserList()
-    data['PAGE_TITLE'] = 'manage users CMS infotek'
+    data['PAGE_TITLE'] = 'Manage users: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'user/usermanagement.html', data, content_type='text/html')
 
@@ -164,7 +164,7 @@ def createuser(request):
             data['lastname']=request.POST['lastname']
             data['creationfailed']=True
             
-    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['PAGE_TITLE'] = 'Create user: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'user/createuser.html', data, content_type='text/html')
 
@@ -216,7 +216,7 @@ def changeuser(request):
     data['firstname']=request.user.first_name
     data['lastname']=request.user.last_name
             
-    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['PAGE_TITLE'] = 'change user: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'user/changeuser.html', data, content_type='text/html')
 
@@ -232,7 +232,7 @@ def clientview(request, clientid):
     data = modelgetters.form_client_data(clientid)
     if data is None:
         return redirect('/')            
-    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['PAGE_TITLE'] = 'Client "'+ data['clientname'] +'": CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'views/client.html', data, content_type='text/html')
 
@@ -244,6 +244,6 @@ def allclientsview(request):
     data = {'allclients': modelgetters.form_all_clients_data()}
     if data is None:
         return redirect('/')            
-    data['PAGE_TITLE'] = 'create user CMS Infotek'
+    data['PAGE_TITLE'] = 'All clients: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'views/allclients.html', data, content_type='text/html')

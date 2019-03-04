@@ -1,0 +1,24 @@
+<div class="reveal" id="{{ modalpre }}{{ printer.id }}" data-reveal>
+    <h3>{{ printer.printername }}</h3>
+    {% if printer.pryear %}
+    <p><b>Printer recieved:</b> {% if printer.prmonth %}{{ printer.prmonth }}/{% endif %}{{ printer.pryear }}</p>
+    {% endif %} {% if printer.printertype %}
+    <p><b>Type:</b> {{ printer.get_printertype_display }}</p>
+    {% endif %}
+    <p><b>Manufacturer:</b> {{ printer.get_manufacturer_display }}</p>
+    {% if printer.model %}
+    <p><b>Model:</b> {{ printer.model }}</p>
+    {% endif %} {% if printer.serialnumber %}
+    <p><b>Serial number:</b>{{ printer.serialnumber }}</p>
+    {% endif %} 
+    {% include "views/components/networkeqinfo.html" with equipment=printer %}
+    <form action="{% url 'clientprinter' clientid=clid %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="change">
+        <input type="hidden" name="targetid" value="{{ printer.id }}">
+        <a id="printerb{{ modalpre }}{{printer.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change printer info</a>
+    </form>
+    <a class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </a>
+</div>

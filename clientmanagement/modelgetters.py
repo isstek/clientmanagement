@@ -1,8 +1,10 @@
 from models import client
 from models import computers
+from models import printer
 from models import networkequipment
-from models import description
 from models import person
+from models import domain
+from models import router
 
 
 def form_all_clients_data():
@@ -26,9 +28,22 @@ def form_client_data(clientid):
     data['clientid'] = cur_client.id
     data['clientphonenumber'] = cur_client.phone
     data['clientaddress'] = cur_client.address
+    data['clientnetwork'] = form_client_network_equipment_data(cur_client)
     data['clientcomputers'] = form_client_computers_data(cur_client)
+    data['clientprinters'] = form_client_printers_data(cur_client)
+    data['clientdomain'] = domain.getDomain(cur_client)
+    data['clientrouter'] = router.getRouter(cur_client)
     data['clientpeople'] = form_client_people_data(cur_client)
     return data
+
+
+def form_client_network_equipment_data(client):
+    data=[]
+    try:
+        neteq = networkequipment.NetworkEquipment.objects.filter(company=client).order_by('ip_address', 'mac_address')
+    except Exception as err:
+        return []
+    return neteq
 
 
 def form_client_computers_data(client):
@@ -38,6 +53,15 @@ def form_client_computers_data(client):
     except Exception as err:
         return []
     return comps
+
+
+def form_client_printers_data(client):
+    data=[]
+    try:
+        pr = printer.Printer.objects.filter(company=client)
+    except Exception as err:
+        return []
+    return pr
 
 
 def form_client_people_data(client): 

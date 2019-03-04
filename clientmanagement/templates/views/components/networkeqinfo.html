@@ -1,0 +1,9 @@
+<p><b>Connection type:</b> {{ equipment.get_connection_type_display }}</p>
+<p><b>IP type:</b> {{ equipment.get_ip_type_display}}</p>
+{% if equipment.ip_address %}
+<p><b>IP address:</b> {{ equipment.ip_address }}</p>
+{% endif %} {% if equipment.mac_address %}
+<p><b>MAC address:</b> {{ equipment.mac_address }}</p>
+{% endif %} {% if equipment.description %}
+<p><b>Description:</b> {{ equipment.description }}</p>
+{% endif %}

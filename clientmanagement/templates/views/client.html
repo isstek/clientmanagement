@@ -4,15 +4,23 @@
     <li class="accordion-item is-active" data-accordion-item>
         <a href="#" class="accordion-title bold">General information</a>
         <div class="accordion-content" data-tab-content>
-            {% include "views/generalinfoclient.html" %}
+            {% include "views/components/generalinfoclient.html" %}
         </div>
     </li>
 
 
     <li class="accordion-item" data-accordion-item>
-        <a href="#" class="accordion-title">Computers</a>
+        <a href="#" class="accordion-title">Domain info</a>
         <div class="accordion-content" data-tab-content>
-            {% include "views/computers.html" with computers=clientcomputers clid=clientid %}
+            {% include "views/components/domaininfo.html" with domain=clientdomain clid=clientid %}
+        </div>
+    </li>
+
+
+    <li class="accordion-item" data-accordion-item>
+        <a href="#" class="accordion-title">Router info</a>
+        <div class="accordion-content" data-tab-content>
+            {% include "views/components/routerinfo.html" with router=clientrouter clid=clientid %}
         </div>
     </li>
 
@@ -20,9 +28,34 @@
     <li class="accordion-item" data-accordion-item>
         <a href="#" class="accordion-title">People</a>
         <div class="accordion-content" data-tab-content>
-            {% include "views/people.html" with people=clientpeople clid=clientid %}
+            {% include "views/components/people.html" with people=clientpeople clid=clientid %}
         </div>
     </li>
+
+
+    <li class="accordion-item" data-accordion-item>
+        <a href="#" class="accordion-title">Computers</a>
+        <div class="accordion-content" data-tab-content>
+            {% include "views/components/computers.html" with computers=clientcomputers clid=clientid %}
+        </div>
+    </li>
+
+
+    <li class="accordion-item" data-accordion-item>
+        <a href="#" class="accordion-title">Printers</a>
+        <div class="accordion-content" data-tab-content>
+            {% include "views/components/printers.html" with printers=clientprinters clid=clientid %}
+        </div>
+    </li>
+
+    {% if clientnetwork %}
+    <li class="accordion-item" data-accordion-item>
+        <a href="#" class="accordion-title">Network Equipment</a>
+        <div class="accordion-content" data-tab-content>
+            {% include "views/components/networkequipment.html" with networkeq=clientnetwork clid=clientid %}
+        </div>
+    </li>
+    {% endif %}
 
 
 

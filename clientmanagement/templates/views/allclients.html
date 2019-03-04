@@ -9,9 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for client in allclients  %}
-        {% include "views/clientrow.html" with obj=client.clientobj name=client.clientname phonenumber=client.clientphonenumber %}
-        {% endfor %}
+        {% for client in allclients %} {% include "views/oneitemrow/clientrow.html" with obj=client.clientobj name=client.clientname phonenumber=client.clientphonenumber %} {% endfor %}
     </tbody>
 </table>
 

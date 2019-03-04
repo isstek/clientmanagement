@@ -1,0 +1,9 @@
+<tr id="{{ computer.id }}">
+    <td>{{ computer.computername }}</td>
+    <td>{{ computer.get_operatingsystem_display}}</td>
+    <td>{{ computer.description }}</td>
+    <td>
+        <button class="button round nomargin margin-sides" data-open="modal-computername-{{ computer.id }}">View full info</a>
+        {% include "views/modals/computermodal.html" with computer=computer modalpre="modal-computername-" %}
+    </td>
+</tr>

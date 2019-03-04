@@ -1,0 +1,22 @@
+<div class="reveal" id="{{ modalpre }}{{ equipment.id }}" data-reveal>
+    <h3>{{ equipment.equipmenttype }}</h3>
+    {% if equipment.manufacturer %}
+    <p><b>Manufacturer:</b> {{ equipment.manufacturer }}</p>
+    {% endif %}
+    {% if equipment.model %}
+    <p><b>Model:</b> {{ equipment.model }}</p>
+    {% endif %} 
+    {% if equipment.serialnumber %}
+    <p><b>Serial number:</b>{{ equipment.serialnumber }}</p>
+    {% endif %} 
+    {% include "views/components/networkeqinfo.html" with equipment=equipment %}
+    <form action="{% url 'clientothernetequip' clientid=clid %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="change">
+        <input type="hidden" name="targetid" value="{{ equipment.id }}">
+        <a id="nwqpm{{ modalpre }}{{equipment.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change equipment info</a>
+    </form>
+    <a class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </a>
+</div>

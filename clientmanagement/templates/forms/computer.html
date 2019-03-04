@@ -1,8 +1,0 @@
-{% extends "_basenarrow.html" %} {% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %} {% endblock %} {% block body %}
-<h2>{{ minititle }}</h2>
-<form method="POST" class="post-form" autocomplete="off">{{ form.as_p }} {% csrf_token %}
-    <input type="hidden" name="compid" value="{{ compid|default:'-1' }}">
-    <input name="action" type="hidden" value="{{ action|default:'add' }}">
-    <button type="submit" class="save button round">{{ submbutton }}</button>
-</form>
-{% endblock %}

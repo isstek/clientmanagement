@@ -57,6 +57,7 @@ button.round,
     display: inline-block;
 }
 
-.alert {
+.alert,
+.errorlist {
     color: red;
 }

@@ -9,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for computer in computers %} {% include "views/onecomputerrow.html" with computer=computer %} {% endfor %}
+        {% for computer in computers %} {% include "views/oneitemrow/computerrow.html" with computer=computer %} {% endfor %}
     </tbody>
 </table>
 {% else %}
@@ -19,7 +19,7 @@
 <div class="row align-middle" data-equalizer>
     <div class='columns'></div>
     <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
-        <a href="{% url 'computer' clientid=clid %}" class="button round centered-block-element">Add new computer</a>
+        <a href="{% url 'clientcomputer' clientid=clid %}" class="button round centered-block-element">Add new computer</a>
     </div>
     <div class='columns'></div>
 </div>

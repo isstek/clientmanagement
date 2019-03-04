@@ -1,0 +1,25 @@
+{% if router %}
+<p><b>Manufacturer:</b> {{ router.get_manufacturer_display }}</p>
+{% if router.model %}
+<p><b>Model:</b> {{ router.model }}</p>
+{% endif %}
+{% if router.serialnumber %}
+<p><b>Serial number:</b> {{ router.serialnumber }}</p>
+{% endif %}
+{% if router.externalip %}
+<p><b>External IP address:</b> {{ router.externalip }}</p>
+{% endif %}
+{% if router.settingslink %}
+<p><b>Link to settings:</b> <a href="{{ router.settingslink }}" target="_blank">{{ router.settingslink }}</a></p>
+{% endif %}
+{% if router.firmwareversion %}
+<p><b>Model:</b> {{ router.firmwareversion }}</p>
+{% endif %}
+{% include "views/components/networkeqinfo.html" with equipment=router %}
+<form action="{% url 'clientrouter' clientid=clid %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="change">
+    <a id="routerbutton" class="button round" onclick="this.parentElement.submit();">Change router info</a>
+</form>
+{% else %}
+<a href="{% url 'clientrouter' clientid=clid %}" id="routerbutton" class="button round">Add router info</a> {% endif %}

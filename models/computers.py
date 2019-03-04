@@ -1,21 +1,48 @@
 from django.db import models
-from models import description
+from datetime import datetime
 from models import networkequipment
+from django.core.validators import MaxValueValidator, MinValueValidator
 from models import person
 from models import client
 
 class Computer(networkequipment.NetworkEquipment):
     OPERATING_SYSTEMS = (
         ('W10', 'Windows 10'),
+        ('W8', 'Windows 8'),
         ('W7', 'Windows 7'),
+        ('WS6', 'Windows Server 2019'),
+        ('WS6', 'Windows Server 2016'),
+        ('WS2', 'Windows Server 2012'),
+        ('WS08', 'Windows Server 2008'),
+        ('WS03', 'Windows Server 2003'),
+        ('WSO', 'Windows Other'),
+        ('MJ', 'MacOS Majovang'),
+        ('MHS', 'MacOS High Siera'),
+        ('MHS', 'MacOS Siera'),
+        ('MHS', 'MacOS Other'),
         ('WXP', 'Windows XP'),
         ('WO', 'Windows Other'),
-        ('MJ', 'MacOS Majovang'),
-        ('MHS', 'MacOS High Siera')
+        ('MO', 'MacOS Other'),
+        ('O', 'Other'),
+    )
+    MANUFACTURER = (
+        ('D', 'DELL'),
+        ('H', 'HP'),
+        ('L', 'Lenovo'),
+        ('G', 'Apple'),
+        ('A', 'Asus'),
+        ('S', 'Sony'),
+        ('C', 'Acer'),
+        ('O', 'Other')
     )
     computername = models.CharField('Computer Name', max_length=30, null=False)
-    operatingsystem = models.CharField(max_length=3, null=True, default='', blank=True, choices=OPERATING_SYSTEMS)
-    user = models.ManyToManyField(client.Client, related_name='computer')
-
+    operatingsystem = models.CharField(max_length=4, null=False, default='W10', blank=False, choices=OPERATING_SYSTEMS)
+    manufacturer = models.CharField(max_length=1, null=False, default='D', blank=False, choices=MANUFACTURER)
+    model = models.CharField(max_length=20, null=True, default='', blank=True)
+    compmonth = models.IntegerField("Recieved Month (enter a number)", blank=True, null=True, default=datetime.today().month, validators=[MaxValueValidator(12), MinValueValidator(1)])
+    compyear = models.IntegerField("Recieved Year (enter a number)", blank=True, null=True, default=datetime.today().year, validators=[MaxValueValidator(2030), MinValueValidator(2000)])
+    serialnumber = models.CharField(max_length=25, null=True, default='', blank=True)
+    user = models.ManyToManyField(person.Person, blank=True, related_name='computer')
+    
     def __str__(self):
         return self.computername

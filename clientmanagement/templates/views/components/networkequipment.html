@@ -1,0 +1,27 @@
+{% if networkeq %}
+<table id='networkequipmenttable'>
+    <thead>
+        <tr>
+            <th>Item type</th>
+            <th>IP address</th>
+            <th>MAC address</th>
+            <th>Assignment type</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for equipment in networkeq %} {% include "views/oneitemrow/networkequipmentrow.html" with equip=equipment clid=clientid %} {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h5>This client has no network equipment entered yet</h5>
+{% endif %}
+
+<div class="row align-middle" data-equalizer>
+    <div class='columns'></div>
+    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+        <a href="{% url 'clientothernetequip' clientid=clid %}" class="button round centered-block-element">Add new network equipment</a>
+    </div>
+    <div class='columns'></div>
+</div>

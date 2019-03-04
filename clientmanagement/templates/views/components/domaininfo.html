@@ -1,0 +1,17 @@
+{% if domain %}
+<p><b>Domain name (short):</b> {{ domain.domainnameshort }}</p>
+<p><b>Domain name (long):</b> {{ domain.domainnamelong }}</p>
+<p><b>Admin name:</b> {{ domain.admin }}</p>
+<p><b>Admin login:</b> {{ domain.domainnameshort }}\{{ domain.admin }}</p>
+<p><b>DNS ip settings:</b> {{ domain.dnsip }}</p>
+{% if domain.description %}
+<p><b>Description:</b> {{ domain.description }}</p>
+{% endif %}
+<a href="{% url 'clientjoindomainfile' clientid=clid %}" id="domainbutton" class="button round" target="_blank">Download login script</a>
+<form action="{% url 'clientdomain' clientid=clid %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="change">
+    <a id="domainbutton" class="button round" onclick="this.parentElement.submit();">Change domain info</a>
+</form>
+{% else %}
+<a href="{% url 'clientdomain' clientid=clid %}" id="domainbutton" class="button round">Add domain info</a> {% endif %}
