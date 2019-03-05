@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.conf import settings
+from datetime import datetime, timedelta
 import re
 
 def createUser(username, password, email, firstname, lastname, stuff=True):
@@ -94,6 +96,16 @@ def deleteUserID(ID):
 
 def checkUser(request):
     if request.user is not None:
+        try:
+            t = datetime.fromtimestamp(request.session['last_touch'])
+            if datetime.now() - t > timedelta(0, settings.AUTO_LOGOUT_DELAY * 60, 0):
+                logout(request)
+                del request.session['last_touch']
+                return False
+        except KeyError:
+            pass
+
+        request.session['last_touch'] = datetime.now().timestamp()
         return request.user.is_authenticated
     else:
         return False
