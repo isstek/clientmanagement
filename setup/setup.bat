@@ -9,3 +9,4 @@ echo "Making the migration now:"
 python manage.py migrate
 echo "Create super user:"
 python manage.py createsuperuser
+pause

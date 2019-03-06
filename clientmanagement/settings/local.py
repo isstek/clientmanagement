@@ -8,5 +8,3 @@ except:
     print("Error with LOCAL_EXTRA_SETTINGS")
     print(os.getcwd())
     sys.exit(1)
-
-DEBUG = True
