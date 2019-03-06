@@ -33,10 +33,9 @@
 <table id='userstable'>
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Username</th>
             <th>First name</th>
             <th>Last name</th>
-            <th>Username</th>
             <th>e-mail</th>
             <th>Can edit users</th>
             <th>Actions</th>
@@ -45,7 +44,6 @@
     <tbody>
         {%for u in userlist %}
         <tr id="{{ u.id }}">
-            <td>{{ u.id }}</td>
             <td>{{ u.username }}</td>
             <td>{{ u.first_name }}</td>
             <td>{{ u.last_name }}</td>
