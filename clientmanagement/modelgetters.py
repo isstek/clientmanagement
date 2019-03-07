@@ -76,3 +76,16 @@ def form_client_people_data(client):
 def form_computer_data(computerid):
     data={}
     return data
+
+
+def form_all_computers_data():
+    try:
+        comps = computers.Computer.objects.all().order_by('computername')
+    
+    except Exception as err:
+        return None
+    # result = []
+    # for comp in comps:
+    #     result.append(comp)
+    # return result
+    return comps

@@ -23,6 +23,7 @@ from models import views as models_views
 
 urlpatterns = [
     path('clients/', clientmanagement_views.allclientsview, name='allclients'),
+    path('computers/', clientmanagement_views.allcomputersview, name='allcomputers'),
     path('clients/<int:clientid>', clientmanagement_views.clientview, name='oneclient'),
     path('clients/<int:clientid>/computer', models_views.computerForm, name='clientcomputer'),
     path('clients/<int:clientid>/printer', models_views.printerForm, name='clientprinter'),
@@ -32,6 +33,7 @@ urlpatterns = [
     path('clients/<int:clientid>/netequipment', models_views.otherNetEquipmentForm, name='clientothernetequip'),
     path('clients/<int:clientid>/joindomainfile', generate_files.downloadConnectDomainFile, name='clientjoindomainfile'),
     path('client', models_views.clientForm, name='newclient'),
+    path('clients/', clientmanagement_views.allclientsview, name='changecomputer'),
     path('usermanagement', clientmanagement_views.usermanagement, name='usermanagement'),
     path('createuser', clientmanagement_views.createuser, name='createuser'),
     path('changeuser', clientmanagement_views.changeuser, name='changeuser'),
