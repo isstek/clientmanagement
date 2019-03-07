@@ -23,7 +23,9 @@
 </table>
 <script>
     $(document).ready(function() {
-        document.userstable = $('#computerstable').DataTable();
+        document.userstable = $('#computerstable').DataTable({
+            'iDisplayLength': 50
+        });
     });
 </script>
 {% endblock %}
