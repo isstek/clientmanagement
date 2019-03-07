@@ -36,10 +36,10 @@ class Computer(networkequipment.NetworkEquipment):
     computername = models.CharField('Computer Name', max_length=30, null=False)
     operatingsystem = models.CharField(max_length=4, null=False, default='W10', blank=False, choices=OPERATING_SYSTEMS)
     manufacturer = models.CharField(max_length=1, null=False, default='D', blank=False, choices=MANUFACTURER)
-    model = models.CharField(max_length=35, null=True, default='', blank=True)
+    model = models.CharField(max_length=40, null=True, default='', blank=True)
     compmonth = models.IntegerField("Recieved Month (enter a number)", blank=True, null=True, default=None, validators=[MaxValueValidator(12), MinValueValidator(1)])
     compyear = models.IntegerField("Recieved Year (enter a number)", blank=True, null=True, default=None, validators=[MaxValueValidator(2030), MinValueValidator(2000)])
-    serialnumber = models.CharField(max_length=25, null=True, default='', blank=True)
+    serialnumber = models.CharField(max_length=40, null=True, default='', blank=True)
     user = models.ManyToManyField(person.Person, blank=True, related_name='computer')
     
     def __str__(self):
