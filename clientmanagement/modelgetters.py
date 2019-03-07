@@ -27,7 +27,12 @@ def form_client_data(clientid):
     data['clientname'] = cur_client.name
     data['clientid'] = cur_client.id
     data['clientphonenumber'] = cur_client.phone
-    data['clientaddress'] = cur_client.address
+    if(cur_client.address is None):
+        data['clientaddress'] = False
+        data['clientaddresslink'] = ""
+    else:
+        data['clientaddress'] = cur_client.address
+        data['clientaddresslink'] = "https://www.google.com/maps/place/"+cur_client.address.replace(" ", "+")
     data['clientnetwork'] = form_client_network_equipment_data(cur_client)
     data['clientcomputers'] = form_client_computers_data(cur_client)
     data['clientprinters'] = form_client_printers_data(cur_client)

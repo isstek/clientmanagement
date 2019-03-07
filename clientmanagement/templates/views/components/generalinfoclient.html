@@ -1,7 +1,16 @@
 <p><b><u>Name:</u></b> {{ clientname }}</p>
+{% if clientphonenumber %}
 <p><b><u>Phone number:</u></b> {{ clientphonenumber }}</p>
-<p><b><u>Address:</u></b> {{ clientaddress }}</p>
+{% else %}
+{% endif %}
+{% if clientaddress %}
+<p><b><u>Address:</u></b> <a href="{{ clientaddresslink }}" target="_blank">{{ clientaddress }}</a></p>
+{% else %}
+{% endif %}
+{% if clientdescription %}
 <p><b><u>Description:</u></b> {{ clientdescription|linebreaksbr }}</p>
+{% else %}
+{% endif %}
 <form action="{% url 'newclient' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="action" value="change">
