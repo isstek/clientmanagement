@@ -17,6 +17,36 @@ def form_all_clients_data():
         result.append({'clientobj': cl, 'clientname':cl.name, 'clientphonenumber':cl.phone})
     return result
 
+
+def form_all_clients_statistics_data():
+    try:
+        all_clients = client.Client.objects.all().order_by('name')
+    except Exception as err:
+        return None
+    result = []
+    for cl in all_clients:
+        result.append(form_client_statistics_data(cl))
+    data = {}
+    data['clients'] = result
+    data['countofclients'] = client.Client.objects.count()
+    data['countofcomp'] = computers.Computer.objects.count()
+    data['countofpeople'] = person.Person.objects.count()
+    data['countofprinters'] = printer.Printer.objects.count()
+    data['countofnetworkeq'] = networkequipment.NetworkEquipment.objects.count()
+    return data
+
+
+def form_client_statistics_data(cur_client):
+    data = {}
+    data['id'] = cur_client.id
+    data['name'] = cur_client.name
+    data['people'] = cur_client.employees.count()
+    data['computers'] = computers.Computer.objects.filter(company=cur_client).count()
+    data['printers'] = printer.Printer.objects.filter(company=cur_client).count()
+    data['networkeq'] = cur_client.networkequipment.count()
+    return data
+
+
 def form_client_data(clientid):
     try:
         cur_client = client.Client.objects.get(id=clientid)

@@ -26,7 +26,7 @@
 
 
     <li class="accordion-item" data-accordion-item>
-        <a href="#" class="accordion-title">People</a>
+        <a href="#" class="accordion-title">People ({{ clientpeople|length }})</a>
         <div class="accordion-content" data-tab-content>
             {% include "views/components/people.html" with people=clientpeople clid=clientid %}
         </div>
@@ -34,7 +34,7 @@
 
 
     <li class="accordion-item" data-accordion-item>
-        <a href="#" class="accordion-title">Computers</a>
+        <a href="#" class="accordion-title">Computers ({{ clientcomputers|length }})</a>
         <div class="accordion-content" data-tab-content>
             {% include "views/components/computers.html" with computers=clientcomputers clid=clientid %}
         </div>
@@ -42,7 +42,7 @@
 
 
     <li class="accordion-item" data-accordion-item>
-        <a href="#" class="accordion-title">Printers</a>
+        <a href="#" class="accordion-title">Printers ({{ clientprinters|length }})</a>
         <div class="accordion-content" data-tab-content>
             {% include "views/components/printers.html" with printers=clientprinters clid=clientid %}
         </div>
@@ -50,7 +50,7 @@
 
     {% if clientnetwork %}
     <li class="accordion-item" data-accordion-item>
-        <a href="#" class="accordion-title">Network Equipment</a>
+        <a href="#" class="accordion-title">Network Equipment ({{ clientnetwork|length }})</a>
         <div class="accordion-content" data-tab-content>
             {% include "views/components/networkequipment.html" with networkeq=clientnetwork clid=clientid %}
         </div>

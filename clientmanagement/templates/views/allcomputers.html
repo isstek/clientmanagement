@@ -6,7 +6,7 @@
 <script src="{% static 'js/base/dialogs.js' %}"></script>
 {% endblock %}
 {% block body %}
-<h2>All Clients</h2>
+<h2>All Computers</h2>
 <table id='computerstable'>
     <thead>
         <tr>
@@ -24,7 +24,8 @@
 <script>
     $(document).ready(function() {
         document.userstable = $('#computerstable').DataTable({
-            'iDisplayLength': 50
+            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            "iDisplayLength": -1
         });
     });
 </script>

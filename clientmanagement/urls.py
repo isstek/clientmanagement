@@ -32,6 +32,7 @@ urlpatterns = [
     path('clients/<int:clientid>/router', models_views.routerForm, name='clientrouter'),
     path('clients/<int:clientid>/netequipment', models_views.otherNetEquipmentForm, name='clientothernetequip'),
     path('clients/<int:clientid>/joindomainfile', generate_files.downloadConnectDomainFile, name='clientjoindomainfile'),
+    path('statistics/', clientmanagement_views.statisticsview, name='statistics'),
     path('client', models_views.clientForm, name='newclient'),
     path('clients/', clientmanagement_views.allclientsview, name='changecomputer'),
     path('usermanagement', clientmanagement_views.usermanagement, name='usermanagement'),

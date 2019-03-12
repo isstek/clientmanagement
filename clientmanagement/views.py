@@ -342,3 +342,15 @@ def allcomputersview(request):
     data['PAGE_TITLE'] = 'All computers: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'views/allcomputers.html', data, content_type='text/html')
+
+
+def statisticsview(request):
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data = modelgetters.form_all_clients_statistics_data()
+    if data is None:
+        return redirect('/')            
+    data['PAGE_TITLE'] = 'Statistics: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'views/statistics.html', data, content_type='text/html')

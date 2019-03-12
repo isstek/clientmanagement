@@ -1,0 +1,10 @@
+<tr id="{{ client.id }}">
+    <td>{{ client.name }}</td>
+    <td>{{ client.people }}</td>
+    <td>{{ client.computers }}</td>
+    <td>{{ client.printers }}</td>
+    <td>{{ client.networkeq }}</td>
+    <td>
+        <a class="button round nomargin margin-sides" href="{% url 'oneclient' clientid=client.id %}">View</a>
+    </td>
+</tr>
