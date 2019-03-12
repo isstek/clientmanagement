@@ -47,16 +47,16 @@
                         <div class="top-bar-left">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li> <a href="/">Main page</a> </li>
-                                <li><a href="{% url 'usermanagement' %}">User management</a></li>
-                                <li> <a href="{% url 'allclients' %}">View Clients</a> </li>
-                                <li> <a href="{% url 'allcomputers' %}">View Computers</a> </li>
+                                {% comment %} <li><a href="{% url 'usermanagement' %}">User management</a></li> {% endcomment %}
+                                <li> <a href="{% url 'allclients' %}">Clients</a> </li>
+                                <li> <a href="{% url 'allcomputers' %}">Computers</a> </li>
                             </ul>
                         </div>
                     </div>
                     {% endif %}
                 </div>
                 <div class="small-9 medium-4 large-3 columns text-right">
-                    {%block welcomeusername%}{% if user.is_authenticated %} Welcome, {{ user.get_short_name }}. <a href="{% url 'logout' %}">log out</a>{% endif %}{% endblock%}
+                    {%block welcomeusername%}{% if user.is_authenticated %} Welcome, {{ user.get_short_name }}. {% comment %} <a class='button round' href="{% url 'changeuser' %}">Change</a> {% endcomment %}<a class='alert button round' href="{% url 'logout' %}">Log out</a>{% endif %}{% endblock%}
                 </div>
             </div>
             <div class="row">

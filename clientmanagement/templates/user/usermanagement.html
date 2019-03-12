@@ -50,7 +50,8 @@
             <td>{{ u.email }}</td>
             <td></td>
             <td>
-                <a class="button alert" onclick="deleteUser('{{ u.id }}', '{{ u.username }}', '{{ u.get_full_name }}'); return false;">Delete</a>
+                <a class="button alert round" onclick="deleteUser('{{ u.id }}', '{{ u.username }}', '{{ u.get_full_name }}'); return false;">Delete</a>
+                <a class="button round" onclick="deleteUser('{{ u.id }}', '{{ u.username }}', '{{ u.get_full_name }}'); return false;">Delete</a>
             </td>
         </tr>
         {% endfor %}

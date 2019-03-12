@@ -8,6 +8,7 @@ from datetime import datetime
 from urllib.parse import urlencode, urlparse, parse_qs
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth import forms as userforms
 from django.urls import reverse
 from django.shortcuts import render_to_response, redirect
 from django.utils.cache import patch_response_headers
@@ -163,7 +164,7 @@ def createuser(request):
             data['firstname']=request.POST['firstname']
             data['lastname']=request.POST['lastname']
             data['creationfailed']=True
-            
+    
     data['PAGE_TITLE'] = 'Create user: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'user/createuser.html', data, content_type='text/html')
@@ -210,17 +211,99 @@ def changeuser(request):
                         return redirect('/changeuser')
             except Exception as exc:
                 logger.error('!views.createuser!: Could not create user. \n' + str(exc))
-    
-    data['username']=request.user.username
-    data['email']=request.user.email
-    data['firstname']=request.user.first_name
-    data['lastname']=request.user.last_name
-            
+        elif (request.POST['action'] == 'change') and ('id' in request.POST):
+            cur_user = userfunctions.getUser(request.POST['id'])
+            if cur_user is None:
+                return redirect(reverse('usermanagement'))
+            data['username']=cur_user.username
+            data['email']=cur_user.email
+            data['firstname']=cur_user.first_name
+            data['lastname']=cur_user.last_name   
+            data['id']=cur_user.id
+
+    if (request.method == 'GET'):  
+        data['username']=request.user.username
+        data['email']=request.user.email
+        data['firstname']=request.user.first_name
+        data['lastname']=request.user.last_name
+                
     data['PAGE_TITLE'] = 'change user: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'user/changeuser.html', data, content_type='text/html')
 
 
+def userForm(request):    
+    valid, response = initRequestLogin(request)
+    if not valid:
+        return response
+    data={}
+    data['PAGE_TITLE'] = 'Change User: CMS infotek'
+    if (request.method == 'POST') and ('action' in request.POST):
+        if (request.POST['action']=='add'):
+            form = userforms.UserCreationForm(request.POST)
+            if form.is_valid():
+                model = form.save(commit=False)
+                model.save()
+                return redirect(reverse('clientmanagement'))
+            else:
+                data['action']='add'
+                data['PAGE_TITLE'] = 'New User: CMS infotek'
+                data['minititle'] = 'Add User'
+                data['submbutton'] = 'Add user'
+        elif (request.POST['action']=='change'):
+            if('targetid' in request.POST):
+                try:
+                    curuser=userfunctions.getUser(request.POST['targetid'])
+                except Exception:
+                    return redirect(reverse('usermanagement'))
+                form = UserShortForm(instance=curuser)
+                data['action'] = 'changed'
+                data['targetid'] = request.POST['targetid']
+                data['minititle'] = 'Change User "'+curuser.full+'"'
+                data['submbutton'] = 'Change printer'
+                data['deletebutton'] = 'Delete ' +curprinter.printername
+            else:
+                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+        elif (request.POST['action']=='changed'):
+            if('targetid' in request.POST):
+                try:
+                    curprinter=printer.Printer.objects.get(id=request.POST['targetid'])
+                except Exception:
+                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+                form = PrinterFullForm(request.POST, instance=curprinter)
+                if form.is_valid():
+                    model = form.save(commit=False)
+                    model.save()
+                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+                data['action'] = 'changed'
+                data['targetid'] = request.POST['targetid']
+                data['minititle'] = 'Change Printer "'+curprinter.printername+'"'
+                data['submbutton'] = 'Change printer'
+                data['deletebutton'] = 'Delete ' +curprinter.printername
+            else:
+                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+        elif (request.POST['action']=='delete'): 
+            if('targetid' in request.POST):
+                try:
+                    curprinter=printer.Printer.objects.get(id=request.POST['targetid'])
+                except Exception:
+                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+                curprinter.delete()
+                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+            else:
+                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+        else:
+            return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+    else:
+        form = PrinterForm(initial={'company': b})
+        data['action']='add'
+        data['PAGE_TITLE'] = 'New Printer: CMS infotek'
+        data['minititle'] = 'Add printer'
+        data['submbutton'] = 'Add printer'
+    data['form'] = form
+    data['built'] = datetime.now().strftime("%H:%M:%S") 
+    data['backurl'] = reverse('oneclient', kwargs={'clientid': clientid})
+    return render(request, 'forms/unimodelform.html', data, content_type='text/html')
 
 
 

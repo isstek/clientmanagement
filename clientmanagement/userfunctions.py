@@ -11,6 +11,15 @@ def createUser(username, password, email, firstname, lastname, stuff=True):
     user.save()
     return user
 
+def getUser(id):
+    try:
+        user = User.objects.get(id=id)
+    except User.DoesNotExist:
+        return None
+    except Exception:
+        return None
+    return user
+
 
 def resetPassword(userid, newpassword):
     try:
