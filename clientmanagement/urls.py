@@ -45,7 +45,7 @@ urlpatterns = [
     path('', clientmanagement_views.homepage, name='homepage'),
     # path('login', clientmanagement_views.loginpage, name='loginpage'),
     # path('logout', clientmanagement_views.logout, name='logout'),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     re_path(r'^.*$', clientmanagement_views.homepage),
     path('testmodule/', include('clientmanagement.testmodule.urls')),

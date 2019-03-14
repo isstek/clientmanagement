@@ -58,7 +58,7 @@
                     {% endif %}
                 </div>
                 <div class="small-9 medium-4 large-3 columns text-right">
-                    {%block welcomeusername%}{% if user.is_authenticated %} Welcome, {{ user.get_short_name }}. {% comment %} <a class='button round' href="{% url 'changeuser' %}">Change</a> {% endcomment %}<a class='alert button round' href="{% url 'logout' %}">Log out</a>{% endif %}{% endblock%}
+                    {%block welcomeusername%}{% if user.is_authenticated %} Welcome, {{ user.get_short_name }}. <a href="{% url 'password_change' %}">Change password</a><br><a class='alert' href="{% url 'logout' %}">Log out</a>{% endif %}{% endblock%}
                 </div>
             </div>
             <div class="row">
