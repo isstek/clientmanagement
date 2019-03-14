@@ -13,7 +13,7 @@ class ClientForm(forms.ModelForm):
 
 
 def ClientFormParse(request):
-    valid, response = main_views.initRequestLogin(request)
+    valid, response = main_views.initRequest(request)
     if not valid:
         return response
     data={}

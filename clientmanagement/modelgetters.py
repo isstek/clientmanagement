@@ -5,6 +5,7 @@ from models import networkequipment
 from models import person
 from models import domain
 from models import router
+from models import updates
 
 
 def form_all_clients_data():
@@ -124,3 +125,11 @@ def form_all_computers_data():
     #     result.append(comp)
     # return result
     return comps
+
+
+def form_updates_data():
+    try:
+        posts = updates.SystemUpdates.objects.all().order_by('-postedon')[:10]
+    except Exception as err:
+        return None
+    return {'posts': posts}

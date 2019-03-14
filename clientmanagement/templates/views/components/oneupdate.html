@@ -1,0 +1,23 @@
+<div id='post-id-{{ post.id }}' class='post-bordered'><p><b>Posted on: </b><i>{{ post.postedon|date:"Y-m-d" }} {{ post.postedon|time:"h:i P"}}</i></p>
+<p><b>Version: </b><i>{{ post.version }}</i></p>
+<h4>{{ post.title }}</h4>
+{{ post.newstext|linebreaks  }}
+<br>
+<p><i>Posted by: {{ post.author }}</i></p>
+{% if post.editable %}
+<form action="{% url 'postupdate' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="change">
+        <input type="hidden" name="targetid" value="{{ post.id }}">
+        <a id="post-id-change-{{post.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Edit post</a>
+</form>
+{% endif %}
+{% if not post.wassent %}
+<form action="{% url 'postupdate' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="send">
+        <input type="hidden" name="targetid" value="{{ post.id }}">
+        <a id="post-id-send-{{post.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Send post</a>
+</form>
+{% endif %}
+</div>

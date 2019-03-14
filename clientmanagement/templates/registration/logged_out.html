@@ -1,0 +1,8 @@
+{% extends "_basenarrow.html" %}{% block page_title %}Loged out of CMS Infotek{% endblock %} {% load staticfiles %} {% block extra_css %}{% endblock %} {% block body %} {% csrf_token %}
+
+<h2 class="text-center">Infotek CMS</h2>
+<p>Good bye. Have a good day!</p>
+<p>
+    <a href="{% url 'homepage' %}">Go to homepage</a>
+</p>
+{% endblock %}

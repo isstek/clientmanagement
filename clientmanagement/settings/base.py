@@ -71,6 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'clientmanagement.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -119,7 +120,6 @@ USE_TZ = True
 
 # In minutes
 AUTO_LOGOUT_DELAY = 60
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

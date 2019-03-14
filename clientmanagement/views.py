@@ -12,6 +12,7 @@ from django.contrib.auth import forms as userforms
 from django.urls import reverse
 from django.shortcuts import render_to_response, redirect
 from django.utils.cache import patch_response_headers
+from django.contrib.auth.decorators import login_required
 import os
 from django.shortcuts import render
 from django.conf import settings
@@ -19,15 +20,9 @@ from clientmanagement import userfunctions
 from clientmanagement import modelgetters
 
 
+
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
-
-
-def initRequestLogin(request):
-    if userfunctions.checkUser(request):
-        return initRequest(request)
-    else:
-        return False, loginpage(request)
 
 
 def initRequest(request):
@@ -55,6 +50,8 @@ def initRequest(request):
     ## Create a dict in session for storing request params
     requestParams = {}
     request.session['requestParams'] = requestParams
+    if getattr(settings, 'SESSION_COOKIE_AGE', None):
+        request.session.set_expiry(settings.SESSION_COOKIE_AGE)
 
     if request.method == 'POST':
         for p in request.POST:
@@ -72,34 +69,15 @@ def initRequest(request):
 
     return True, None
 
-
+@login_required( login_url = 'login' )
 def homepage(request):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = {}
     data['PAGE_TITLE'] = 'CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'index.html', data, content_type='text/html')
-
-def loginpage(request):
-    valid, response = initRequest(request)
-    if not valid:
-        return response
-    data = {}
-    if (request.method == 'POST') and ('username' in request.POST) and ('password' in request.POST):
-        try:
-            user = userfunctions.loginUser(request, request.POST['username'], request.POST['password'])
-            data['USER'] = user
-            if ('last_URL' in request.POST):
-                return redirect(request.POST['last_URL'])
-            else:
-                return redirect('/')
-        except Exception as exc:
-            logger.error('!views.loginpage!: Could not perform log in the client. \n' + str(exc))
-    data['PAGE_TITLE'] = 'Login to CMS Infotek'
-    data['built'] = datetime.now().strftime("%H:%M:%S")
-    return render(request, 'login.html', data, content_type='text/html')
 
 def logout(request):
     valid, response = initRequest(request)
@@ -109,8 +87,9 @@ def logout(request):
     return redirect('/')
 
 
+@login_required( login_url = 'login' )
 def usermanagement(request):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = {}
@@ -128,8 +107,9 @@ def usermanagement(request):
     return render(request, 'user/usermanagement.html', data, content_type='text/html')
 
 
+@login_required( login_url = 'login' )
 def createuser(request):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = {}
@@ -170,8 +150,9 @@ def createuser(request):
     return render(request, 'user/createuser.html', data, content_type='text/html')
 
 
+@login_required( login_url = 'login' )
 def changeuser(request):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = {}
@@ -232,8 +213,9 @@ def changeuser(request):
     return render(request, 'user/changeuser.html', data, content_type='text/html')
 
 
+@login_required( login_url = 'login' )
 def userForm(request):    
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data={}
@@ -308,8 +290,9 @@ def userForm(request):
 
 
 
+@login_required( login_url = 'login' )
 def clientview(request, clientid):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = modelgetters.form_client_data(clientid)
@@ -320,8 +303,9 @@ def clientview(request, clientid):
     return render(request, 'views/client.html', data, content_type='text/html')
 
 
+@login_required( login_url = 'login' )
 def allclientsview(request):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = {'allclients': modelgetters.form_all_clients_data()}
@@ -332,8 +316,9 @@ def allclientsview(request):
     return render(request, 'views/allclients.html', data, content_type='text/html')
 
 
+@login_required( login_url = 'login' )
 def allcomputersview(request):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = {'allcomputers': modelgetters.form_all_computers_data()}
@@ -344,13 +329,47 @@ def allcomputersview(request):
     return render(request, 'views/allcomputers.html', data, content_type='text/html')
 
 
+@login_required( login_url = 'login' )
 def statisticsview(request):
-    valid, response = initRequestLogin(request)
+    valid, response = initRequest(request)
     if not valid:
         return response
     data = modelgetters.form_all_clients_statistics_data()
     if data is None:
         return redirect('/')            
     data['PAGE_TITLE'] = 'Statistics: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'views/statistics.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
+def systemupdatesview(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = modelgetters.form_updates_data()         
+    data['PAGE_TITLE'] = 'System Updates: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'views/updates.html', data, content_type='text/html')
+
+
+def resetpasswordview(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = {}           
+    data['PAGE_TITLE'] = 'Reset Password: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'views/statistics.html', data, content_type='text/html')
+
+
+def resetpasswordreadyview(request, resetgui):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = modelgetters.form_all_clients_statistics_data()
+    if data is None:
+        return redirect('/')            
+    data['PAGE_TITLE'] = 'Reset Password: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'views/statistics.html', data, content_type='text/html')

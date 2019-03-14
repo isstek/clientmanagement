@@ -61,3 +61,10 @@ button.round,
 .errorlist {
     color: red;
 }
+
+.post-bordered {
+    border: 1px;
+    border-style: dotted;
+    border-color: black;
+    padding: 0.4rem;
+}

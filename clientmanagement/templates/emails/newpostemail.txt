@@ -1,0 +1,8 @@
+Hi, {{ user.first_name }}.
+
+There is a new system update posted by {{ post.author }}. Here it is:
+{{ post.newstext }}
+
+Have a great day!
+Always yours,
+CMS Infotek Robot

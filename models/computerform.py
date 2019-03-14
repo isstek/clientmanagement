@@ -26,7 +26,7 @@ class ComputerFullForm(forms.ModelForm):
 
 
 def computerFormParse(request, clientid):    
-    valid, response = main_views.initRequestLogin(request)
+    valid, response = main_views.initRequest(request)
     if not valid:
         return response
     data={}

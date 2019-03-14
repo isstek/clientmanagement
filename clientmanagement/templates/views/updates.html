@@ -1,0 +1,14 @@
+{% extends "_basewide.html" %} {% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %} {% endblock %} {% block body %}
+<h2>System updates</h2>
+{% for post in posts %}
+{% include "views/components/oneupdate.html" with post=post %}
+{% endfor %}
+<br><br>
+<div class="row align-middle" data-equalizer>
+    <div class='columns'></div>
+    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+        <a href="{% url 'postupdate' %}" class="button round centered-block-element">Post a new update</a>
+    </div>
+    <div class='columns'></div>
+</div>
+{% endblock %}
