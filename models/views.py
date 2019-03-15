@@ -17,6 +17,7 @@ from models import domainform
 from models import routerform
 from models import othernetequipform
 from models import updatesform
+from models import userform
 # Create your views here.
 
 
@@ -82,3 +83,11 @@ def PostSystemUpdate(request):
     if not valid:
         return response
     return updatesform.SystemUpdateFormParse(request)
+
+
+@login_required( login_url = 'login' )
+def addUserForm(request):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return userform.userFormParse(request)

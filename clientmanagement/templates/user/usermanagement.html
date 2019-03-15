@@ -37,46 +37,29 @@
             <th>First name</th>
             <th>Last name</th>
             <th>e-mail</th>
-            <th>Can edit users</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         {%for u in userlist %}
-        <tr id="{{ u.id }}">
-            <td>{{ u.username }}</td>
-            <td>{{ u.first_name }}</td>
-            <td>{{ u.last_name }}</td>
-            <td>{{ u.email }}</td>
-            <td></td>
-            <td>
-                <a class="button alert round" onclick="deleteUser('{{ u.id }}', '{{ u.username }}', '{{ u.get_full_name }}'); return false;">Delete</a>
-                <a class="button round" onclick="deleteUser('{{ u.id }}', '{{ u.username }}', '{{ u.get_full_name }}'); return false;">Delete</a>
-            </td>
-        </tr>
+            {% include "user/oneuserrow.html" with user=u %}
         {% endfor %}
     </tbody>
 </table>
 <div class="row align-middle" data-equalizer>
     <div class='columns'></div>
     <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
-        <a href="{% url 'createuser' %}" class="button round centered-block-element">Create new user account</a>
+        <a href="{% url 'adduser' %}" class="button round centered-block-element">Create new user account</a>
     </div>
     <div class='columns'></div>
 </div>
-{% comment %} <br>
-<div class="row align-middle" data-equalizer>
-    <div class='columns'></div>
-    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
-        <a href='/' class="button round centered-block-element">Main menu</a>
-    </div>
-    <div class='columns'></div>
-</div> {% endcomment %}
 
 
 <script>
     $(document).ready(function() {
-        document.userstable = $('#userstable').DataTable();
+        document.userstable = $('#userstable').DataTable(    
+            {"paging":   false}
+        );
     });
 </script>
 {% endblock %}

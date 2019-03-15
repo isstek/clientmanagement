@@ -151,6 +151,19 @@ def checkEmailExists(email, curusername=None):
     except Exception as e:  
         return False, e.message
 
+def checkEmailExistsForm(email, curuserid=None):
+    try:
+        if re.fullmatch("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email) is None:
+            return 2
+        u = User.objects.get(email = email)
+        if (u is not None) and (u.id != curuserid):
+            return 1
+        return 0
+    except User.DoesNotExist:
+        return 0
+    except Exception as e:  
+        return 3
+
 def checkPasswordComplexity(password):
     try:
         if re.fullmatch(r'[0-9A-Za-z!@#$%\^&\*~`_\+=,.<>/]+', password) is None:
