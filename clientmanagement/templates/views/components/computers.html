@@ -9,7 +9,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for computer in computers %} {% include "views/oneitemrow/computerrow.html" with computer=computer %} {% endfor %}
+        {% for computer in computers %} {% include "views/oneitemrow/computerrow.html" with computer=computer fullinfo=False %} {% endfor %}
     </tbody>
 </table>
 {% else %}
