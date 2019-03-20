@@ -2,10 +2,10 @@
     <td>{{ ticket.title }}</td>
     <td>{{ ticket.companyname }}</td>
     <td>{{ ticket.contactname }}</td>
-    <td>{{ ticket.createdon|date:"Y-m-d h:i a" }} </td>
+    <td>{{ ticket.createtime|date:"Y-m-d h:i a" }} </td>
     {% if closedticketson %}
     <td>{% if ticket.resolved %}
-    {{ ticket.resolvedon|date:"Y-m-d h:i a" }}
+    {{ ticket.closetime|date:"Y-m-d h:i a" }}
     {% endif %}</td>
     {% endif %}
     <td>

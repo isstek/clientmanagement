@@ -1,8 +1,8 @@
 <div class="reveal" id="{{ modalpre }}{{ ticket.id }}" data-reveal>
     <h3>{{ ticket.title }}</h3>
-    <p><b>Opened on:</b> {{ ticket.createdon|date:"Y-m-d h:i a" }}</p>
+    <p><b>Opened on:</b> {{ ticket.createtime|date:"Y-m-d h:i a" }}</p>
     {% if ticket.resolved %}
-    <p><b>Closed on:</b> {{ ticket.createdon|date:"Y-m-d h:i a"}}</p>
+    <p><b>Closed on:</b> {{ ticket.closetime|date:"Y-m-d h:i a"}}</p>
     <p><b>Closed by:</b> {{ ticket.resolvedby }}</p>
     {% endif %}
     {% if ticket.companyname %}

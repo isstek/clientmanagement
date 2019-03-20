@@ -1,10 +1,10 @@
-Hi, {{ ticket.contactname }}.
+{% load tz %} {% timezone "Asia/Kolkata" %}Hi, {{ ticket.contactname }}.
 
 
 We received your ticket and will work on it now. Here is some information that we got, some of it may be used as a reference later:
 Link to the ticket: {{ link }}.
 Contact name: {{ ticket.contactname }}.
-Created: {{ ticket.createdon|date:"Y-m-d h:i a"}}.{% if ticket.contactphone %}
+Created: {{ ticket.createtime|date:"Y-m-d h:i a"}}.{% if ticket.contactphone %}
 Phone number: {{ ticket.contactphone.as_international }}{% endif %}{% if ticket.contactemail %}
 Email: {{ ticket.contactemail }}{% endif %}{% if ticket.title %}
 Subject: {{ ticket.title }}{% endif %}{% if ticket.description %}
@@ -14,4 +14,4 @@ If anything doesn't seem correct, please contact us at (212) 754-8008 or by emai
 
 Have a great day!
 Always yours,
-Infotek
+Infotek{% endtimezone %}

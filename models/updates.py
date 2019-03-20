@@ -5,7 +5,7 @@ from clientmanagement import sendemail
 class SystemUpdates(models.Model):
     
     version = models.CharField('Version', max_length=25, null=False, blank=False)
-    postedon = models.DateTimeField('Update time', default=datetime.now, null=False, blank=False)
+    postedon = models.DateTimeField('Update time', default=datetime.utcnow, null=False, blank=False)
     createdon = models.DateTimeField('Created time', auto_now_add=True, null=False, blank=False)
     author = models.CharField('Update author', max_length=80, null=True, blank=True)
     title = models.CharField('Title', max_length=120, null=False, blank=False)

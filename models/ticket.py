@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta, timezone
+import pytz
 import uuid
 from clientmanagement import sendemail
 from phonenumber_field.modelfields import PhoneNumberField
@@ -19,6 +20,12 @@ class Ticket(models.Model):
     resolvedon = models.DateTimeField("Resolved on", null=True, blank=True, default=None)
     resolvedby = models.CharField("Resolved by", max_length=60, null=True, blank=True, default=None)
     unid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    def createtime(self):
+        return self.createdon.astimezone(pytz.timezone('America/New_York'))
+
+    def closetime(self):
+        return self.resolvedon.astimezone(pytz.timezone('America/New_York'))
     
     def __str__(self):
         return "Ticket number " + str(self.id)
