@@ -12,16 +12,15 @@
         <a href="https://www.dell.com/support/home/us/en/19/product-support/servicetag/{{ computer.serialnumber }}/diagnose" target="_blank">{{ computer.serialnumber }}</a> {% else %} {{ computer.serialnumber }} {% endif %}</p>
     {% endif %}
     {% include "views/components/networkeqinfo.html" with equipment=computer %}
-    <form {% if clid %}
-        action="{% url 'clientcomputer' clientid=clid %}"
-    {% else %}
-        action="{% url 'changecomputer' %}"
-    {% endif %}  method="POST" enctype="multipart/form-data">
+    {% if clid %}<form 
+        action="{% url 'clientcomputer' clientid=clid %}"  method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="action" value="change">
         <input type="hidden" name="targetid" value="{{ computer.id }}">
         <a id="comb{{ modalpre }}{{computer.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change computer info</a>
     </form>
+    {% else %}
+    {% endif %}
     <a class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </a>

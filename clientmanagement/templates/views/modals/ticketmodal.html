@@ -1,0 +1,44 @@
+<div class="reveal" id="{{ modalpre }}{{ ticket.id }}" data-reveal>
+    <h3>{{ ticket.title }}</h3>
+    <p><b>Opened on:</b> {{ ticket.createdon|date:"Y-m-d h:i a" }}</p>
+    {% if ticket.resolved %}
+    <p><b>Closed on:</b> {{ ticket.createdon|date:"Y-m-d h:i a"}}</p>
+    <p><b>Closed by:</b> {{ ticket.resolvedby }}</p>
+    {% endif %}
+    {% if ticket.companyname %}
+    <p><b>Company name:</b> {{ ticket.companyname }}</p>
+    {% endif %}
+    {% if ticket.contactname %}
+    <p><b>Contact:</b> {{ ticket.contactname }}</p>
+    {% endif %}
+    {% if ticket.contactemail %}
+    <p><b>Contact email:</b> <a href="mailto:{{ ticket.contactemail }}">{{ ticket.contactemail }}</a></p>
+    {% endif %}
+    {% if ticket.contactphone %}
+    <p><b>Phone number:</b> {{ ticket.contactphone.as_international }}</p>
+    {% endif %}
+    {% if ticket.description %}
+    <p><b>Description:</b> {{ ticket.description|linebreaksbr }}</p>
+    {% endif %}
+    {% if ticket.resolved %}
+    <form action="{% url 'ticket_change' ticketid=ticket.id %}"  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="open">
+        <a id="open-button-{{ modalpre }}{{ticket.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Reopen ticket</a>
+    </form>
+    {% else %}
+    <form action="{% url 'ticket_change' ticketid=ticket.id %}"  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="close">
+        <a id="close-button-{{ modalpre }}{{ticket.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Close ticket</a>
+    </form>
+    {% endif %}
+    <form action="{% url 'ticket_change' ticketid=ticket.id %}"  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="change">
+        <a id="change-button-{{ modalpre }}{{ticket.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change ticket</a>
+    </form>
+    <a class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </a>
+</div>

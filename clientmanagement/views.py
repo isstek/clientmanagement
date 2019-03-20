@@ -77,14 +77,15 @@ def homepage(request):
     data = {}
     data['PAGE_TITLE'] = 'CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
     return render(request, 'index.html', data, content_type='text/html')
 
-def logout(request):
-    valid, response = initRequest(request)
-    if not valid:
-        return response
-    userfunctions.logoutUser(request)
-    return redirect('/')
+# def logout(request):
+#     valid, response = initRequest(request)
+#     if not valid:
+#         return response
+#     userfunctions.logoutUser(request)
+#     return redirect('/')
 
 
 @login_required( login_url = 'login' )
@@ -104,6 +105,7 @@ def usermanagement(request):
     data['userlist'] = userfunctions.getUserList()
     data['PAGE_TITLE'] = 'Manage users: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
     return render(request, 'user/usermanagement.html', data, content_type='text/html')
 
 
@@ -147,6 +149,7 @@ def createuser(request):
     
     data['PAGE_TITLE'] = 'Create user: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
     return render(request, 'user/createuser.html', data, content_type='text/html')
 
 
@@ -210,83 +213,84 @@ def changeuser(request):
                 
     data['PAGE_TITLE'] = 'change user: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
     return render(request, 'user/changeuser.html', data, content_type='text/html')
 
 
-@login_required( login_url = 'login' )
-def userForm(request):    
-    valid, response = initRequest(request)
-    if not valid:
-        return response
-    data={}
-    data['PAGE_TITLE'] = 'Change User: CMS infotek'
-    if (request.method == 'POST') and ('action' in request.POST):
-        if (request.POST['action']=='add'):
-            form = userforms.UserCreationForm(request.POST)
-            if form.is_valid():
-                model = form.save(commit=False)
-                model.save()
-                return redirect(reverse('clientmanagement'))
-            else:
-                data['action']='add'
-                data['PAGE_TITLE'] = 'New User: CMS infotek'
-                data['minititle'] = 'Add User'
-                data['submbutton'] = 'Add user'
-        elif (request.POST['action']=='change'):
-            if('targetid' in request.POST):
-                try:
-                    curuser=userfunctions.getUser(request.POST['targetid'])
-                except Exception:
-                    return redirect(reverse('usermanagement'))
-                form = UserShortForm(instance=curuser)
-                data['action'] = 'changed'
-                data['targetid'] = request.POST['targetid']
-                data['minititle'] = 'Change User "'+curuser.full+'"'
-                data['submbutton'] = 'Change printer'
-                data['deletebutton'] = 'Delete ' +curprinter.printername
-            else:
-                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-        elif (request.POST['action']=='changed'):
-            if('targetid' in request.POST):
-                try:
-                    curprinter=printer.Printer.objects.get(id=request.POST['targetid'])
-                except Exception:
-                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-                form = PrinterFullForm(request.POST, instance=curprinter)
-                if form.is_valid():
-                    model = form.save(commit=False)
-                    model.save()
-                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-                data['action'] = 'changed'
-                data['targetid'] = request.POST['targetid']
-                data['minititle'] = 'Change Printer "'+curprinter.printername+'"'
-                data['submbutton'] = 'Change printer'
-                data['deletebutton'] = 'Delete ' +curprinter.printername
-            else:
-                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-        elif (request.POST['action']=='delete'): 
-            if('targetid' in request.POST):
-                try:
-                    curprinter=printer.Printer.objects.get(id=request.POST['targetid'])
-                except Exception:
-                    return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-                curprinter.delete()
-                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-            else:
-                return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-        else:
-            return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
-    else:
-        form = PrinterForm(initial={'company': b})
-        data['action']='add'
-        data['PAGE_TITLE'] = 'New Printer: CMS infotek'
-        data['minititle'] = 'Add printer'
-        data['submbutton'] = 'Add printer'
-    data['form'] = form
-    data['built'] = datetime.now().strftime("%H:%M:%S") 
-    data['backurl'] = reverse('oneclient', kwargs={'clientid': clientid})
-    return render(request, 'forms/unimodelform.html', data, content_type='text/html')
-
+# @login_required( login_url = 'login' )
+# def userForm(request):    
+#     valid, response = initRequest(request)
+#     if not valid:
+#         return response
+#     data={}
+#     data['PAGE_TITLE'] = 'Change User: CMS infotek'
+#     if (request.method == 'POST') and ('action' in request.POST):
+#         if (request.POST['action']=='add'):
+#             form = userforms.UserCreationForm(request.POST)
+#             if form.is_valid():
+#                 model = form.save(commit=False)
+#                 model.save()
+#                 return redirect(reverse('clientmanagement'))
+#             else:
+#                 data['action']='add'
+#                 data['PAGE_TITLE'] = 'New User: CMS infotek'
+#                 data['minititle'] = 'Add User'
+#                 data['submbutton'] = 'Add user'
+#         elif (request.POST['action']=='change'):
+#             if('targetid' in request.POST):
+#                 try:
+#                     curuser=userfunctions.getUser(request.POST['targetid'])
+#                 except Exception:
+#                     return redirect(reverse('usermanagement'))
+#                 form = UserShortForm(instance=curuser)
+#                 data['action'] = 'changed'
+#                 data['targetid'] = request.POST['targetid']
+#                 data['minititle'] = 'Change User "'+curuser.full+'"'
+#                 data['submbutton'] = 'Change printer'
+#                 data['deletebutton'] = 'Delete ' +curprinter.printername
+#             else:
+#                 return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#         elif (request.POST['action']=='changed'):
+#             if('targetid' in request.POST):
+#                 try:
+#                     curprinter=printer.Printer.objects.get(id=request.POST['targetid'])
+#                 except Exception:
+#                     return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#                 form = PrinterFullForm(request.POST, instance=curprinter)
+#                 if form.is_valid():
+#                     model = form.save(commit=False)
+#                     model.save()
+#                     return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#                 data['action'] = 'changed'
+#                 data['targetid'] = request.POST['targetid']
+#                 data['minititle'] = 'Change Printer "'+curprinter.printername+'"'
+#                 data['submbutton'] = 'Change printer'
+#                 data['deletebutton'] = 'Delete ' +curprinter.printername
+#             else:
+#                 return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#         elif (request.POST['action']=='delete'): 
+#             if('targetid' in request.POST):
+#                 try:
+#                     curprinter=printer.Printer.objects.get(id=request.POST['targetid'])
+#                 except Exception:
+#                     return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#                 curprinter.delete()
+#                 return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#             else:
+#                 return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#         else:
+#             return redirect(reverse('oneclient', kwargs={'clientid': clientid}))
+#     else:
+#         form = PrinterForm(initial={'company': b})
+#         data['action']='add'
+#         data['PAGE_TITLE'] = 'New Printer: CMS infotek'
+#         data['minititle'] = 'Add printer'
+#         data['submbutton'] = 'Add printer'
+#     data['form'] = form
+#     data['built'] = datetime.now().strftime("%H:%M:%S") 
+#     data['backurl'] = reverse('oneclient', kwargs={'clientid': clientid})
+#     data['needdatatables'] = False
+#     return render(request, 'forms/unimodelform.html', data, content_type='text/html')
 
 
 
@@ -300,6 +304,7 @@ def clientview(request, clientid):
         return redirect('/')            
     data['PAGE_TITLE'] = 'Client "'+ data['clientname'] +'": CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
     return render(request, 'views/client.html', data, content_type='text/html')
 
 
@@ -313,6 +318,7 @@ def allclientsview(request):
         return redirect('/')            
     data['PAGE_TITLE'] = 'All clients: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
     return render(request, 'views/allclients.html', data, content_type='text/html')
 
 
@@ -326,6 +332,7 @@ def allcomputersview(request):
         return redirect('/')            
     data['PAGE_TITLE'] = 'All computers: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
     return render(request, 'views/allcomputers.html', data, content_type='text/html')
 
 
@@ -339,7 +346,38 @@ def statisticsview(request):
         return redirect('/')            
     data['PAGE_TITLE'] = 'Statistics: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
     return render(request, 'views/statistics.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
+def allticketsview(request, reqtype):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    if not reqtype in ['a', 'c']:
+        reqtype='o'
+    try:
+        if reqtype == 'a':
+            data = modelgetters.form_all_tickets_data()
+            data['PAGE_TITLE'] = 'All Tickets: CMS Infotek'
+            data['subtittle'] = 'All Tickets'
+            data['closedticketson'] = True
+        elif reqtype == 'c':
+            data = modelgetters.form_closed_tickets_data()
+            data['PAGE_TITLE'] = 'Closed Tickets: CMS Infotek'
+            data['subtittle'] = 'Closed Tickets'
+            data['closedticketson'] = True
+        else:
+            data = modelgetters.form_open_tickets_data()
+            data['PAGE_TITLE'] = 'Open Tickets: CMS Infotek'
+            data['subtittle'] = 'Open Tickets'
+            data['closedticketson'] = False
+    except Exception:
+        return redirect('/')            
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
+    return render(request, 'views/alltickets.html', data, content_type='text/html')
 
 
 @login_required( login_url = 'login' )
@@ -350,6 +388,7 @@ def systemupdatesview(request):
     data = modelgetters.form_updates_data()         
     data['PAGE_TITLE'] = 'System Updates: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
     return render(request, 'views/updates.html', data, content_type='text/html')
 
 
@@ -360,6 +399,7 @@ def resetpasswordview(request):
     data = {}           
     data['PAGE_TITLE'] = 'Reset Password: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
     return render(request, 'views/statistics.html', data, content_type='text/html')
 
 
@@ -372,4 +412,16 @@ def resetpasswordreadyview(request, resetgui):
         return redirect('/')            
     data['PAGE_TITLE'] = 'Reset Password: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
     return render(request, 'views/statistics.html', data, content_type='text/html')
+
+
+def ticketdoneview(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = {}           
+    data['PAGE_TITLE'] = 'Ticket submitted: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
+    return render(request, 'forms/thankyouticket.html', data, content_type='text/html')
