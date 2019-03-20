@@ -18,6 +18,7 @@ from models import routerform
 from models import othernetequipform
 from models import updatesform
 from models import userform
+from models import ticketform
 # Create your views here.
 
 
@@ -91,3 +92,24 @@ def addUserForm(request):
     if not valid:
         return response
     return userform.userFormParse(request)
+
+@login_required( login_url = 'login' )
+def changeTicketForm(request, ticketid=None):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return ticketform.TicketChangeFormParse(request, ticketid)
+
+
+def submitTicketForm(request):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return ticketform.TicketFormParse(request)
+
+
+def viewTicketDirectView(request, ticketuuid=None):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return ticketform.ViewTicketDirectParse(request, ticketuuid)

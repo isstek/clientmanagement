@@ -1,0 +1,16 @@
+<tr id="{{ ticket.id }}">
+    <td>{{ ticket.title }}</td>
+    <td>{{ ticket.companyname }}</td>
+    <td>{{ ticket.contactname }}</td>
+    <td>{{ ticket.createdon|date:"Y-m-d h:i a" }} </td>
+    {% if closedticketson %}
+    <td>{% if ticket.resolved %}
+    {{ ticket.resolvedon|date:"Y-m-d h:i a" }}
+    {% endif %}</td>
+    {% endif %}
+    <td>
+        <button class="button round nomargin margin-sides" data-open="modal-ticket-number-{{ ticket.id }}">View full info</button>
+        <a class="button round nomargin margin-sides" href="{% url 'ticket_view_direct' ticket.unid %}">View ticket page</a>
+        {% include "views/modals/ticketmodal.html" with modalpre="modal-ticket-number-" %}
+    </td>
+</tr>

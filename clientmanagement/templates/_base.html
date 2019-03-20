@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="{% static 'css/foundation/foundation.css' %}">
     <link rel="stylesheet" href="{% static 'css/foundation/foundation-icons/foundation-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/main.css' %}">
+    {% if needdatatables %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.css"/>
+    {% endif %}
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 
@@ -30,6 +33,9 @@
     </script>
     <script src="{% static 'js/foundation/vendor/jquery.js' %}"></script>
     <script src="{% static 'js/foundation/vendor/foundation.min.js' %}"></script>
+    {% if needdatatables %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+    {% endif %}
     {% block extra_css %}{% endblock %}{% block extra_javascript %}{% endblock %}
 </head>
 
@@ -50,8 +56,7 @@
                                 <li> <a href="{% url 'allclients' %}">Clients</a> </li>
                                 <li> <a href="{% url 'allcomputers' %}">Computers</a> </li>
                                 <li> <a href="{% url 'statistics' %}">Statistics</a> </li>
-                                <li> <a href="{% url 'usermanagement' %}">Users</a> </li>
-                                <li> <a href="{% url 'updates' %}">Updates</a> </li>
+                                <li> <a href="{% url 'alltickets' 'o' %}">Tickets</a> </li>
                             </ul>
                         </div>
                     </div>

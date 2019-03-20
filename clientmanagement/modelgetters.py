@@ -6,6 +6,8 @@ from models import person
 from models import domain
 from models import router
 from models import updates
+from models import ticket
+import uuid
 
 
 def form_all_clients_data():
@@ -120,10 +122,6 @@ def form_all_computers_data():
     
     except Exception as err:
         return None
-    # result = []
-    # for comp in comps:
-    #     result.append(comp)
-    # return result
     return comps
 
 
@@ -133,3 +131,36 @@ def form_updates_data():
     except Exception as err:
         return None
     return {'posts': posts}
+
+
+def form_open_tickets_data():
+    try:
+        tickets = ticket.Ticket.objects.filter(resolved=False).order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tickets': tickets}
+
+
+def form_closed_tickets_data():
+    try:
+        tickets = ticket.Ticket.objects.filter(resolved=True).order_by('-resolvedon')
+    except Exception as err:
+        return None
+    return {'tickets': tickets}
+
+
+def form_all_tickets_data():
+    try:
+        tickets = ticket.Ticket.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tickets': tickets}
+
+
+def form_one_ticket_data(ticketuuid):
+    try:
+        curticket = ticket.Ticket.objects.get(unid=ticketuuid)
+    except Exception as err:
+        print(err)
+        return None
+    return {'ticket': curticket}

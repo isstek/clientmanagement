@@ -1,6 +1,6 @@
 {% extends "_basenarrow.html" %} {% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %} {% endblock %} {% block body %}
 <h2>All Clients</h2>
-<table id='userstable'>
+<table id='clienttable'>
     <thead>
         <tr>
             <th>Name</th>
@@ -20,4 +20,16 @@
     </div>
     <div class='columns'></div>
 </div>
+
+{% if needdatatables %}
+<script>
+    $(document).ready(function() {
+        $('#clienttable').DataTable({
+            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            "iDisplayLength": -1,
+            "bSort" : false
+        });
+    });
+</script>
+{% endif %}
 {% endblock %}

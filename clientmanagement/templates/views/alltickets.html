@@ -1,0 +1,41 @@
+{% extends "_basewide.html" %}{% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %}{% endblock %}
+{% block body %}
+<h2>{{ subtittle }}</h2>
+<div class='row'>
+<div class='column small-4 medium-3 large-2'><a class='button round' href="{% url 'alltickets' reqtype='o' %}">Opened tickets</a></div>
+<div class='column small-4 medium-3 large-2'><a class='button round' href="{% url 'alltickets' reqtype='c' %}">Closed tickets</a></div>
+<div class='column small-4 medium-3 large-2'><a class='button round' href="{% url 'alltickets' reqtype='a' %}">All tickets</a></div>
+<div class='column'></div>
+</div>
+<table id='ticket_table'>
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Created on</th>
+            {% if closedticketson %}
+            <th>Resolved on</th>
+            {% endif %}
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %} {% include "views/oneitemrow/oneticketrow.html" %} {% endfor %}
+    </tbody>
+</table>
+<div class='row'>
+<div class='column'></div>
+<div class='column small-4 medium-3 large-2'><a class='button round' href="{% url 'ticket_submit' %}">Submit ticket</a></div>
+<div class='column'></div>
+</div>
+<script>
+    $(document).ready(function() {
+        document.userstable = $('#ticket_table').DataTable({
+            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            "iDisplayLength": -1,
+            "order": []
+        });
+    });
+</script>
+{% endblock %}

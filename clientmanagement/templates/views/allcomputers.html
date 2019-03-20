@@ -1,8 +1,4 @@
-{% extends "_basewide.html" %} {% load staticfiles %} {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.css"/>
-{% endblock %} 
-{% block extra_javascript %} 
-<script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script></script>
+{% extends "_basewide.html" %} {% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %} 
 <script src="{% static 'js/base/dialogs.js' %}"></script>
 {% endblock %}
 {% block body %}
@@ -21,12 +17,15 @@
         {% for computer in allcomputers %} {% include "views/oneitemrow/computerrow.html" with computer=computer fullinfo=True %} {% endfor %}
     </tbody>
 </table>
+
+{% if needdatatables %}
 <script>
     $(document).ready(function() {
-        document.userstable = $('#computerstable').DataTable({
+        document.computerstable = $('#computerstable').DataTable({
             "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
             "iDisplayLength": -1
         });
     });
 </script>
+{% endif %}
 {% endblock %}

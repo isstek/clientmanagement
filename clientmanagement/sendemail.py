@@ -11,3 +11,10 @@ def sendemaileveryonetxt(template, data, subject):
         text_content = plaintext.render(data)
         msg = EmailMultiAlternatives(subject, text_content, '', [user.email])
         msg.send()
+
+def sendemailtoone(template, data, subject, email, name):
+    plaintext = get_template(template)
+    data['name'] = name
+    text_content = plaintext.render(data)
+    msg = EmailMultiAlternatives(subject, text_content, '', [email])
+    msg.send()
