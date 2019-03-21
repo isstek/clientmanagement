@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 import collections, copy
 from clientmanagement import modelgetters, sendemail
 from clientmanagement import views as main_views
@@ -128,7 +129,7 @@ def TicketChangeFormParse(request, ticketid):
                 model.save()
                 if needemail:
                     sendemail.sendemailtouser('emails/ticket_was_assigned_to_you.txt', {'ticket': model,
-                    "link": request.build_absolute_uri(reverse('ticket_view_direct', kwargs={'ticketuuid': model.unid}))}, 'New ticket assigned to you', model.assignedto)
+                    "link": settings.EMAIL_HOST_LINK + reverse('ticket_view_direct', kwargs={'ticketuuid': model.unid})}, 'New ticket assigned to you', model.assignedto)
                 return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
             data['action'] = 'changed'
             data['PAGE_TITLE'] = 'Change Ticket: CMS infotek'

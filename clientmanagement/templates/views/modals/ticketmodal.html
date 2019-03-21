@@ -5,6 +5,9 @@
     <p><b>Closed on:</b> {{ ticket.closetime|date:"Y-m-d h:i a"}}</p>
     <p><b>Closed by:</b> {{ ticket.resolvedby }}</p>
     {% endif %}
+    {% if ticket.assignedto %}
+    <p><b>Assigned to:</b> {{ ticket.assignedto.get_full_name }}</p>
+    {% endif %}
     {% if ticket.companyname %}
     <p><b>Company name:</b> {{ ticket.companyname }}</p>
     {% endif %}

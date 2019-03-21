@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for computer in allcomputers %} {% include "views/oneitemrow/computerrow.html" with computer=computer fullinfo=True %} {% endfor %}
+        {% for computer in allcomputers %} {% include "views/oneitemrow/computerrow.html" with computer=computer fullinfo=True clid=False %} {% endfor %}
     </tbody>
 </table>
 
