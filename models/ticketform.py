@@ -12,7 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 class TicketForm(forms.ModelForm):
-    contactphone = PhoneNumberField(label="Contact phone number", required=False)
+    contactphone = PhoneNumberField(label="Contact phone number", required=False, help_text="You can add the extension after an x")
     order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description")
     class Meta:
         model = ticket.Ticket
@@ -39,7 +39,7 @@ class TicketForm(forms.ModelForm):
         return ticket
 
 
-class TicketFormFull(forms.ModelForm):
+class TicketFormFull(TicketForm):
     order = ("title", "assignedto", "companyname", "contactname", "contactemail", "contactphone", "description")
 
     class Meta(TicketForm.Meta):
@@ -77,7 +77,7 @@ def TicketFormParse(request):
                 model.senderipaddress = ip
                 model.save()
                 sendemail.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": model, 
-                "link": request.build_absolute_uri(reverse('ticket_view_direct', kwargs={'ticketuuid': model.unid}))}, 'New ticket submited to Infotek', model.contactemail, model.contactname)
+                "link": settings.EMAIL_HOST_LINK + reverse('ticket_view_direct', kwargs={'ticketuuid': model.unid})}, 'New ticket submited to Infotek', model.contactemail, model.contactname)
                 return redirect(reverse('ticket_submitted'))
             else:
                 data['action']='add'
