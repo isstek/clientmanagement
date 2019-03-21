@@ -20,6 +20,7 @@ class Ticket(models.Model):
     resolvedon = models.DateTimeField("Resolved on", null=True, blank=True, default=None)
     resolvedby = models.CharField("Resolved by", max_length=60, null=True, blank=True, default=None)
     unid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    assignedto = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name="Assigned to", null=True, blank=True)
 
     def createtime(self):
         return self.createdon.astimezone(pytz.timezone('America/New_York'))

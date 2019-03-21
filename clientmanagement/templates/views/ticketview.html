@@ -1,10 +1,21 @@
 {% extends "_basewide.html" %}{% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %}{% endblock %}
 {% block body %}
 <h3>{{ ticket.title }}</h3>
+{% if can_change %}
 <p><b>Opened on:</b> {{ ticket.createtime|date:"Y-m-d h:i a" }}</p>
 {% if ticket.resolved %}
 <p><b>Closed on:</b> {{ ticket.closetime|date:"Y-m-d h:i a"}}</p>
 <p><b>Closed by:</b> {{ ticket.resolvedby }}</p>
+{% endif %}
+{% if ticket.assignedto %}
+<p><b>Assign to:</b> {{ ticket.assignedto.get_full_name }}</p>
+{% endif %}
+{% else %}
+<p><b>Opened on:</b> {{ ticket.createtime|date:"M d, Y h:i a" }}</p>
+{% if ticket.resolved %}
+<p><b>Closed on:</b> {{ ticket.closetime|date:"M d, Y h:i a"}}</p>
+<p><b>Closed by:</b> {{ ticket.resolvedby }}</p>
+{% endif %}
 {% endif %}
 {% if ticket.companyname %}
 <p><b>Company name:</b> {{ ticket.companyname }}</p>

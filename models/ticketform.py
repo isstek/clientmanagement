@@ -12,16 +12,16 @@ from django.contrib.sites.shortcuts import get_current_site
 
 class TicketForm(forms.ModelForm):
     contactphone = PhoneNumberField(label="Contact phone number", required=False)
+    order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description")
     class Meta:
         model = ticket.Ticket
         fields = ("title", "companyname", "contactname", "contactemail", "description")
 
     def __init__(self, *args, **kwargs): 
         super(TicketForm, self).__init__(*args, **kwargs)
-        order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description")
         tmp = self.fields
         self.fields = collections.OrderedDict()
-        for item in order:
+        for item in self.order:
             self.fields[item] = tmp[item]
 
         instance = getattr(self, 'instance', None)
@@ -36,6 +36,25 @@ class TicketForm(forms.ModelForm):
         if commit:
             ticket.save()
         return ticket
+
+
+class TicketFormFull(forms.ModelForm):
+    order = ("title", "assignedto", "companyname", "contactname", "contactemail", "contactphone", "description")
+
+    class Meta(TicketForm.Meta):
+        fields = ("title", "assignedto", "companyname", "contactname", "contactemail", "description")
+
+    def __init__(self, *args, **kwargs): 
+        super(TicketFormFull, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        ticket = super(TicketFormFull, self).save(commit=False)
+        assignedchanged = False
+        if ("assignedto" in self.changed_data):
+            assignedchanged = not ticket.assignedto is None
+        if commit:
+            ticket.save()
+        return ticket, assignedchanged
 
 
 def TicketFormParse(request):    
@@ -96,17 +115,20 @@ def TicketChangeFormParse(request, ticketid):
             curticket.open()
             return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
         elif (request.POST['action']=='change'):
-            form = TicketForm(instance=curticket)
+            form = TicketFormFull(instance=curticket)
             data['action'] = 'changed'
             data['PAGE_TITLE'] = 'Change Ticket: CMS infotek'
             data['minititle'] = 'Change Ticket'
             data['submbutton'] = 'Change ticket'
             data['deletebutton'] = 'Delete ticket'
         elif (request.POST['action']=='changed'):
-            form = TicketForm(request.POST, instance=curticket)
+            form = TicketFormFull(request.POST, instance=curticket)
             if form.is_valid():
-                model = form.save(commit=False)
+                model, needemail = form.save(commit=False)
                 model.save()
+                if needemail:
+                    sendemail.sendemailtouser('emails/ticket_was_assigned_to_you.txt', {'ticket': model,
+                    "link": request.build_absolute_uri(reverse('ticket_view_direct', kwargs={'ticketuuid': model.unid}))}, 'New ticket assigned to you', model.assignedto)
                 return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
             data['action'] = 'changed'
             data['PAGE_TITLE'] = 'Change Ticket: CMS infotek'
@@ -119,7 +141,7 @@ def TicketChangeFormParse(request, ticketid):
         else:
             return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
     else:
-        form = TicketForm()
+        form = TicketFormFull()
         data['action']='add'
         data['PAGE_TITLE'] = 'Submit a ticket: CMS infotek'
         data['minititle'] = 'Submit a Ticket to Infotek'

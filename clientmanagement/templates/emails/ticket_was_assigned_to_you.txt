@@ -1,0 +1,16 @@
+{% load tz %} {% timezone "America/New_York" %}Hi, {{ ticket.assignto.first_name }}.
+
+
+A new ticket was assigned to you. The subject is:
+{{ ticket.title }}
+
+Link to the ticket: {{ link }}.
+
+Contact info:
+name: {{ ticket.contactname }}.{% if ticket.contactphone %}
+Phone number: {{ ticket.contactphone.as_international }}{% endif %}{% if ticket.contactemail %}
+Email: {{ ticket.contactemail }}{% endif %}
+
+Have a great day!
+Always yours,
+Infotek robot{% endtimezone %}
