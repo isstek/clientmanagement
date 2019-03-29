@@ -1,0 +1,12 @@
+{% load tz %} {% timezone "America/New_York" %}Hi, {{ ticket.contactname }}.
+
+
+There is an update on your ticket from {{ comment.author_name }}. 
+Link to the ticket: {{ link }}.{% if answerlink %}
+
+You can answer this using the following link:
+{{ answerlink }}{% endif %}
+
+Have a great day!
+Always yours,
+Infotek{% endtimezone %}

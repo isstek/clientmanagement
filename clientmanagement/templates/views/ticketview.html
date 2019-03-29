@@ -1,5 +1,6 @@
 {% extends "_basewide.html" %}{% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %}{% endblock %}
 {% block body %}
+<div class="post-bordered">
 <h3>{{ ticket.title }}</h3>
 {% if can_change %}
 <p><b>Opened on:</b> {{ ticket.createtime|date:"Y-m-d h:i a" }}</p>
@@ -52,5 +53,17 @@
     <a id="change-button-{{ticket.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change ticket</a>
 </form>
 {% endif %}
-
+</div>
+{% for comment in comments %} {% include "views/components/ticket_one_comment.html" with comment=comment %} {% endfor %}
+{% if can_comment %}
+<div class="row">
+<div class="column"><hr></div>
+</div>
+<div class="row">
+<div class="column"><form action="{% url 'ticket_add_comment' ticketuuid=ticket.unid %}" method="POST" class="post-form" autocomplete="off"> {{ form.as_p }}{% csrf_token %}
+    <input type="hidden" name="action" value="{{ action|default:'add' }}">
+    <button type="submit" class="button save round">{{ submbutton }}</button>
+</form></div>
+</div>
+{% endif %}
 {% endblock %}

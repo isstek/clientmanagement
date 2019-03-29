@@ -15,10 +15,10 @@ class Domain(models.Model):
 
     def DomainLoginFile(self):
         resultfile = StringIO()
-        resultfile.write('@echo off\n')
-        resultfile.write('set /p pass=Enter domain admin password-> \n')
-        resultfile.write('wmic.exe /interactive:off ComputerSystem Where "Name=\'%computername%\'" Call UnJoinDomainOrWorkgroup FUnjoinOptions=0\n')
-        resultfile.write('wmic.exe /interactive:off ComputerSystem Where name="%computername%" call JoinDomainOrWorkgroup FJoinOptions=3 Name="' + self.domainnamelong + '" UserName="' + self.domainnameshort + '\\' + self.admin + '" Password="%pass%"\n')
+        resultfile.write('@echo off\r\n')
+        resultfile.write('set /p pass="Enter domain admin password-> "\r\n')
+        resultfile.write('wmic.exe /interactive:off ComputerSystem Where "Name=\'%computername%\'" Call UnJoinDomainOrWorkgroup FUnjoinOptions=0\r\n')
+        resultfile.write('wmic.exe /interactive:off ComputerSystem Where name="%computername%" call JoinDomainOrWorkgroup FJoinOptions=3 Name="' + self.domainnamelong + '" UserName="' + self.domainnameshort + '\\' + self.admin + '" Password="%pass%"\r\n')
         resultfile.write('pause')
         return {'file': resultfile, 'filename': 'join'+self.domainnameshort+'.bat'}
 

@@ -7,6 +7,7 @@ from models import domain
 from models import router
 from models import updates
 from models import ticket
+from models import ticket_comment
 import uuid
 
 
@@ -161,6 +162,9 @@ def form_one_ticket_data(ticketuuid):
     try:
         curticket = ticket.Ticket.objects.get(unid=ticketuuid)
     except Exception as err:
-        print(err)
         return None
-    return {'ticket': curticket}
+    try:
+        curcomments = ticket_comment.TicketComment.objects.filter(initial_ticket=curticket).order_by('createdon')
+    except Exception as err:
+        curcomments=[]
+    return {'ticket': curticket, 'comments': curcomments}

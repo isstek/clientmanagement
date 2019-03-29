@@ -19,6 +19,7 @@ from models import othernetequipform
 from models import updatesform
 from models import userform
 from models import ticketform
+from models import ticket_commentform
 # Create your views here.
 
 
@@ -99,6 +100,13 @@ def changeTicketForm(request, ticketid=None):
     if not valid:
         return response
     return ticketform.TicketChangeFormParse(request, ticketid)
+
+@login_required( login_url = 'login' )
+def addCommentToTicketView(request, ticketuuid=None):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return ticket_commentform.Ticket_CommentFormParse(request, ticketuuid)
 
 
 def submitTicketForm(request):    

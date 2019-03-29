@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
 from phonenumber_field.formfields import PhoneNumberField
-from models import ticket
+from models import ticket, ticket_commentform
 from django.contrib.sites.shortcuts import get_current_site
 
 
@@ -77,7 +77,8 @@ def TicketFormParse(request):
                 model.senderipaddress = ip
                 model.save()
                 sendemail.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": model, 
-                "link": settings.EMAIL_HOST_LINK + reverse('ticket_view_direct', kwargs={'ticketuuid': model.unid})}, 'New ticket submited to Infotek', model.contactemail, model.contactname)
+                "link": model.generate_link(), "answerlink": model.initial_ticket.generate_answer_link()}, 
+                'New ticket submited to Infotek', model.contactemail, model.contactname)
                 return redirect(reverse('ticket_submitted'))
             else:
                 data['action']='add'
@@ -129,7 +130,7 @@ def TicketChangeFormParse(request, ticketid):
                 model.save()
                 if needemail:
                     sendemail.sendemailtouser('emails/ticket_was_assigned_to_you.txt', {'ticket': model,
-                    "link": settings.EMAIL_HOST_LINK + reverse('ticket_view_direct', kwargs={'ticketuuid': model.unid})}, 'New ticket assigned to you', model.assignedto)
+                    "link": model.generate_link()}, 'New ticket assigned to you', model.assignedto)
                 return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
             data['action'] = 'changed'
             data['PAGE_TITLE'] = 'Change Ticket: CMS infotek'
@@ -154,10 +155,13 @@ def TicketChangeFormParse(request, ticketid):
 
 
 def ViewTicketDirectParse(request, ticketuuid):
-    data = modelgetters.form_one_ticket_data(ticketuuid)
-    if data is None:
+    data_ticket = modelgetters.form_one_ticket_data(ticketuuid)
+    if data_ticket is None:
         return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
+    data_comments = ticket_commentform.Ticket_CommentFormCreate(request, ticketuuid)
+    data = {**data_comments, **data_ticket}
     data['can_change'] = request.user.is_authenticated
+    data['can_comment'] = request.user.is_authenticated
     data['built'] = datetime.now().strftime("%H:%M:%S") 
     data['PAGE_TITLE'] = 'Ticket View: CMS infotek'
     return render(request, 'views/ticketview.html', data, content_type='text/html')

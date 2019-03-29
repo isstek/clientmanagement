@@ -68,3 +68,15 @@ button.round,
     border-color: black;
     padding: 0.4rem;
 }
+
+@media screen and (max-width: 39.99875em) {
+    .accordion-content {
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+    .column,
+    .columns {
+        padding-left: 0.35rem;
+        padding-right: 0.35rem;
+    }
+}

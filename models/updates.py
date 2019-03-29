@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta, timezone
 from clientmanagement import sendemail
+from django.conf import settings
 
 class SystemUpdates(models.Model):
     
@@ -16,7 +17,7 @@ class SystemUpdates(models.Model):
         return 'Updates for ' + self.version
 
     def editable(self):
-        if datetime.now(timezone.utc) - self.createdon > timedelta(minutes=10):
+        if datetime.now(timezone.utc) - self.createdon > timedelta(minutes=settings.TIME_TO_EDIT):
             return False
         else:
             return True

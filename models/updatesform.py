@@ -59,7 +59,7 @@ def SystemUpdateFormParse(request):
                     return redirect(reverse('updates'))
                 if not curpost.editable():
                     return redirect(reverse('updates'))
-                form = SystemUpdateForm(instance=curpost)
+                form = SystemUpdateForm(request.POST, instance=curpost)
                 if form.is_valid():
                     model = form.save(commit=False)
                     model.createdon = datetime.now()

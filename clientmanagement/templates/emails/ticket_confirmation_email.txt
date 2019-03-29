@@ -1,4 +1,4 @@
-{% load tz %} {% timezone "Asia/Kolkata" %}Hi, {{ ticket.contactname }}.
+{% load tz %} {% timezone "America/New_York" %}Hi, {{ ticket.contactname }}.
 
 
 We received your ticket and will work on it now. Here is some information that we got, some of it may be used as a reference later:

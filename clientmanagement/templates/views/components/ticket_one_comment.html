@@ -1,0 +1,24 @@
+<div id='comment-id-{{ comment.id }}' class='post-bordered'>
+    <div class="row">
+        <div class="columns text-left"><b>{{ comment.author_name }} <a href="mailto:{{ comment.author_email }}">email</a></b></div>
+        <div class="columns text-left"></div>
+        <div class="columns text-right"><i>
+            {% if can_change %}
+            {{ comment.createtime|date:"Y-m-d h:i a" }}
+            {% else %}
+            {{ comment.createtime|date:"M d, Y h:i a" }}
+            {% endif %}
+            </i></div>
+    </div>
+    {{ comment.description|linebreaks  }}
+    {% if comment.author == request.user %}
+    {% if comment.editable %}
+    <form action="{% url 'ticket_add_comment' ticketuuid=ticket.unid %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="change">
+            <input type="hidden" name="targetid" value="{{ comment.id }}">
+            <a id="comment-id-change-{{ comment.id }}" class="button round inlineblock" onclick="this.parentElement.submit();">Edit comment</a>
+    </form>
+    {% endif %}
+    {% endif %}
+</div>

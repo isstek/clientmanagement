@@ -6,9 +6,13 @@ from clientmanagement import views as main_views
 from models import client
 from models import domain
 from clientmanagement import modelgetters
+from django.contrib.auth.decorators import login_required
 
+
+
+@login_required( login_url = 'login' )
 def downloadConnectDomainFile(request, clientid):
-    valid, response = main_views.initRequestLogin(request)
+    valid, response = main_views.initRequest(request)
     if not valid:
         return response
     try:

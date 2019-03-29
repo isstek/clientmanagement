@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta, timezone
+from django.conf import settings
+from django.urls import reverse
 import pytz
 import uuid
 from clientmanagement import sendemail
@@ -33,6 +35,12 @@ class Ticket(models.Model):
 
     def sendemail(self):
         sendemail.sendemaileveryonetxt("emails/newpostemail.txt", {"post":self}, "New post: " + self.title)
+
+    def generate_link(self):
+        return settings.EMAIL_HOST_LINK + reverse('ticket_view_direct', kwargs={'ticketuuid': self.unid})
+
+    def generate_answer_link(self):
+        return False
 
     def close(self, user):
         self.resolved = True
