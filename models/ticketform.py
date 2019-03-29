@@ -77,7 +77,7 @@ def TicketFormParse(request):
                 model.senderipaddress = ip
                 model.save()
                 sendemail.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": model, 
-                "link": model.generate_link(), "answerlink": model.initial_ticket.generate_answer_link()}, 
+                "link": model.generate_link(), "answerlink": model.generate_answer_link()}, 
                 'New ticket submited to Infotek', model.contactemail, model.contactname)
                 return redirect(reverse('ticket_submitted'))
             else:
