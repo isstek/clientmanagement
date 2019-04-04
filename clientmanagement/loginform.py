@@ -24,7 +24,7 @@ class MyLoginForm(forms.Form):
     def process(self, request):
         user = userfunctions.loginUser(request, self.cleaned_data['username'], self.cleaned_data['password'])
         if user is None:
-            self.add_error(self.username, 'notfound')
+            self.add_error('username', 'This combination of username and password was not found')
             return False, ''
         redirect_to = self.get_redirect_url(request)
         if redirect_to == request.path:
