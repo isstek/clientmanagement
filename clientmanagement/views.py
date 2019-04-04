@@ -18,6 +18,7 @@ from django.shortcuts import render
 from django.conf import settings
 from clientmanagement import userfunctions
 from clientmanagement import modelgetters
+from clientmanagement import loginform
 
 
 
@@ -305,6 +306,13 @@ def systemupdatesview(request):
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = False
     return render(request, 'views/updates.html', data, content_type='text/html')
+
+
+def loginview(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    return loginform.myLoginFormParse(request)
 
 
 def resetpasswordview(request):

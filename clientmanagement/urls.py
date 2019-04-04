@@ -48,6 +48,7 @@ urlpatterns = [
     path('resetpassword/<slug:resetgui>', clientmanagement_views.resetpasswordreadyview, name='reset_password_ready'),
     path('', clientmanagement_views.homepage, name='homepage'),
     #path('admin/', admin.site.urls),
+    path('accounts/login/', clientmanagement_views.loginview, name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
     re_path(r'^.*$', clientmanagement_views.homepage),
     path('testmodule/', include('clientmanagement.testmodule.urls')),

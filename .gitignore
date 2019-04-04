@@ -106,6 +106,9 @@ venv.bak/
 #Private folders
 /private
 
+#Local settings
+settings/local.py
+
 #ignore not needed folders, but keep the folders
 clientmanagement/logs/*
 !clientmanagement/logs/.keep

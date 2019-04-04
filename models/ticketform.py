@@ -9,11 +9,15 @@ from datetime import datetime
 from phonenumber_field.formfields import PhoneNumberField
 from models import ticket, ticket_commentform
 from django.contrib.sites.shortcuts import get_current_site
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Invisible
 
 
 class TicketForm(forms.ModelForm):
     contactphone = PhoneNumberField(label="Contact phone number", required=False, help_text="You can add the extension after an x")
-    order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description")
+    rcaptcha = ReCaptchaField(label='', required=True, error_messages={'required': 'Please, check the box to prove you are not a robot'}, widget=ReCaptchaV2Invisible)
+
+    order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description", "rcaptcha")
     class Meta:
         model = ticket.Ticket
         fields = ("title", "companyname", "contactname", "contactemail", "description")
