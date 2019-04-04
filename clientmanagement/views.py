@@ -308,37 +308,6 @@ def systemupdatesview(request):
     return render(request, 'views/updates.html', data, content_type='text/html')
 
 
-def loginview(request):
-    valid, response = initRequest(request)
-    if not valid:
-        return response
-    return loginform.myLoginFormParse(request)
-
-
-def resetpasswordview(request):
-    valid, response = initRequest(request)
-    if not valid:
-        return response
-    data = {}           
-    data['PAGE_TITLE'] = 'Reset Password: CMS Infotek'
-    data['built'] = datetime.now().strftime("%H:%M:%S")
-    data['needdatatables'] = False
-    return render(request, 'views/statistics.html', data, content_type='text/html')
-
-
-def resetpasswordreadyview(request, resetgui):
-    valid, response = initRequest(request)
-    if not valid:
-        return response
-    data = modelgetters.form_all_clients_statistics_data()
-    if data is None:
-        return redirect('/')            
-    data['PAGE_TITLE'] = 'Reset Password: CMS Infotek'
-    data['built'] = datetime.now().strftime("%H:%M:%S")
-    data['needdatatables'] = False
-    return render(request, 'views/statistics.html', data, content_type='text/html')
-
-
 def ticketdoneview(request):
     valid, response = initRequest(request)
     if not valid:

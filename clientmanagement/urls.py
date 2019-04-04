@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.contrib.auth import views as auth_views
 
 from clientmanagement import views as clientmanagement_views
+from clientmanagement import loginform as clientmanagement_loginform
 from clientmanagement import generatefileviews as generate_files
 from models import views as models_views
 
@@ -44,11 +46,9 @@ urlpatterns = [
     path('updates/post', models_views.PostSystemUpdate, name='postupdate'),
     path('usermanagement/', clientmanagement_views.usermanagement, name='usermanagement'),
     path('usermanagement/adduser', models_views.addUserForm, name='adduser'),
-    path('resetpassword', clientmanagement_views.resetpasswordview, name='reset_password'),
-    path('resetpassword/<slug:resetgui>', clientmanagement_views.resetpasswordreadyview, name='reset_password_ready'),
     path('', clientmanagement_views.homepage, name='homepage'),
-    #path('admin/', admin.site.urls),
-    path('accounts/login/', clientmanagement_views.loginview, name='login'),
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(form_class=clientmanagement_loginform.my_reset_password_form), {'password_reset_form':clientmanagement_loginform.my_reset_password_form, 'form_class': clientmanagement_loginform.my_reset_password_form}, 'password_reset'),
+    path('accounts/login/', auth_views.LoginView.as_view(authentication_form=clientmanagement_loginform.MyAuthLoginForm), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
     re_path(r'^.*$', clientmanagement_views.homepage),
     path('testmodule/', include('clientmanagement.testmodule.urls')),
