@@ -16,8 +16,8 @@ from models import ticket, ticket_commentform
 from django.contrib.sites.shortcuts import get_current_site
 
 class MyAuthLoginForm(auth_forms.AuthenticationForm):
-    rcaptcha = ReCaptchaField(label='', required=True, error_messages={'required': 'Please, check the box to prove you are not a robot'}, widget=ReCaptchaV2Invisible)
+    rcaptcha = ReCaptchaField(label='', required=True, widget=ReCaptchaV2Invisible)
 
 
 class my_reset_password_form(auth_forms.PasswordResetForm):
-    rcaptcha = ReCaptchaField(label='', required=True, error_messages={'required': 'Please, check the box to prove you are not a robot'}, widget=ReCaptchaV2Invisible)
+    rcaptcha = ReCaptchaField(label='', required=True, widget=ReCaptchaV2Invisible)
