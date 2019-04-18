@@ -8,7 +8,7 @@ from phonenumber_field.formfields import PhoneNumberField
 import collections, copy
 
 class ClientForm(forms.ModelForm):
-    phone = PhoneNumberField(label="Phone number: ", required=False, help_text="You can add the extension after an x")
+    phone = PhoneNumberField(label="Phone number", required=False, help_text="You can add the extension after an x")
     order = ('name', 'address', 'phone', 'description')
     class Meta:
         model = client.Client
