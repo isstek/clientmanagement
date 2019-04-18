@@ -28,7 +28,7 @@
 <p><b>Contact email:</b> <a href="mailto:{{ ticket.contactemail }}">{{ ticket.contactemail }}</a></p>
 {% endif %}
 {% if ticket.contactphone %}
-<p><b>Phone number:</b> {{ ticket.contactphone.as_national }}</p>
+<p><b>Phone number:</b> {% include "views/components/phonenumber.html" with phone=ticket.contactphone %}</p>
 {% endif %}
 {% if ticket.description %}
 <p><b>Description:</b> {{ ticket.description|linebreaksbr }}</p>

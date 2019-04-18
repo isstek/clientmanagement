@@ -5,18 +5,41 @@ from models import client
 from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
+from phonenumber_field.formfields import PhoneNumberField
+import collections, copy
 
 class PersonForm(forms.ModelForm):
-
+    phone = PhoneNumberField(label="Phone number: ", required=False, help_text="You can add the extension after an x")
+    order=('firstname', 'lastname', 'email', 'phone', 'annoyance', 'employedby', 'description')
     class Meta:
         model = person.Person
-        fields = ('firstname', 'lastname', 'email', 'phone', 'annoyance', 'employedby', 'description')
+        fields = ('firstname', 'lastname', 'email', 'annoyance', 'employedby', 'description')
+
+    def __init__(self, *args, **kwargs):
+        super(PersonForm, self).__init__(*args, **kwargs)
+        tmp = self.fields
+        self.fields = collections.OrderedDict()
+        for item in self.order:
+            self.fields[item] = tmp[item]
+
+        instance = getattr(self, 'instance', None)
+        if instance and instance.id:
+            if (not instance.phone is None) and (instance.phone != ""):
+                self.fields['phone'].initial = instance.phone.as_national
+
+    def save(self, commit=True):
+        person = super(PersonForm, self).save(commit=False)
+        if ('phone' in self.changed_data):
+            person.phone= self.cleaned_data["phone"]
+        if commit:
+            person.save()
+        return person
 
 
-class PersonFullForm(PersonForm):
+# class PersonFullForm(PersonForm): 
 
-    class Meta(PersonForm.Meta):
-        fields = ('firstname', 'lastname', 'email', 'phone', 'annoyance', 'employedby', 'description')
+#     class Meta(PersonForm.Meta):
+#         fields = ('firstname', 'lastname', 'email', 'phone', 'annoyance', 'employedby', 'description')
  
 
 def personFormParse(request, clientid):

@@ -4,12 +4,35 @@ from clientmanagement import views as main_views
 from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
+from phonenumber_field.formfields import PhoneNumberField
+import collections, copy
 
 class ClientForm(forms.ModelForm):
-
+    phone = PhoneNumberField(label="Phone number: ", required=False, help_text="You can add the extension after an x")
+    order = ('name', 'address', 'phone', 'description')
     class Meta:
         model = client.Client
-        fields = ('name', 'address', 'phone', 'description')
+        fields = ('name', 'address', 'description')
+
+    def __init__(self, *args, **kwargs):
+        super(ClientForm, self).__init__(*args, **kwargs)
+        tmp = self.fields
+        self.fields = collections.OrderedDict()
+        for item in self.order:
+            self.fields[item] = tmp[item]
+
+        instance = getattr(self, 'instance', None)
+        if instance and instance.id:
+            if (not instance.phone is None) and (instance.phone != ""):
+                self.fields['phone'].initial = instance.phone.as_national
+
+    def save(self, commit=True):
+        client = super(ClientForm, self).save(commit=False)
+        if ('phone' in self.changed_data):
+            client.phone= self.cleaned_data["phone"]
+        if commit:
+            client.save()
+        return client
 
 
 def ClientFormParse(request):

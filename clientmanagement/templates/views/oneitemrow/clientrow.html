@@ -1,7 +1,7 @@
 <tr id="{{ obj.id }}">
     <td>{{ name }}</td>
     <td>{% if phonenumber %}
-    {{ phonenumber }}
+    {% include "views/components/phonenumber.html" with phone=phonenumber %}
     {% endif %}</td>
     <td>
         <a class="button round nomargin margin-sides" href="{% url 'oneclient' clientid=obj.id %}">View client</a>

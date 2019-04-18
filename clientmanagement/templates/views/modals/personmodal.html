@@ -5,7 +5,7 @@
     {% if person.email %}
     <p><b>Email:</b> <a href="mailto:{{ person.email }}">{{ person.email }}</a></p>
     {% endif %} {% if person.phone %}
-    <p><b>Phone:</b> {{ person.phone}}</p>
+    <p><b>Phone:</b> {% include "views/components/phonenumber.html" with phone=person.phone %}</p>
     {% endif %}
     <p><b>Annoyance level:</b> <span {% comment %} {% if person.annoyance> 5 %}class="alert"{% endif %} {% endcomment %}> {{ person.annoyance }}</span></p>
     {% if person.description %}

@@ -1,6 +1,6 @@
 <p><b><u>Name:</u></b> {{ clientname }}</p>
 {% if clientphonenumber %}
-<p><b><u>Phone number:</u></b> {{ clientphonenumber }}</p>
+<p><b><u>Phone number:</u></b> {% include "views/components/phonenumber.html" with phone=clientphonenumber %}</p>
 {% else %}
 {% endif %}
 {% if clientaddress %}
