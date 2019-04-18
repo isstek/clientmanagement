@@ -2,6 +2,7 @@ import os
 from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
+ENABLE_MAIL_CHECK = True
 LOG_SIZE = 10000000
 LOGGING = {
     'version': 1,
@@ -85,3 +86,4 @@ LOGGING = {
         'formatter': 'verbose',
     },
 }
+

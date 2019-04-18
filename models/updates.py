@@ -31,7 +31,7 @@ class SystemUpdates(models.Model):
 
 def getCurrentVersion():
     try:
-        latest_update = SystemUpdates.objects.all().order_by('-updatedon')[0]
+        latest_update = SystemUpdates.objects.all().order_by('-postedon')[0]
     except Exception:
         return "1.0.0"
     return latest_update.version

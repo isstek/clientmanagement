@@ -6,4 +6,5 @@ from models import printer
 from models import router
 from models import updates
 from models import ticket
+from models.email import mailbox
 # Create your models here.

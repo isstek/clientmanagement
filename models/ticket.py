@@ -34,8 +34,11 @@ class Ticket(models.Model):
         return "Ticket number " + str(self.id)
 
     def sendemail(self):
-        sendemail.sendemaileveryonetxt("emails/newpostemail.txt", {"post":self}, "New post: " + self.title)
+        sendemail.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": self, 
+            "link": self.generate_link(), "answerlink": self.generate_answer_link()}, 
+            'New ticket submited to Infotek', self.contactemail, self.contactname)
 
+        
     def generate_link(self):
         return settings.EMAIL_HOST_LINK + reverse('ticket_view_direct', kwargs={'ticketuuid': self.unid})
 

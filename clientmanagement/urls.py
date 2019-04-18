@@ -21,6 +21,7 @@ from clientmanagement import views as clientmanagement_views
 from clientmanagement import loginform as clientmanagement_loginform
 from clientmanagement import generatefileviews as generate_files
 from models import views as models_views
+from models.email import mailbox
 
 
 urlpatterns = [
@@ -53,3 +54,6 @@ urlpatterns = [
     re_path(r'^.*$', clientmanagement_views.homepage),
     path('testmodule/', include('clientmanagement.testmodule.urls')),
 ]
+
+
+mailbox.initiateEmailCheck()
