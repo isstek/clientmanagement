@@ -9,7 +9,7 @@ from phonenumber_field.formfields import PhoneNumberField
 import collections, copy
 
 class PersonForm(forms.ModelForm):
-    phone = PhoneNumberField(label="Phone number: ", required=False, help_text="You can add the extension after an x")
+    phone = PhoneNumberField(label="Phone number", required=False, help_text="You can add the extension after an x")
     order=('firstname', 'lastname', 'email', 'phone', 'annoyance', 'employedby', 'description')
     class Meta:
         model = person.Person
