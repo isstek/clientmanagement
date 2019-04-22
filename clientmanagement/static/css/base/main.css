@@ -29,6 +29,7 @@ body {
 
 footer {
     flex-shrink: 0;
+    margin-bottom: 0.5rem;
     /* text-align: center; */
 }
 
