@@ -17,6 +17,7 @@ from models import domainform
 from models import routerform
 from models import othernetequipform
 from models import updatesform
+from models import secretnoteform
 from models import userform
 from models import ticketform
 from models import ticket_commentform
@@ -108,6 +109,27 @@ def addCommentToTicketView(request, ticketuuid=None):
         return response
     return ticket_commentform.Ticket_CommentFormParse(request, ticketuuid)
 
+@login_required( login_url = 'login' )
+def allSecretNotesView(request):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return secretnoteform.AllSecretNotes(request)
+
+@login_required( login_url = 'login' )
+def SecretNoteInternalView(request, noteid):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return secretnoteform.SecretNoteViewInternal(request, noteid)
+
+@login_required( login_url = 'login' )
+def AddSecretNoteView(request):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return secretnoteform.SecretNoteFormParse(request)
+
 
 def submitTicketForm(request):    
     valid, response = main_views.initRequest(request)
@@ -121,3 +143,17 @@ def viewTicketDirectView(request, ticketuuid=None):
     if not valid:
         return response
     return ticketform.ViewTicketDirectParse(request, ticketuuid)
+
+
+def viewSecretNoteViewClose(request, noteuuid=None):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return secretnoteform.SecretNoteViewExternalClose(request, noteuuid)
+
+
+def viewSecretNoteViewOpen(request, noteuuid=None):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return secretnoteform.SecretNoteViewExternalOpen(request, noteuuid)

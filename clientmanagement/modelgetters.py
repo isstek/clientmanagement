@@ -8,6 +8,7 @@ from models import router
 from models import updates
 from models import ticket
 from models import ticket_comment
+from models import secretnote
 import uuid
 
 
@@ -168,3 +169,24 @@ def form_one_ticket_data(ticketuuid):
     except Exception as err:
         curcomments=[]
     return {'ticket': curticket, 'comments': curcomments}
+
+def form_all_notes_data():
+    try:
+        notes = secretnote.SecretNote.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'allnotes': notes}
+
+def form_one_note_data_external(noteuuid):
+    try:
+        note = secretnote.SecretNote.objects.get(unid=noteuuid)
+    except Exception as err:
+        return None
+    return {'note': note}
+
+def form_one_note_data_internal(noteid):
+    try:
+        note = secretnote.SecretNote.objects.get(id=noteid)
+    except Exception as err:
+        return None
+    return {'note': note}

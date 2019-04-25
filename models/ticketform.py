@@ -27,6 +27,8 @@ class TicketForm(forms.ModelForm):
         self.fields = collections.OrderedDict()
         for item in self.order:
             self.fields[item] = tmp[item]
+        if (settings.CANCEL_CAPTCHA):
+            self.fields.pop('rcaptcha')
 
         instance = getattr(self, 'instance', None)
         if instance and instance.id:

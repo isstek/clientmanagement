@@ -3,6 +3,7 @@ from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
 ENABLE_MAIL_CHECK = True
+CANCEL_CAPTCHA = False
 LOG_SIZE = 10000000
 LOGGING = {
     'version': 1,
