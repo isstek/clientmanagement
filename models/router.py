@@ -16,11 +16,11 @@ class Router(networkequipment.NetworkEquipment):
         ('O', 'Other')
     )
     manufacturer = models.CharField(max_length=1, null=False, default='S', blank=False, choices=MANUFACTURER)
-    model = models.CharField(max_length=20, null=True, default='', blank=True)
-    serialnumber = models.CharField(max_length=25, null=True, default='', blank=True)
+    model = models.CharField(max_length=40, null=True, default='', blank=True)
+    serialnumber = models.CharField(max_length=50, null=True, default='', blank=True)
     externalip = models.GenericIPAddressField(verbose_name="External IP address", protocol='IPv4', null=True, blank=True, default='')
-    settingslink = models.CharField("Link to settings", max_length=100, null=True, blank=True, default='')
-    firmwareversion = models.CharField("Firware version", max_length=30, null=True, blank=True, default='')
+    settingslink = models.CharField("Link to settings", max_length=130, null=True, blank=True, default='')
+    firmwareversion = models.CharField("Firware version", max_length=60, null=True, blank=True, default='')
 
     
     def __str__(self):

@@ -4,8 +4,8 @@ from models import client
 from phonenumber_field.modelfields import PhoneNumberField
 
 class Person(models.Model):
-    firstname = models.CharField('First Name', max_length=30)
-    lastname = models.CharField('Last Name', max_length=30)
+    firstname = models.CharField('First Name', max_length=60)
+    lastname = models.CharField('Last Name', max_length=60)
     email = models.EmailField('Email', max_length=254, null=True, blank=True)
     phone = PhoneNumberField('Phone Number', help_text= "In the following format: +10000000000x0000, if you need extension", null=True, default=None, blank=True)
     annoyance = models.fields.PositiveSmallIntegerField('Annoyance level', null=False, default='0', validators=[MaxValueValidator(10), MinValueValidator(0)])

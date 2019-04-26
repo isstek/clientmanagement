@@ -5,11 +5,11 @@ from django.conf import settings
 
 class SystemUpdates(models.Model):
     
-    version = models.CharField('Version', max_length=25, null=False, blank=False)
+    version = models.CharField('Version', max_length=50, null=False, blank=False)
     postedon = models.DateTimeField('Update time', default=datetime.utcnow, null=False, blank=False)
     createdon = models.DateTimeField('Created time', auto_now_add=True, null=False, blank=False)
-    author = models.CharField('Update author', max_length=80, null=True, blank=True)
-    title = models.CharField('Title', max_length=120, null=False, blank=False)
+    author = models.CharField('Update author', max_length=120, null=True, blank=True)
+    title = models.CharField('Title', max_length=160, null=False, blank=False)
     wassent = models.BooleanField('Was sent', null=False, blank=False, default=False)
     newstext = models.TextField('News in text format')
     

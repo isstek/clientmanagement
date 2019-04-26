@@ -9,7 +9,7 @@ from clientmanagement import sendemail
 
 class SecretNote(models.Model):
     contactemail = models.EmailField("Contact email address*", max_length=120, null=True, blank=True)
-    subject = models.CharField("Subject*", max_length=120, null=False, blank=False)
+    subject = models.CharField("Subject*", max_length=150, null=False, blank=False)
     note_text = models.TextField("Secret note text*", null=True, blank=True)
     createdon = models.DateTimeField("Created time", auto_now_add=True, null=False, blank=False)
     expireon = models.DateField("Note expires on", null=True, blank=True, default=datetime.today().date() + timedelta(days=7))
