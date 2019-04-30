@@ -5,6 +5,7 @@ from django.urls import reverse
 import pytz, uuid, os
 from clientmanagement import sendemail as emailsending
 from phonenumber_field.modelfields import PhoneNumberField
+from urllib.parse import quote, unquote
 from django.core.files.storage import DefaultStorage
 from django.contrib.auth.models import User
 
@@ -60,6 +61,9 @@ class Ticket(models.Model):
 
     def generate_answer_link(self):
         return False
+
+    def get_email_link(self):
+        return "mailto:" + self.contactemail + "?subject=" + quote(self.title)
 
     def close(self, user):
         self.resolved = True
