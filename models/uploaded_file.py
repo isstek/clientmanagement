@@ -85,7 +85,7 @@ def downloadFileFromTicket(ticketuuid, filename):
     except Exception as exc:
         print(exc)
         return None
-    response = HttpResponse()
+    response = HttpResponse(resfile.uplfile.read())
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(resfile.uplfile.name))
     response['X-Sendfile'] = smart_str(resfile.uplfile.name)
     return response
