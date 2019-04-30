@@ -21,6 +21,7 @@ from models import secretnoteform
 from models import userform
 from models import ticketform
 from models import ticket_commentform
+from models import uploaded_file
 # Create your views here.
 
 
@@ -152,8 +153,33 @@ def viewSecretNoteViewClose(request, noteuuid=None):
     return secretnoteform.SecretNoteViewExternalClose(request, noteuuid)
 
 
-def viewSecretNoteViewOpen(request, noteuuid=None):    
+def viewSecretNoteViewOpen(request, noteuuid=None):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
     return secretnoteform.SecretNoteViewExternalOpen(request, noteuuid)
+
+def downloadFileFromTicket(request, ticketuuid=None, filename=None):
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return uploaded_file.downloadFileFromTicket(ticketuuid, filename)
+
+def viewFileFromTicket(request, ticketuuid=None, filename=None):
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return uploaded_file.viewFileFromTicket(ticketuuid, filename)
+
+
+def downloadFileFromComment(request, ticketuuid=None, commentid=None, filename=None):
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return uploaded_file.download(ticketuuid, filename)
+
+def viewFileFromComment(request, ticketuuid=None, commentid=None, filename=None):
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return uploaded_file.viewFileFromTicket(ticketuuid, filename)

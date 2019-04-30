@@ -1,7 +1,8 @@
-import poplib, email, re, datetime, pytz, threading, time
+import poplib, email, re, datetime, pytz, threading, time, os, random
 from django.db import models
 from django.conf import settings
-from models import ticket
+from urllib.parse import quote
+from models import ticket, uploaded_file
 
 
 class OneEmail(models.Model):
@@ -49,8 +50,8 @@ class OneEmail(models.Model):
             m = regex.search(self.body)
             if m is None:
                 return False
-            subject = m.group('subject')
-            body = m.group('body')
+            subject = re.sub('=20$', '', m.group('subject').replace('=\n', ''))
+            body = re.sub('=20$', '', m.group('body').replace('=\n', '').replace('=20\n', '\n'))
             regex = re.compile(settings.HELP_REQUEST_REGEX_ORGANIZATION)
             m = regex.search(self.body)
             organization = m.group('organization')
@@ -60,7 +61,7 @@ class OneEmail(models.Model):
                 subm_ticket.sendemail()
             except Exception as e:
                 print(e)
-            return True
+            return subm_ticket
         return False
 
 
@@ -116,7 +117,7 @@ class EmailServer:
             except Exception as ex:
                 print(ex)
         result = OneEmail.create(emailid, emaildate, fromfield, subject, body)
-        return result, emaildate
+        return result, emaildate, parsed_email
 
     def readAllLastEmails(self):
         self.conMail()
@@ -129,17 +130,34 @@ class EmailServer:
                 latestemail = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7)
             count_new_emails = 0
             for i in range(numberofemails, 0, -1):
-                message, emaildate = self.readEmail(i)
+                message, emaildate, parsed_email = self.readEmail(i)
                 if emaildate < latestemail:
                     break
-                if not message is None:
-                    message.parseEmail()
+                if (not message is None) and message:
+                    tick = message.parseEmail()
+                    if tick:
+                        parse_attachments(tick, parsed_email)
                     count_new_emails += 1
         finally:
             self.closeMail()
         return count_new_emails
 
 ContinueCheckingEmail = True
+
+def parse_attachments(tick, parsedemail):
+    for part in parsedemail.walk():
+        if not part['Content-Description'] is None:
+            path = tick.get_files_folder()
+            addition = ""
+            filepath = os.path.join(path, addition, part['Content-Description'])
+            while os.path.exists(filepath):
+                addition+=str(random.randint(0,9))
+                filepath = os.path.join(path, addition, part['Content-Description'])
+            newFile = open(filepath, "wb")
+            newFile.write(part.get_payload(decode=True))
+            newFile.close()
+            upf = uploaded_file.UploadedFileTicket(for_ticket=tick, uplfile=filepath, filename=quote(os.path.basename(filepath)))
+            upf.save()
 
 def checkEmail(timeout_secs, emailsrvr):
     while(emailsrvr.enabled):

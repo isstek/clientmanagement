@@ -10,7 +10,10 @@
             {% endif %}
             </i></div>
     </div>
-    {{ comment.description|linebreaks  }}
+    <p>{{ comment.description|linebreaks }}</p>
+    {% if comment.files %}
+    {% for onefile in comment.files.all %} {% include "views/components/oneuploadedfile.html" with onefile=onefile %} {% endfor %}
+    {% endif %}
     {% if comment.author == request.user %}
     {% if comment.editable %}
     <form action="{% url 'ticket_add_comment' ticketuuid=ticket.unid %}" method="POST" enctype="multipart/form-data">

@@ -53,6 +53,9 @@
     <a id="change-button-{{ticket.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change ticket</a>
 </form>
 {% endif %}
+{% if ticket.files %}
+{% for onefile in ticket.files.all %} {% include "views/components/oneuploadedfile.html" with onefile=onefile %} {% endfor %}
+{% endif %}
 </div>
 {% for comment in comments %} {% include "views/components/ticket_one_comment.html" with comment=comment %} {% endfor %}
 {% if can_comment %}
@@ -60,7 +63,7 @@
 <div class="column"><hr></div>
 </div>
 <div class="row">
-<div class="column"><form action="{% url 'ticket_add_comment' ticketuuid=ticket.unid %}" method="POST" class="post-form" autocomplete="off"> {{ form.as_p }}{% csrf_token %}
+<div class="column"><form action="{% url 'ticket_add_comment' ticketuuid=ticket.unid %}" method="POST" class="post-form" autocomplete="off" enctype="multipart/form-data"> {{ form.as_p }}{% csrf_token %}
     <input type="hidden" name="action" value="{{ action|default:'add' }}">
     <button type="submit" class="button save round">{{ submbutton }}</button>
 </form></div>

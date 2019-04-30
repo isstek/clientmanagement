@@ -19,6 +19,12 @@ def sendemailtoone(template, data, subject, email, name):
     msg = EmailMultiAlternatives(subject, text_content, '', [email])
     msg.send()
 
+def sendemailtosome(template, data, subject, email):
+    plaintext = get_template(template)
+    text_content = plaintext.render(data)
+    msg = EmailMultiAlternatives(subject, text_content, '', email)
+    msg.send()
+
 def sendemailtouser(template, data, subject, user):
     plaintext = get_template(template)
     data['useer'] = user

@@ -7,11 +7,13 @@ from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime, timezone
 from phonenumber_field.formfields import PhoneNumberField
-from models import ticket_comment, ticket
+from models import ticket_comment, ticket, uploaded_file
 from django.contrib.sites.shortcuts import get_current_site
 
 
 class Ticket_CommentForm(forms.ModelForm):
+    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    
     class Meta:
         model = ticket_comment.TicketComment
         fields = ("description",)
@@ -19,6 +21,9 @@ class Ticket_CommentForm(forms.ModelForm):
     def save(self, commit=True):
         ticket = super(Ticket_CommentForm, self).save(commit=False)
         return ticket
+
+    def get_files(self, request):
+        return request.FILES.getlist('file_field')
 
 
 def Ticket_CommentFormCreate(request, ticketuuid):
@@ -64,7 +69,11 @@ def Ticket_CommentFormParse(request, ticketuuid):
                     model.author_email = curticket.author_email
                     model.author = None
                 model.save()
-                model.sendemail()
+                files = form.get_files(request)
+                for f in files:
+                    uploaded_file.save_file_comment(model, f)
+                if settings.SEND_EMAILS_ON_NEW_TICKET_MANUAL:
+                    model.sendemail()
                 return redirect(reverse('ticket_view_direct', kwargs={'ticketuuid': ticketuuid}))
             else:
                 data['action']='add'

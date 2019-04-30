@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta, timezone
-import pytz
+import pytz, os
 from clientmanagement import sendemail
 from models import ticket
 from django.contrib.auth.models import User
@@ -27,6 +27,12 @@ class TicketComment(models.Model):
             return False
         else:
             return True
+
+    def get_files_folder(self):
+        folder_path = os.path.join(self.initial_ticket.get_files_folder(), str(self.id))
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        return folder_path
 
     def sendemail(self):
         if True:

@@ -1,0 +1,8 @@
+<p>
+{% if onefile.isimage %}
+<a href="{{ onefile.get_internal_link_to_view_file }}" target="_blank"><img src="{{ onefile.get_internal_link_to_view_file }}" alt="{{ onefile.get_file_name }}" class="icon_picture"></a>
+<a href="{{ onefile.get_internal_link_to_file }}" target="_blank">{{ onefile.get_file_name }}</a>
+{% else %}
+<a href="{{ onefile.get_internal_link_to_file }}" target="_blank">{{ onefile.get_file_name }}</a>
+{% endif %}
+</p>

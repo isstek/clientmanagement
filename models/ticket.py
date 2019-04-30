@@ -2,10 +2,10 @@ from django.db import models
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from django.urls import reverse
-import pytz
-import uuid
-from clientmanagement import sendemail
+import pytz, uuid, os
+from clientmanagement import sendemail as emailsending
 from phonenumber_field.modelfields import PhoneNumberField
+from django.core.files.storage import DefaultStorage
 from django.contrib.auth.models import User
 
 
@@ -33,12 +33,28 @@ class Ticket(models.Model):
     def __str__(self):
         return "Ticket number " + str(self.id)
 
-    def sendemail(self):
-        sendemail.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": self, 
+    def sendemail(self, autocreated=False):
+        if settings.SEND_EMAILS_TEAM_ON_TICKET_CREATE_TO_SUPPORT:
+            self.sendemailsupportteam()
+        if settings.SEND_EMAILS_ON_NEW_TICKET_MANUAL and not autocreated or settings.SEND_EMAILS_ON_NEW_TICKET_CREATED_AUTOMATICALLY and autocreated:
+            self.sendemailclient()
+
+    def sendemailclient(self):
+        emailsending.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": self, 
             "link": self.generate_link(), "answerlink": self.generate_answer_link()}, 
             'New ticket submited to Infotek', self.contactemail, self.contactname)
 
-        
+    def sendemailsupportteam(self):
+        emailsending.sendemailtosome('emails/ticket_creation_support_team_email.txt', {"ticket": self, 
+            "link": self.generate_link()}, 'New ticket from ' + self.contactname, settings.SUPPORT_TEAM_EMAIL_RECIPIENT)
+
+    def get_files_folder(self):
+        folder_path = os.path.join(settings.TICKET_FILES, str(self.id))
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        return folder_path
+
+       
     def generate_link(self):
         return settings.EMAIL_HOST_LINK + reverse('ticket_view_direct', kwargs={'ticketuuid': self.unid})
 

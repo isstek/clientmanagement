@@ -1,0 +1,10 @@
+{% load tz %} {% timezone "America/New_York" %}Hi, All.
+
+A new ticket add to the system. {{ ticket.contactname }} {% if ticket.companyname %}from {{ ticket.companyname }} {% endif %} has an issue with {{ ticket.title }}.
+More info:
+Contact email: {{ ticket.contactemail }}{% if ticket.contactphone %}
+Contact phone: {{ ticket.contactphone.as_international }}{% endif %}
+Link to the ticket: {{ link }}.
+
+Have a great day!
+Infotek Robot! :-){% endtimezone %}

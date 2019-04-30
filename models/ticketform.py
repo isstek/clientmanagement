@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
 from phonenumber_field.formfields import PhoneNumberField
-from models import ticket, ticket_commentform
+from models import ticket, ticket_commentform, uploaded_file
 from django.contrib.sites.shortcuts import get_current_site
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Invisible
@@ -16,10 +16,13 @@ from captcha.widgets import ReCaptchaV2Invisible
 class TicketForm(forms.ModelForm):
     contactphone = PhoneNumberField(label="Contact phone number", required=False, help_text="You can add the extension after an x")
     rcaptcha = ReCaptchaField(label='', required=True, error_messages={'required': 'Please, check the box to prove you are not a robot'}, public_key=settings.RECAPTCHA_CHECKBOX_PUBLIC_KEY, private_key=settings.RECAPTCHA_CHECKBOX_PRIVATE_KEY)
-    order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description", "rcaptcha")
+    
+    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description", "file_field", "rcaptcha")
     class Meta:
         model = ticket.Ticket
         fields = ("title", "companyname", "contactname", "contactemail", "description")
+
 
     def __init__(self, *args, **kwargs): 
         super(TicketForm, self).__init__(*args, **kwargs)
@@ -35,13 +38,16 @@ class TicketForm(forms.ModelForm):
             if (not instance.contactphone is None) and (instance.contactphone != ""):
                 self.fields['contactphone'].initial = instance.contactphone.as_national
 
-    def save(self, commit=True):
+    def save(self, commit=True, request=None):
         ticket = super(TicketForm, self).save(commit=False)
         if ('contactphone' in self.changed_data):
             ticket.contactphone= self.cleaned_data["contactphone"]
         if commit:
             ticket.save()
         return ticket
+
+    def get_files(self, request):
+        return request.FILES.getlist('file_field')
 
 
 class TicketFormFull(TicketForm):
@@ -53,8 +59,8 @@ class TicketFormFull(TicketForm):
     def __init__(self, *args, **kwargs): 
         super(TicketFormFull, self).__init__(*args, **kwargs)
 
-    def save(self, commit=True):
-        ticket = super(TicketFormFull, self).save(commit=False)
+    def save(self, commit=True, request=None):
+        ticket = super(TicketFormFull, self).save(commit=False, request=request)
         assignedchanged = False
         if ("assignedto" in self.changed_data):
             assignedchanged = not ticket.assignedto is None
@@ -81,10 +87,10 @@ def TicketFormParse(request):
                     ip = request.META.get('REMOTE_ADDR')
                 model.senderipaddress = ip
                 model.save()
+                files = form.get_files(request)
+                for f in files:
+                    uploaded_file.save_file_ticket(model, f)
                 model.sendemail()
-                # sendemail.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": model, 
-                # "link": model.generate_link(), "answerlink": model.generate_answer_link()}, 
-                # 'New ticket submited to Infotek', model.contactemail, model.contactname)
                 return redirect(reverse('ticket_submitted'))
             else:
                 data['action']='add'
