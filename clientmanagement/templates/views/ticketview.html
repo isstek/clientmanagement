@@ -25,11 +25,7 @@
 <p><b>Contact:</b> {{ ticket.contactname }}</p>
 {% endif %}
 {% if ticket.contactemail %}
-{% if can_change %}
 <p><b>Contact email:</b> <a href="{{ ticket.get_email_link }}">{{ ticket.contactemail }}</a></p>
-{% else %}
-<p><b>Contact email:</b> <a href="mailto:{{ ticket.contactemail }}">{{ ticket.contactemail }}</a></p>
-{% endif %}
 {% endif %}
 {% if ticket.contactphone %}
 <p><b>Phone number:</b> {% include "views/components/phonenumber.html" with phone=ticket.contactphone %}</p>
