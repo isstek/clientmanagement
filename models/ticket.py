@@ -41,12 +41,12 @@ class Ticket(models.Model):
             self.sendemailclient()
 
     def sendemailclient(self):
-        emailsending.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": self, 
+        emailsending.sendemailtoone('emails/ticket_confirmation_email.htm', {"ticket": self, 
             "link": self.generate_link(), "answerlink": self.generate_answer_link()}, 
             'New ticket submited to Infotek', self.contactemail, self.contactname)
 
     def sendemailsupportteam(self):
-        emailsending.sendemailtosome('emails/ticket_creation_support_team_email.txt', {"ticket": self, 
+        emailsending.sendemailtosome('emails/ticket_creation_support_team_email.htm', {"ticket": self, 
             "link": self.generate_link()}, 'New ticket from ' + self.contactname, settings.SUPPORT_TEAM_EMAIL_RECIPIENT)
 
     def get_files_folder(self):

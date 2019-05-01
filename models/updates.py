@@ -26,7 +26,7 @@ class SystemUpdates(models.Model):
         if (not self.wassent):
             self.wassent = True
             self.save()
-            sendemail.sendemaileveryonetxt('emails/newpostemail.txt', {'post':self}, "New post: " + self.title)
+            sendemail.sendemaileveryone('emails/newpostemail.htm', {'post':self}, "New post: " + self.title)
 
 
 def getCurrentVersion():

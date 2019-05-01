@@ -29,9 +29,8 @@ class SecretNote(models.Model):
         return "Secret note number " + str(self.id)
 
     def sendemail(self):
-        sendemail.sendemailtoone('emails/ticket_confirmation_email.txt', {"ticket": self, 
-            "link": self.generate_link(), "answerlink": self.generate_answer_link()}, 
-            'New ticket submited to Infotek', self.contactemail, self.contactname)
+        sendemail.sendemailhtml('emails/secret_note_created_email.htm', {"note": self}, 
+            'New secret note', self.contactemail)
         
     def generate_link_external_close(self):
         return settings.EMAIL_HOST_LINK + reverse('note_close', kwargs={'noteuuid': self.unid})

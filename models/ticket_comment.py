@@ -36,7 +36,7 @@ class TicketComment(models.Model):
 
     def sendemail(self):
         if True:
-            sendemail.sendemailtoone('emails/ticket_update_email.txt', {"ticket": self.initial_ticket, 
+            sendemail.sendemailtoone('emails/ticket_update_email.htm', {"ticket": self.initial_ticket, 
             "link": self.initial_ticket.generate_link(), "answerlink": self.initial_ticket.generate_answer_link(),
             "comment": self}, 
             'Update to your ticket', self.initial_ticket.contactemail, self.initial_ticket.contactname)

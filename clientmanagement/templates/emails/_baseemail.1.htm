@@ -1,0 +1,85 @@
+{% load tz %} {% timezone "America/New_York" %}
+<style type="text/css">
+    .header {
+      background: #8a8a8a;
+    }
+    .header .columns {
+      padding-bottom: 0;
+    }
+    .header p {
+      color: #fff;
+      margin-bottom: 0;
+    }
+    .header .wrapper-inner {
+      padding: 20px; /*controls the height of the header*/
+    }
+    .header .container {
+      background: #8a8a8a;
+    }
+    .wrapper.secondary {
+      background: #f3f3f3;
+    }
+    .alert{
+        color:red;
+    }
+</style>
+    
+    
+    <wrapper class="header" bgcolor="#8a8a8a">
+      <container>
+        <row class="collapse">
+          <columns small="6" valign="middle">{% block logoimage %}
+          <img style="height:50px" src="https://cms.isstek.com/static/img/base/logo.jpg">
+          {% endblock logoimage %}
+          </columns>
+          <columns small="6" valign="middle">
+            <p class="text-right">{% block title %}
+            Email from Infotek
+            {% endblock title %}</p>
+          </columns>
+        </row>
+      </container>
+    </wrapper>
+    
+    <container>
+    
+      <spacer size="16"></spacer>
+      
+      <row>
+        <columns>
+          {% block emailcontent %}
+          
+          <h1></h1>
+          <p class="lead"></p>
+          <p></p>
+          <callout class="primary">
+            <p></p>
+          </callout>
+
+          {% endblock emailcontent %}    
+        </columns>
+      </row>
+      
+      <wrapper class="secondary">
+        <spacer size="16"></spacer>
+        <row>
+          <columns small="12" large="6">
+            {% comment %} <h5>Connect With Us:</h5>
+            <menu class="vertical">
+              <item style="text-align: left;" href="#">Twitter</item>
+              <item style="text-align: left;" href="#">Facebook</item>
+              <item style="text-align: left;" href="#">Google +</item>
+            </menu> {% endcomment %}
+            Have a great day.
+            Always yours,
+            Infotek.
+          </columns>
+          <columns small="12" large="6">
+            <h5>Contact Info:</h5>
+            <p>Phone: (212) 754-8008</p>
+            <p>Email: <a href="mailto:support@isstek.com">support@isstek.com</a></p>
+          </columns>
+        </row>
+      </wrapper>
+    
+    </container>{% endtimezone %}

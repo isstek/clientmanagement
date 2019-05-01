@@ -31,7 +31,10 @@ class TicketForm(forms.ModelForm):
         for item in self.order:
             self.fields[item] = tmp[item]
         if (settings.CANCEL_CAPTCHA):
-            self.fields.pop('rcaptcha')
+            try:
+                self.fields.pop('rcaptcha')
+            except Exception:
+                pass
 
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
@@ -141,7 +144,7 @@ def TicketChangeFormParse(request, ticketid):
                 model, needemail = form.save(commit=False)
                 model.save()
                 if needemail:
-                    sendemail.sendemailtouser('emails/ticket_was_assigned_to_you.txt', {'ticket': model,
+                    sendemail.sendemailtouser('emails/ticket_was_assigned_to_you.htm', {'ticket': model,
                     "link": model.generate_link()}, 'New ticket assigned to you', model.assignedto)
                 return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
             data['action'] = 'changed'

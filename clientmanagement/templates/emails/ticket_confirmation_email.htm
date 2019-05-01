@@ -1,0 +1,13 @@
+{% load tz %} {% timezone "America/New_York" %}
+<p>Hi, {{ ticket.contactname }}.</p>
+<p>We received your ticket and will work on it now. Here is some information that we got, some of it may be used as a reference later:
+    <br>Link to the ticket: <a href="{{ link }}" target="_blank">{{ link }}</a>.
+    <br>Contact name: {{ ticket.contactname }}.
+    <br>Created: {{ ticket.createtime|date:"M d, Y h:i a"}}.{% if ticket.contactphone %}
+    <br>Phone number: {{ ticket.contactphone.as_international }}{% endif %}{% if ticket.contactemail %}
+    <br>Email: {{ ticket.contactemail }}{% endif %}{% if ticket.title %}
+    <br>Subject: {{ ticket.title }}{% endif %}{% if ticket.description %}
+    <br>Description: {{ ticket.description|linebreaks }}{% endif %}</p>
+<p>If anything doesn't seem correct, please contact us at (212) 754-8008 or by email support@isstek.com</p>
+<p>Have a great day!<br> Always yours,<br> Infotek
+</p>{% endtimezone %}

@@ -9,8 +9,6 @@ import collections, copy
 
 
 class SecretNoteForm(forms.ModelForm):
-    # expires = forms.NullBooleanField(label="test")
-    # expireon = forms.DateField(label="Epires on", widget=forms.SelectDateWidget, initial=datetime.utcnow() + timedelta(days=7))
     order = ('contactemail', 'reads_left', 'expireon', 'subject', 'note_text')
     class Meta:
         model = secretnote.SecretNote
