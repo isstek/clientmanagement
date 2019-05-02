@@ -3,8 +3,7 @@
     <td>{{ computer.get_operatingsystem_display}}</td>
     {% if fullinfo %}
     <td>{{ computer.company.name }}</td>
-
-    {% else %} {% endif %}
+    {% endif %}
     <td class="show-for-medium-up">{{ computer.description }}</td>
     <td>
         <button class="button round nomargin margin-sides" data-open="modal-computername-{{ computer.id }}">View full info</a>

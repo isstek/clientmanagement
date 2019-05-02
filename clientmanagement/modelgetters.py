@@ -127,6 +127,15 @@ def form_all_computers_data():
     return comps
 
 
+def form_all_people_data():
+    try:
+        peop = person.Person.objects.all().order_by('firstname', 'lastname')
+    
+    except Exception as err:
+        return None
+    return peop
+
+
 def form_updates_data():
     try:
         posts = updates.SystemUpdates.objects.all().order_by('-postedon')[:10]

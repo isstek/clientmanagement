@@ -253,6 +253,20 @@ def allcomputersview(request):
 
 
 @login_required( login_url = 'login' )
+def allpeopleview(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = {'people': modelgetters.form_all_people_data()}
+    if data is None:
+        return redirect('/')            
+    data['PAGE_TITLE'] = 'All people: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
+    return render(request, 'views/allpeople.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
 def statisticsview(request):
     valid, response = initRequest(request)
     if not valid:

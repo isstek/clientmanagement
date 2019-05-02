@@ -27,6 +27,7 @@ from models.email import mailbox
 urlpatterns = [
     path('clients/', clientmanagement_views.allclientsview, name='allclients'),
     path('computers/', clientmanagement_views.allcomputersview, name='allcomputers'),
+    path('people/', clientmanagement_views.allpeopleview, name='allpeople'),
     path('clients/<int:clientid>', clientmanagement_views.clientview, name='oneclient'),
     path('clients/<int:clientid>/computer', models_views.computerForm, name='clientcomputer'),
     path('clients/<int:clientid>/printer', models_views.printerForm, name='clientprinter'),

@@ -52,19 +52,24 @@
                     {% if user.is_authenticated %}
                     <div class="top-bar">
                         <div class="top-bar-left">
-                            <ul class="dropdown menu" data-dropdown-menu>
+                            <ul class="vertical medium-horizontal menu"  data-responsive-menu="drilldown medium-dropdown">
                                 <li> <a href="/">Main page</a> </li>
-                                <li> <a href="{% url 'allclients' %}">Clients</a> </li>
-                                <li> <a href="{% url 'allcomputers' %}">Computers</a> </li>
-                                <li> <a href="{% url 'statistics' %}">Statistics</a> </li>
+                                <li> <a href="#">Views</a><ul class="vertical menu">
+                                    <li> <a href="{% url 'allclients' %}">Clients</a> </li>
+                                    <li> <a href="{% url 'allcomputers' %}">Computers</a> </li>
+                                    <li> <a href="{% url 'allpeople' %}">People</a> </li>
+                                    </ul>
+                                </li>
                                 <li> <a href="{% url 'alltickets' 'o' %}">Tickets</a> </li>
+                                <li> <a href="{% url 'all_notes' %}">Notes</a> </li>
+                                {% comment %} <li> <a href="{% url 'alltickets' 'o' %}">Tools</a> </li> {% endcomment %}
                             </ul>
                         </div>
                     </div>
                     {% else %}
                     <div class="top-bar">
                         <div class="top-bar-left">
-                            <ul class="dropdown menu" data-dropdown-menu>
+                            <ul class="vertical medium-horizontal menu"  data-responsive-menu="drilldown medium-dropdown">
                                 <li> <a href="{% url 'login' %}">Login page</a> </li>
                                 <li> <a href="{% url 'ticket_submit' %}">Submit a ticket</a> </li>
                             </ul>

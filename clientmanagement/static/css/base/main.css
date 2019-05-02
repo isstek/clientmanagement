@@ -7,7 +7,6 @@ body {
 body {
     display: flex;
     flex-direction: column;
-    /* background-color: #999999; */
 }
 
 .wrapper {
@@ -43,6 +42,11 @@ button.round,
 .is-dropdown-submenu {
     background-color: inherit;
     border: inherit;
+}
+
+.top-bar a {
+    background-color: #EEEEFF !important;
+    color: black !important;
 }
 
 .nomargin {

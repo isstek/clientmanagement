@@ -1,0 +1,33 @@
+{% extends "_basewide.html" %} {% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %} 
+<script src="{% static 'js/base/dialogs.js' %}"></script>
+{% endblock %}
+{% block body %}
+<h2>All People</h2>
+<table id='peopletable'>
+    <thead>
+        <tr>
+            <th>Full name</th>
+            <th>Phone number</th>
+            <th>Email</th>
+            <th class="hide-for-small-only">Annoyance</th>
+            <th class="hide-for-small-only">Company name</th>
+            <th class="hide-for-small-only">Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for person in people %} {% include "views/oneitemrow/personrow.html" with person=person fullinfo=True %} {% endfor %}
+    </tbody>
+</table>
+
+{% if needdatatables %}
+<script>
+    $(document).ready(function() {
+        document.computerstable = $('#peopletable').DataTable({
+            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            "iDisplayLength": -1
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}
