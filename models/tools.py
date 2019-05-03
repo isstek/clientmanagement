@@ -1,13 +1,13 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, StreamingHttpResponse
 from django.utils.encoding import smart_str
 from urllib.parse import quote, unquote
 from django.conf import settings
 #from django.core.files.storage import default_storage
 from wsgiref.util import FileWrapper
 from django.urls import reverse
-import uuid, os, random, pytz
+import uuid, os, random, pytz, mimetypes
 
 
 def upload_to_file_tool(instance, filename):
@@ -116,7 +116,10 @@ def downloadFileFromTools(tooluuid):
     except Exception as exc:
         print(exc)
         return None
-    response = HttpResponse(FileWrapper(tool.uplfile))
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(tool.uplfile, chunk_size),
+                            content_type=mimetypes.guess_type(tool.uplfile.name)[0])
+    response['Content-Length'] = os.path.getsize(tool.uplfile.name)    
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(tool.uplfile.name))
-    response['X-Sendfile'] = smart_str(tool.uplfile.name)
+    #response['X-Sendfile'] = smart_str(tool.uplfile.name)
     return response
