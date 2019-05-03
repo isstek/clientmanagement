@@ -4,10 +4,11 @@ from django.http import HttpResponse, FileResponse, StreamingHttpResponse
 from django.utils.encoding import smart_str
 from urllib.parse import quote, unquote
 from django.conf import settings
-#from django.core.files.storage import default_storage
+from django.dispatch import receiver
 from wsgiref.util import FileWrapper
 from django.urls import reverse
 import uuid, os, random, pytz, mimetypes
+from clientmanagement import utilities
 
 
 def upload_to_file_tool(instance, filename):
@@ -95,19 +96,38 @@ class FileTool(MainTool):
         super(FileTool, self).__init__(*args, **kwargs)
 
     def get_full_name(self):
-        return "File tool " + self.name + " (v. " + self.version + ")"
+        if (os.path.exists(self.uplfile.path)):
+            return "File tool " + self.name + " (v. " + self.version + ")"
+        else:
+            return "File was deleted"
     
     def get_name_for_user(self):
-        return self.name + " (v. " + self.version + ")"
+        if (os.path.exists(self.uplfile.path)):
+            return self.name + " (v. " + self.version + ")"
+        else:
+            return "File was deleted"
 
     def get_link_text(self):
-        return "Download"
+        if (os.path.exists(self.uplfile.path)):
+            return "Download (" + utilities.humanize_bytes(os.path.getsize(self.uplfile.path)) + ")"
+        else:
+            return "File was deleted"
 
     def get_link(self):
-        return reverse("download_tool", kwargs={'tooluuid': self.unid})
+        if (os.path.exists(self.uplfile.path)):
+            return reverse("download_tool", kwargs={'tooluuid': self.unid})
+        else:
+            return ''
 
     def tool_type(self):
         return 'f'
+
+@receiver(models.signals.post_delete, sender=FileTool)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    if instance.uplfile:
+        if os.path.isfile(instance.uplfile.path):
+            os.remove(instance.uplfile.path)
+            os.rmdir( os.path.dirname(instance.uplfile.path))
 
 
 def downloadFileFromTools(tooluuid):
@@ -118,8 +138,8 @@ def downloadFileFromTools(tooluuid):
         return None
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(tool.uplfile, chunk_size),
-                            content_type=mimetypes.guess_type(tool.uplfile.name)[0])
-    response['Content-Length'] = os.path.getsize(tool.uplfile.name)    
-    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(tool.uplfile.name))
-    #response['X-Sendfile'] = smart_str(tool.uplfile.name)
+                            content_type=mimetypes.guess_type(tool.uplfile.path)[0])
+    response['Content-Length'] = os.path.getsize(tool.uplfile.path)    
+    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(tool.uplfile.path))
+    #response['X-Sendfile'] = smart_str(tool.uplfile.path)
     return response

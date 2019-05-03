@@ -105,7 +105,11 @@ def ToolFormParser(request, form_type):
     data['action'] = form.inf_action
     data['minititle'] = form.inf_minititle
     data['submbutton'] = form.inf_subm_button
+    data['deletebutton'] = form.inf_delete_button
     data['backurl'] = back_link
+    if('targetid' in request.POST):
+        data['targetid'] = request.POST['targetid']
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    print(data)
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')
