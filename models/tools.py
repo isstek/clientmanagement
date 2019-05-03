@@ -87,7 +87,6 @@ class LinkTool(MainTool):
 
 
 class FileTool(MainTool):
-    filename = models.CharField("Filename", max_length=100, null=True)
     uplfile = models.FileField("File", upload_to=upload_to_file_tool, max_length=255, null=True)
     version = models.CharField("Version", max_length=50, null=False, blank=True, default="")
 
