@@ -21,6 +21,8 @@ from models import secretnoteform
 from models import userform
 from models import ticketform
 from models import ticket_commentform
+from models import tools
+from models import toolsform
 from models import uploaded_file
 # Create your views here.
 
@@ -130,6 +132,20 @@ def AddSecretNoteView(request):
     if not valid:
         return response
     return secretnoteform.SecretNoteFormParse(request)
+
+@login_required( login_url = 'login' )
+def AddNewToolView(request, tool_type):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return toolsform.ToolFormParser(request, tool_type)
+
+@login_required( login_url = 'login' )
+def downloadTool(request, tooluuid):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return tools.downloadFileFromTools(tooluuid)
 
 
 def submitTicketForm(request):    

@@ -1,0 +1,13 @@
+<tr id="{{ tool.id }}">
+    <td>{{ tool.get_name_for_user }}</td>
+    <td><a href="{{ tool.get_link }}" target="_blank">{{ tool.get_link_text }}</a></td>
+    <td class="hide-for-small-only">{{ tool.description|linebreaksbr }}</td>
+    <td class="show-for-large-up">{{ tool.createtime|date:"Y-m-d h:i a" }} </td>
+    <td><form action="{% url 'new_tool' tool_type=toolt %}"  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="change">
+        <input type="hidden" name="targetid" value="{{ tool.id }}">
+        <a id="change_tool_button_{{tool.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change tool info</a>
+    </form>
+    </td>
+</tr>

@@ -8,6 +8,7 @@ from models import router
 from models import updates
 from models import ticket
 from models import ticket_comment
+from models import tools
 from models import secretnote
 import uuid
 
@@ -199,3 +200,24 @@ def form_one_note_data_internal(noteid):
     except Exception as err:
         return None
     return {'note': note}
+
+def form_all_tools_data():
+    try:
+        tool = tools.MainTool.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tools': tool}
+
+def form_all_link_tools_data():
+    try:
+        tool = tools.LinkTool.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tools': tool}
+
+def form_all_file_tools_data():
+    try:
+        tool = tools.FileTool.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tools': tool}

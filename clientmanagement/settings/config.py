@@ -3,6 +3,7 @@ from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
 TICKET_FILES = os.path.join(os.path.abspath("."), "uploads", "tickets")
+TOOLS_FILES = os.path.join(os.path.abspath("."), "uploads", "tools")
 MEDIA_ROOT = os.path.join(os.path.abspath("."), "uploads")
 IMAGE_FILE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.ico', '.gif', '.bmp']
 ENABLE_MAIL_CHECK = True
