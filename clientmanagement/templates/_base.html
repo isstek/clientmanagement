@@ -8,13 +8,13 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/base/favicon.ico' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/base/favicon.ico' %}{{ URL_ADD_TO_STATIC_FILES }}" />
     <title>{% block page_title %}{{ PAGE_TITLE }}{% endblock %}</title>
 
     <!-- Included base CSS Files -->
-    <link rel="stylesheet" href="{% static 'css/foundation/foundation.css' %}">
-    <link rel="stylesheet" href="{% static 'css/foundation/foundation-icons/foundation-icons.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation/foundation.css' %}{{ URL_ADD_TO_STATIC_FILES }}">
+    <link rel="stylesheet" href="{% static 'css/foundation/foundation-icons/foundation-icons.css' %}{{ URL_ADD_TO_STATIC_FILES }}">
+    <link rel="stylesheet" href="{% static 'css/base/main.css' %}{{ URL_ADD_TO_STATIC_FILES }}">
     {% if needdatatables %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.css"/>
     {% endif %}
@@ -32,8 +32,8 @@
     <script>
         var my_crsf_token = '{{ csrf_token }}'
     </script>
-    <script src="{% static 'js/foundation/vendor/jquery.js' %}"></script>
-    <script src="{% static 'js/foundation/vendor/foundation.min.js' %}"></script>
+    <script src="{% static 'js/foundation/vendor/jquery.js' %}{{ URL_ADD_TO_STATIC_FILES }}"></script>
+    <script src="{% static 'js/foundation/vendor/foundation.min.js' %}{{ URL_ADD_TO_STATIC_FILES }}"></script>
     {% if needdatatables %}
     <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
     {% endif %}
@@ -45,7 +45,7 @@
         <header>
             <div class="row align-middle">
                 <div class="small-3 medium-4 large-3 columns">
-                    {% block logo %}<img src="{% static 'img/base/logo.png' %}" alt='Infotek Logo' class='logo'>{% endblock %}
+                    {% block logo %}<img src="{% static 'img/base/logo.png' %}{{ URL_ADD_TO_STATIC_FILES }}" alt='Infotek Logo' class='logo'>{% endblock %}
                 </div>
 
                 <div class="small-6 medium-4 large-6">
