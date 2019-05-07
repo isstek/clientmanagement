@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
 from models import tools
+from clientmanagement.widget import form_switch
 
 class FileToolForm(forms.ModelForm):
     order = ("name", "public", "version", "uplfile", "description")
@@ -14,13 +15,15 @@ class FileToolForm(forms.ModelForm):
     inf_action='add'
     inf_minititle = 'Add a file tool'
     inf_delete_button = False
+
+    public = form_switch.SwitchOnOffField(label="Public link?")
     class Meta:
         model = tools.FileTool
         fields = ("name", "public", "version", "uplfile", "description")
 
     def __init__(self, *args, **kwargs): 
-        form = super(FileToolForm, self).__init__(*args, **kwargs)
-
+        form = super(FileToolForm, self).__init__(*args, **kwargs) 
+        self.fields['public'].label_classes = ('switch-paddle', 'class_b', )
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
             self.inf_page_title = "Change file tool: CMS infotek"
@@ -111,5 +114,4 @@ def ToolFormParser(request, form_type):
         data['targetid'] = request.POST['targetid']
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S")
-    print(data)
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')
