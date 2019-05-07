@@ -74,7 +74,7 @@ class LinkTool(MainTool):
         return self.url
 
     def get_link_text(self):
-        return self.url
+        return (self.url[:settings.LINK_TOOL_STRING_LENGTH] + '...') if len(self.url) > settings.LINK_TOOL_STRING_LENGTH else self.url
 
     def get_full_name(self):
         return "Link tool " + self.name
