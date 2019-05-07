@@ -79,7 +79,6 @@ def downloadFileFromTicket(ticketuuid, filename):
         tick = ticket.Ticket.objects.get(unid=ticketuuid)
     except Exception as exc:
         print(exc)
-        return None
     try:
         resfile = UploadedFileTicket.objects.get(for_ticket=tick, filename=filename)
     except Exception as exc:

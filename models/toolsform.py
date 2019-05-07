@@ -16,7 +16,7 @@ class FileToolForm(forms.ModelForm):
     inf_minititle = 'Add a file tool'
     inf_delete_button = False
 
-    public = form_switch.SwitchOnOffField(label="Public link?")
+    public = form_switch.SwitchOnOffField(label="Public link?", required=False)
     class Meta:
         model = tools.FileTool
         fields = ("name", "public", "version", "uplfile", "description")
@@ -39,6 +39,8 @@ class LinkToolForm(forms.ModelForm):
     inf_action='add'
     inf_minititle = 'Add a link to a tool'
     inf_delete_button = False
+
+    public = form_switch.SwitchOnOffField(label="Public link?", required=False)
     class Meta:
         model = tools.LinkTool
         fields = ("name", "public", "url", "description")
