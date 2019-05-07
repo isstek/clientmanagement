@@ -145,7 +145,7 @@ def downloadTool(request, tooluuid):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
-    return tools.downloadFileFromTools(tooluuid)
+    return tools.downloadFileFromTools(request, tooluuid)
 
 
 def submitTicketForm(request):    
@@ -179,23 +179,23 @@ def downloadFileFromTicket(request, ticketuuid=None, filename=None):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
-    return uploaded_file.downloadFileFromTicket(ticketuuid, filename)
+    return uploaded_file.downloadFileFromTicket(request, ticketuuid, filename)
 
 def viewFileFromTicket(request, ticketuuid=None, filename=None):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
-    return uploaded_file.viewFileFromTicket(ticketuuid, filename)
+    return uploaded_file.viewFileFromTicket(request, ticketuuid, filename)
 
 
 def downloadFileFromComment(request, ticketuuid=None, commentid=None, filename=None):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
-    return uploaded_file.download(ticketuuid, filename)
+    return uploaded_file.download(request, ticketuuid, filename)
 
 def viewFileFromComment(request, ticketuuid=None, commentid=None, filename=None):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
-    return uploaded_file.viewFileFromTicket(ticketuuid, filename)
+    return uploaded_file.viewFileFromTicket(request, ticketuuid, filename)

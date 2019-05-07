@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from wsgiref.util import FileWrapper
 from django.urls import reverse
 import uuid, os, random, pytz, mimetypes
-from clientmanagement import utilities
+from clientmanagement import utilities, error_views
 
 
 def upload_to_file_tool(instance, filename):
@@ -129,16 +129,15 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
             os.rmdir( os.path.dirname(instance.uplfile.path))
 
 
-def downloadFileFromTools(tooluuid):
+def downloadFileFromTools(request, tooluuid):
     try:
         tool = FileTool.objects.get(unid=tooluuid)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     chunk_size = 8192
     response = StreamingHttpResponse(FileWrapper(tool.uplfile, chunk_size),
                             content_type=mimetypes.guess_type(tool.uplfile.path)[0])
     response['Content-Length'] = os.path.getsize(tool.uplfile.path)    
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(tool.uplfile.path))
-    #response['X-Sendfile'] = smart_str(tool.uplfile.path)
     return response

@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 import collections, copy
-from clientmanagement import modelgetters, sendemail
+from clientmanagement import modelgetters, sendemail, error_views
 from clientmanagement import views as main_views
 from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
@@ -169,7 +169,7 @@ def TicketChangeFormParse(request, ticketid):
 def ViewTicketDirectParse(request, ticketuuid):
     data_ticket = modelgetters.form_one_ticket_data(ticketuuid)
     if data_ticket is None:
-        return redirect(reverse('alltickets', kwargs={'reqtype': 'o'}))
+        return error_views.notfound(request)
     data_comments = ticket_commentform.Ticket_CommentFormCreate(request, ticketuuid)
     data = {**data_comments, **data_ticket}
     data['can_change'] = request.user.is_authenticated

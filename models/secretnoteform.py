@@ -1,6 +1,6 @@
 from django import forms
 from models import secretnote
-from clientmanagement import views as main_views, modelgetters
+from clientmanagement import views as main_views, modelgetters, error_views
 from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime, timedelta
@@ -9,8 +9,6 @@ import collections, copy
 
 
 class SecretNoteForm(forms.ModelForm):
-    # expires = forms.NullBooleanField(label="test")
-    # expireon = forms.DateField(label="Epires on", widget=forms.SelectDateWidget, initial=datetime.utcnow() + timedelta(days=7))
     order = ('contactemail', 'reads_left', 'expireon', 'subject', 'note_text')
     class Meta:
         model = secretnote.SecretNote
@@ -113,6 +111,8 @@ def AllSecretNotes(request):
     if not valid:
         return response
     data = modelgetters.form_all_notes_data()
+    if data is None:
+        data = {}
     data['needdatatables'] = True
     data['PAGE_TITLE'] = 'Secret Notes: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
@@ -124,6 +124,8 @@ def SecretNoteViewInternal(request, noteid):
     if not valid:
         return response
     data = modelgetters.form_one_note_data_internal(noteid)
+    if data is None:
+        return error_views.notfound(request)
     data['PAGE_TITLE'] = 'Secret Note: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'views/secretnoteinternal.html', data, content_type='text/html')
@@ -134,6 +136,8 @@ def SecretNoteViewExternalClose(request, noteuuid):
     if not valid:
         return response
     data = modelgetters.form_one_note_data_external(noteuuid)
+    if data is None:
+        return error_views.notfound(request)
     data['PAGE_TITLE'] = 'Secret Note: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'views/secretnoteclose.html', data, content_type='text/html')
@@ -144,6 +148,8 @@ def SecretNoteViewExternalOpen(request, noteuuid):
     if not valid:
         return response
     data = modelgetters.form_one_note_data_external(noteuuid)
+    if data is None:
+        return error_views.notfound(request)
     data['PAGE_TITLE'] = 'Secret Note: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'views/secretnoteopen.html', data, content_type='text/html')
