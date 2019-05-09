@@ -1,7 +1,8 @@
 from django.db import models
 from datetime import datetime, timedelta, timezone
-import pytz, os
+import pytz, os, json
 from clientmanagement import sendemail
+from clientmanagement.widget import quill
 from models import ticket
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -27,6 +28,12 @@ class TicketComment(models.Model):
             return False
         else:
             return True
+
+    def description_is_quill(self):
+        return quill.check_quill_string(self.description)
+
+    def description_as_quill(self):
+        return self.description
 
     def get_files_folder(self):
         folder_path = os.path.join(self.initial_ticket.get_files_folder(), str(self.id))

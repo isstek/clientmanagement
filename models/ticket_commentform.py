@@ -2,6 +2,7 @@ from django import forms
 from django.conf import settings
 import collections, copy
 from clientmanagement import modelgetters, sendemail
+from clientmanagement.widget import quill
 from clientmanagement import views as main_views
 from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
@@ -12,11 +13,13 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 class Ticket_CommentForm(forms.ModelForm):
+    description = quill.QuillField()
     file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     
+
     class Meta:
         model = ticket_comment.TicketComment
-        fields = ("description",)
+        fields = ('description', )
 
     def save(self, commit=True):
         ticket = super(Ticket_CommentForm, self).save(commit=False)
@@ -38,6 +41,7 @@ def Ticket_CommentFormCreate(request, ticketuuid):
     data['minititle'] = 'Add comment'
     data['submbutton'] = 'Submit'
     data['form'] = form
+    data['needquillinput'] = True
     return data
 
 
@@ -132,5 +136,6 @@ def Ticket_CommentFormParse(request, ticketuuid):
         data['submbutton'] = 'Submit'
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S") 
+    data['needquillinput'] = True
     data['backurl'] = reverse('ticket_view_direct', kwargs={'ticketuuid': ticketuuid})
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')

@@ -1,0 +1,36 @@
+<div id="{{ widget.attrs.id }}">
+</div>
+<input type="hidden" name="{{ widget.name }}" id="{{ widget.attrs.id }}-input">
+<script>
+    var quill = new Quill('#{{ widget.attrs.id }}', {
+  modules: {
+    toolbar: {% if widget.toolbar %}{{ widget.toolbar }}
+    {% else %}
+    [
+      ['bold', 'italic', 'underline'],
+      ['link', 'blockquote', 'code-block'],
+      [{ list: 'ordered' }, { list: 'bullet' }]
+    ]
+    {% endif %},
+  },
+  {% if widget.placeholder %}placeholder: '{{ widget.placeholder }}',{% endif %}
+  {% if widget.theme %}theme: '{{ widget.theme }}',{% endif %}
+});
+    {% if widget.value %}
+    try{
+        quill.setContents({{ widget.value|safe }});
+    }catch{
+        try{
+            quill.setText("{{ widget.value }}");
+        }catch{
+            
+        }
+    }
+    {% endif %}
+    var quillinput = document.getElementById("{{ widget.attrs.id }}-input");
+    var form = quillinput.form;
+    form.onsubmit = function() {
+        var quillinput = document.getElementById("{{ widget.attrs.id }}-input");
+        quillinput.value = JSON.stringify(quill.getContents());
+    }
+</script>

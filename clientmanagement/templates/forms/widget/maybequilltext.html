@@ -1,0 +1,8 @@
+<div class="ql"><script>try{
+        var result = {{ text|get_quill_text }}
+        document.write(quillGetHTML(result));
+    }
+    catch{
+        document.write("{{ text|linebreaksbr }}");
+    }
+</script></div>

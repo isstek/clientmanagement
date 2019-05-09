@@ -3,6 +3,7 @@ from django.conf import settings
 import collections, copy
 from clientmanagement import modelgetters, sendemail, error_views
 from clientmanagement import views as main_views
+from clientmanagement.widget import quill
 from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
@@ -14,6 +15,7 @@ from captcha.widgets import ReCaptchaV2Invisible
 
 
 class TicketForm(forms.ModelForm):
+    description = quill.QuillField()
     contactphone = PhoneNumberField(label="Contact phone number", required=False, help_text="You can add the extension after an x")
     rcaptcha = ReCaptchaField(label='', required=True, error_messages={'required': 'Please, check the box to prove you are not a robot'}, public_key=settings.RECAPTCHA_CHECKBOX_PUBLIC_KEY, private_key=settings.RECAPTCHA_CHECKBOX_PRIVATE_KEY)
     
@@ -30,8 +32,11 @@ class TicketForm(forms.ModelForm):
         self.fields = collections.OrderedDict()
         for item in self.order:
             self.fields[item] = tmp[item]
-        if (settings.CANCEL_CAPTCHA):
-            self.fields.pop('rcaptcha')
+        try:
+            if (settings.CANCEL_CAPTCHA):
+                self.fields.pop('rcaptcha')
+        except Exception:
+            pass
 
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
@@ -106,8 +111,8 @@ def TicketFormParse(request):
         data['minititle'] = 'Submit a Ticket to Infotek'
         data['submbutton'] = 'Submit'
     data['form'] = form
-    data['built'] = datetime.now().strftime("%H:%M:%S") 
-    data['backurl'] = reverse('updates')
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needquillinput'] = True
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')
 
 
@@ -162,6 +167,7 @@ def TicketChangeFormParse(request, ticketid):
         data['submbutton'] = 'Submit'
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S") 
+    data['needquillinput'] = True
     data['backurl'] = reverse('alltickets', kwargs={'reqtype': 'o'})
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')
 
@@ -176,4 +182,5 @@ def ViewTicketDirectParse(request, ticketuuid):
     data['can_comment'] = request.user.is_authenticated
     data['built'] = datetime.now().strftime("%H:%M:%S") 
     data['PAGE_TITLE'] = 'Ticket View: CMS infotek'
+    data['needquillinput'] = True
     return render(request, 'views/ticketview.html', data, content_type='text/html')
