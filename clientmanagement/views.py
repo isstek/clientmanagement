@@ -307,6 +307,7 @@ def allticketsview(request, reqtype):
         return redirect('/')            
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = True
+    data['needquillinput'] = True
     return render(request, 'views/alltickets.html', data, content_type='text/html')
 
 
@@ -319,6 +320,7 @@ def systemupdatesview(request):
     data['PAGE_TITLE'] = 'System Updates: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = False
+    data['needquillinput'] = True
     return render(request, 'views/updates.html', data, content_type='text/html')
 
 

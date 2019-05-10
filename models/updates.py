@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime, timedelta, timezone
 from clientmanagement import sendemail
 from django.conf import settings
+from clientmanagement.widget import quill
 
 class SystemUpdates(models.Model):
     
@@ -27,6 +28,9 @@ class SystemUpdates(models.Model):
             self.wassent = True
             self.save()
             sendemail.sendemaileveryonetxt('emails/newpostemail.txt', {'post':self}, "New post: " + self.title)
+    
+    def get_quill_object(self):
+        return quill.QuillObject(self.newstext)
 
 
 def getCurrentVersion():

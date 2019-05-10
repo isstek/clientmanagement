@@ -17,15 +17,19 @@
   {% if widget.theme %}theme: '{{ widget.theme }}',{% endif %}
 });
     {% if widget.value %}
-    try{
-        quill.setContents({{ widget.value|safe }});
-    }catch{
+      {% if widget.quill_object.is_quill_content %}
         try{
-            quill.setText("{{ widget.value }}");
+            quill.setContents({{ widget.quill_object.get_quill_content|safe }});
         }catch{
-            
+            try{
+                quill.setText("{{ widget.quill_object.get_content }}");
+            }catch{
+                
+            }
         }
-    }
+      {% else %}
+        quill.setText("{{ widget.quill_object.get_content_js }}");
+      {% endif %}
     {% endif %}
     var quillinput = document.getElementById("{{ widget.attrs.id }}-input");
     var form = quillinput.form;

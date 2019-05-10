@@ -32,7 +32,7 @@
 {% endif %}
 {% if ticket.description %}
 <p><b>Description:</b></p>
-{% include "forms/widget/maybequilltext.html" with text=ticket.description %}<br>
+{% include "forms/widget/maybequill.html" with obj=ticket %}<br>
 {% endif %}
 {% if can_change %}
 {% if ticket.resolved %}

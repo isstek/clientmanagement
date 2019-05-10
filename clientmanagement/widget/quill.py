@@ -3,16 +3,6 @@ from django.db import models
 from django import template
 import json
 
-register = template.Library()
-
-@register.filter
-def get_quill_text(str):
-    try:
-        a=json.loads(str)
-        return str
-    except Exception:
-        return json.dumps(str)
-
 
 class QuillWidget(forms.Textarea):
     template_name = 'forms/widget/quill.html'
@@ -27,7 +17,9 @@ class QuillWidget(forms.Textarea):
         if 'theme' in attrs:
             context['widget']['theme'] = attrs['theme']
         else:
-            context['widget']['theme'] = 'bubble'
+            context['widget']['theme'] = 'snow'
+        if 'value' in context['widget']:
+            context['widget']['quill_object']=QuillObject(context['widget']['value'])
         return context
 
 
@@ -47,3 +39,28 @@ def check_quill_string(str):
             return False
     except Exception:
         return False
+
+        
+def get_quill_text(str):
+    try:
+        a=json.loads(str)
+        return str
+    except Exception:
+        return json.dumps(str)
+
+
+class QuillObject():
+    def __init__(self, text=""):
+        self.text=text
+
+    def is_quill_content(self):
+        return check_quill_string(self.text)
+
+    def get_quill_content(self):
+        return get_quill_text(self.text)
+
+    def get_content(self):
+        return self.text
+
+    def get_content_js(self):
+        return self.text.replace("\n", "\\n")

@@ -15,11 +15,11 @@ from captcha.widgets import ReCaptchaV2Invisible
 
 
 class TicketForm(forms.ModelForm):
-    description = quill.QuillField()
+    description = quill.QuillField(label="Problem description")
     contactphone = PhoneNumberField(label="Contact phone number", required=False, help_text="You can add the extension after an x")
     rcaptcha = ReCaptchaField(label='', required=True, error_messages={'required': 'Please, check the box to prove you are not a robot'}, public_key=settings.RECAPTCHA_CHECKBOX_PUBLIC_KEY, private_key=settings.RECAPTCHA_CHECKBOX_PRIVATE_KEY)
     
-    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    file_field = forms.FileField(label="Attach files", widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     order = ("title", "companyname", "contactname", "contactemail", "contactphone", "description", "file_field", "rcaptcha")
     class Meta:
         model = ticket.Ticket

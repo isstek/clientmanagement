@@ -22,7 +22,7 @@
     {% endif %}
     {% if ticket.description %}
     <p><b>Description:</b></p>
-        {% include "forms/widget/maybequilltext.html" with text=ticket.description %}
+    {% include "forms/widget/maybequill.html" with obj=ticket %}<br>
     {% endif %}
     {% if ticket.resolved %}
     <form action="{% url 'ticket_change' ticketid=ticket.id %}"  method="POST" enctype="multipart/form-data">

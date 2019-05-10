@@ -29,17 +29,20 @@ class TicketComment(models.Model):
         else:
             return True
 
-    def description_is_quill(self):
-        return quill.check_quill_string(self.description)
-
-    def description_as_quill(self):
-        return self.description
-
     def get_files_folder(self):
         folder_path = os.path.join(self.initial_ticket.get_files_folder(), str(self.id))
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         return folder_path
+
+    def is_quill_content(self):
+        return quill.check_quill_string(self.description)
+
+    def get_quill_content(self):
+        return quill.get_quill_text(self.description)
+
+    def get_content(self):
+        return self.description
 
     def sendemail(self):
         if True:

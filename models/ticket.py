@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from django.urls import reverse
 import pytz, uuid, os
+from clientmanagement.widget import quill
 from clientmanagement import sendemail as emailsending
 from phonenumber_field.modelfields import PhoneNumberField
 from urllib.parse import quote, unquote
@@ -64,6 +65,15 @@ class Ticket(models.Model):
 
     def get_email_link(self):
         return "mailto:" + self.contactemail + "?subject=" + quote(self.title)
+
+    def is_quill_content(self):
+        return quill.check_quill_string(self.description)
+
+    def get_quill_content(self):
+        return quill.get_quill_text(self.description)
+
+    def get_content(self):
+        return self.description
 
     def close(self, user):
         self.resolved = True

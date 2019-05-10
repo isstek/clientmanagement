@@ -13,8 +13,8 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 class Ticket_CommentForm(forms.ModelForm):
-    description = quill.QuillField()
-    file_field = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
+    description = quill.QuillField(label='Comment*')
+    file_field = forms.FileField(label="Attach files", widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
     
 
     class Meta:
