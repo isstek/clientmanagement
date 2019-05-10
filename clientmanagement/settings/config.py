@@ -2,7 +2,7 @@ import os
 from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
-CLIENTMANAGEMENT_VERSION = '1.6'
+CLIENTMANAGEMENT_VERSION = '1.6.1'
 
 TICKET_FILES = os.path.join(os.path.abspath("."), "uploads", "tickets")
 TOOLS_FILES = os.path.join(os.path.abspath("."), "uploads", "tools")
