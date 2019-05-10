@@ -1,7 +1,8 @@
 Hi, {{ user.first_name }}.
 
-There is a new system update posted by {{ post.author }}. Here it is:
-{{ post.newstext }}
+There is a new system update posted by {{ post.author }}. The subject is:
+{{ post.title }}
+Please visit the system to read it.
 
 Have a great day!
 Always yours,
