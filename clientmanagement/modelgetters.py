@@ -59,6 +59,7 @@ def form_client_data(clientid):
     except Exception as err:
         return None
     data = {}
+    data['client'] = cur_client
     data['clientdescription'] = cur_client.description
     data['clientname'] = cur_client.name
     data['clientid'] = cur_client.id

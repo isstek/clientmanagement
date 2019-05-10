@@ -8,7 +8,8 @@
 {% else %}
 {% endif %}
 {% if clientdescription %}
-<p><b><u>Description:</u></b> {{ clientdescription|linebreaksbr }}</p>
+<p><b><u>Description:</u></b></p>
+{% include "forms/widget/maybequill.html" with obj=client.get_quill_object %}<br>
 {% else %}
 {% endif %}
 <form action="{% url 'newclient' %}" method="POST" enctype="multipart/form-data">

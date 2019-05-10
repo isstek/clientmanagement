@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from clientmanagement.widget import quill
 
 
 class Client(models.Model):
@@ -7,6 +8,9 @@ class Client(models.Model):
     address = models.CharField('Client Address', max_length=160, null=True, default='', blank=True)
     phone = PhoneNumberField('Phone Number', help_text= "In the following format: +10000000000x0000, if you need extension", null=True, default=None, blank=True)
     description = models.TextField('Additional information', null=True, default='', blank=True)
+
+    def get_quill_object(self):
+        return quill.QuillObject(self.description)
 
     def __str__(self):
         return self.name

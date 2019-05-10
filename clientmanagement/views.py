@@ -221,6 +221,7 @@ def clientview(request, clientid):
     data['PAGE_TITLE'] = 'Client "'+ data['clientname'] +'": CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = False
+    data['needquillinput'] = True
     return render(request, 'views/client.html', data, content_type='text/html')
 
 
