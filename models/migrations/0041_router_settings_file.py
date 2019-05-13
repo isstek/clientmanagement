@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='router',
             name='settings_file',
-            field=models.FileField(default=True, null=True, upload_to=routermodel.upload_to_router, verbose_name='Settings file'),
+            field=models.FileField(default=None, null=True, upload_to=routermodel.upload_to_router, verbose_name='Settings file'),
         ),
     ]
