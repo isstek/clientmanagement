@@ -9,6 +9,9 @@
 {% if router.externalip %}
 <p><b>External IP address:</b> {{ router.externalip }}</p>
 {% endif %}
+{% if router.settingslink %}
+<p><b>Link to settings:</b> <a href="{{ router.settingslink }}" target="_blank">{{ router.settingslink }}</a></p>
+{% endif %}
 {% if router.firmwareversion %}
 <p><b>Model:</b> {{ router.firmwareversion }}</p>
 {% endif %}
