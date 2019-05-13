@@ -2,13 +2,21 @@ import os
 from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
+CLIENTMANAGEMENT_VERSION = '1.6.1'
+
 TICKET_FILES = os.path.join(os.path.abspath("."), "uploads", "tickets")
+TOOLS_FILES = os.path.join(os.path.abspath("."), "uploads", "tools")
+CLIENT_FILES = os.path.join(os.path.abspath("."), "uploads", "clients")
 MEDIA_ROOT = os.path.join(os.path.abspath("."), "uploads")
 IMAGE_FILE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.ico', '.gif', '.bmp']
+VERSION_STATIC_FILES = False
+
 ENABLE_MAIL_CHECK = True
 SEND_EMAILS_ON_NEW_TICKET_CREATED_AUTOMATICALLY = True
 SEND_EMAILS_ON_NEW_TICKET_MANUAL = True
 SEND_EMAILS_TEAM_ON_TICKET_CREATE_TO_SUPPORT = True
+
+LINK_TOOL_STRING_LENGTH = 25
 CANCEL_CAPTCHA = False
 LOG_SIZE = 10000000
 LOGGING = {

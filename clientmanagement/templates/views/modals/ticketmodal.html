@@ -21,7 +21,8 @@
     <p><b>Phone number:</b> {% include "views/components/phonenumber.html" with phone=ticket.contactphone %}</p>
     {% endif %}
     {% if ticket.description %}
-    <p><b>Description:</b> {{ ticket.description|linebreaksbr }}</p>
+    <p><b>Description:</b></p>
+    {% include "forms/widget/maybequill.html" with obj=ticket %}<br>
     {% endif %}
     {% if ticket.resolved %}
     <form action="{% url 'ticket_change' ticketid=ticket.id %}"  method="POST" enctype="multipart/form-data">

@@ -8,15 +8,21 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <!-- Set the viewport width to device width for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/base/favicon.ico' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/base/favicon.ico' %}{{ URL_ADD_TO_STATIC_FILES }}" />
     <title>{% block page_title %}{{ PAGE_TITLE }}{% endblock %}</title>
 
     <!-- Included base CSS Files -->
-    <link rel="stylesheet" href="{% static 'css/foundation/foundation.css' %}">
-    <link rel="stylesheet" href="{% static 'css/foundation/foundation-icons/foundation-icons.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation/foundation.css' %}{{ URL_ADD_TO_STATIC_FILES }}">
+    <link rel="stylesheet" href="{% static 'css/foundation/foundation-icons/foundation-icons.css' %}{{ URL_ADD_TO_STATIC_FILES }}">
+    <link rel="stylesheet" href="{% static 'css/base/main.css' %}{{ URL_ADD_TO_STATIC_FILES }}">
     {% if needdatatables %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.css"/>
+    {% endif %}
+    {% if needquillinput %}
+    <link rel="stylesheet" href="{% static 'css/quill/quill.core.css' %}{{ URL_ADD_TO_STATIC_FILES }}"/>
+    <link rel="stylesheet" href="{% static 'css/quill/quill.snow.css' %}{{ URL_ADD_TO_STATIC_FILES }}"/>
+    <link rel="stylesheet" href="{% static 'css/quill/quill.snow.div.css' %}{{ URL_ADD_TO_STATIC_FILES }}"/>
+    <link rel="stylesheet" href="{% static 'css/quill/quill.addition.css' %}{{ URL_ADD_TO_STATIC_FILES }}"/>
     {% endif %}
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -32,10 +38,14 @@
     <script>
         var my_crsf_token = '{{ csrf_token }}'
     </script>
-    <script src="{% static 'js/foundation/vendor/jquery.js' %}"></script>
-    <script src="{% static 'js/foundation/vendor/foundation.min.js' %}"></script>
+    <script src="{% static 'js/foundation/vendor/jquery.js' %}{{ URL_ADD_TO_STATIC_FILES }}"></script>
+    <script src="{% static 'js/foundation/vendor/foundation.min.js' %}{{ URL_ADD_TO_STATIC_FILES }}"></script>
     {% if needdatatables %}
     <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+    {% endif %}
+    {% if needquillinput %}
+    <script src="{% static 'js/quill/quill.min.js' %}{{ URL_ADD_TO_STATIC_FILES }}"></script>
+    <script src="{% static 'js/quill/quillfunctions.js' %}{{ URL_ADD_TO_STATIC_FILES }}"></script>
     {% endif %}
     {% block extra_css %}{% endblock %}{% block extra_javascript %}{% endblock %}
 </head>
@@ -45,26 +55,31 @@
         <header>
             <div class="row align-middle">
                 <div class="small-3 medium-4 large-3 columns">
-                    {% block logo %}<img src="{% static 'img/base/logo.png' %}" alt='Infotek Logo' class='logo'>{% endblock %}
+                    {% block logo %}<img src="{% static 'img/base/logo.png' %}{{ URL_ADD_TO_STATIC_FILES }}" alt='Infotek Logo' class='logo'>{% endblock %}
                 </div>
 
                 <div class="small-6 medium-4 large-6">
                     {% if user.is_authenticated %}
                     <div class="top-bar">
                         <div class="top-bar-left">
-                            <ul class="dropdown menu" data-dropdown-menu>
+                            <ul class="vertical medium-horizontal menu"  data-responsive-menu="drilldown medium-dropdown">
                                 <li> <a href="/">Main page</a> </li>
-                                <li> <a href="{% url 'allclients' %}">Clients</a> </li>
-                                <li> <a href="{% url 'allcomputers' %}">Computers</a> </li>
-                                <li> <a href="{% url 'statistics' %}">Statistics</a> </li>
+                                <li> <a href="#">Views</a><ul class="vertical menu">
+                                    <li> <a href="{% url 'allclients' %}">Clients</a> </li>
+                                    <li> <a href="{% url 'allcomputers' %}">Computers</a> </li>
+                                    <li> <a href="{% url 'allpeople' %}">People</a> </li>
+                                    </ul>
+                                </li>
                                 <li> <a href="{% url 'alltickets' 'o' %}">Tickets</a> </li>
+                                <li> <a href="{% url 'all_tools' '' %}">Tools</a> </li>
+                                <li> <a href="{% url 'all_notes' %}">Notes</a> </li>
                             </ul>
                         </div>
                     </div>
                     {% else %}
                     <div class="top-bar">
                         <div class="top-bar-left">
-                            <ul class="dropdown menu" data-dropdown-menu>
+                            <ul class="vertical medium-horizontal menu"  data-responsive-menu="drilldown medium-dropdown">
                                 <li> <a href="{% url 'login' %}">Login page</a> </li>
                                 <li> <a href="{% url 'ticket_submit' %}">Submit a ticket</a> </li>
                             </ul>

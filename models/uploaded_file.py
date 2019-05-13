@@ -8,6 +8,7 @@ from django.core.files.storage import default_storage
 from django.utils.encoding import smart_str
 from urllib.parse import quote, unquote
 from django.http import HttpResponse, FileResponse
+from clientmanagement import error_views
 
 
 class UploadedFileTicket(models.Model):
@@ -74,70 +75,70 @@ class UploadedFileComment(models.Model):
         return extension.lower() in settings.IMAGE_FILE_EXTENSIONS
 
 
-def downloadFileFromTicket(ticketuuid, filename):
+def downloadFileFromTicket(request, ticketuuid, filename):
     try:
         tick = ticket.Ticket.objects.get(unid=ticketuuid)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     try:
         resfile = UploadedFileTicket.objects.get(for_ticket=tick, filename=filename)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     response = HttpResponse(resfile.uplfile.read())
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(resfile.uplfile.name))
     response['X-Sendfile'] = smart_str(resfile.uplfile.name)
     return response
 
 
-def viewFileFromTicket(ticketuuid, filename):
+def viewFileFromTicket(request, ticketuuid, filename):
     try:
         tick = ticket.Ticket.objects.get(unid=ticketuuid)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     try:
         resfile = UploadedFileTicket.objects.get(for_ticket=tick, filename=filename)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     response = HttpResponse(resfile.uplfile.read(), 'image')
     return response
 
 
-def downloadFileFromComment(ticketuuid, commentid, filename):
+def downloadFileFromComment(request, ticketuuid, commentid, filename):
     try:
         comment = ticket_comment.TicketComment.objects.get(id=commentid)
         if comment.initial_ticket.unid != ticketuuid:
-            return None
+            return error_views.notfound(request)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     try:
         resfile = UploadedFileTicket.objects.get(for_ticket=comment, filename=filename)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     response = HttpResponse()
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(resfile.uplfile.name))
     response['X-Sendfile'] = smart_str(resfile.uplfile.name)
     return response
 
 
-def viewFileFromComment(ticketuuid, commentid, filename):
+def viewFileFromComment(request, ticketuuid, commentid, filename):
     try:
         comment = ticket_comment.TicketComment.objects.get(id=commentid)
         if comment.initial_ticket.unid != ticketuuid:
-            return None
+            return error_views.notfound(request)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     try:
         resfile = UploadedFileTicket.objects.get(for_ticket=comment, filename=filename)
     except Exception as exc:
         print(exc)
-        return None
+        return error_views.notfound(request)
     response = HttpResponse(resfile.uplfile.read(), 'image')
     return response
 

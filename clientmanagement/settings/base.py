@@ -32,7 +32,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms',
+    'clientmanagement',
     'clientmanagement.testmodule',
+    'clientmanagement.widget',
+    'clientmanagement.widget.quill',
     'captcha',
     'models',
     'phonenumber_field',
@@ -62,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'clientmanagement.context_processors.global_settings'
             ],
             'loaders':[
                 'django.template.loaders.filesystem.Loader',
@@ -70,6 +75,8 @@ TEMPLATES = [
         },
     },
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'clientmanagement.wsgi.application'
 

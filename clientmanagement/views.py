@@ -221,6 +221,7 @@ def clientview(request, clientid):
     data['PAGE_TITLE'] = 'Client "'+ data['clientname'] +'": CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = False
+    data['needquillinput'] = True
     return render(request, 'views/client.html', data, content_type='text/html')
 
 
@@ -250,6 +251,20 @@ def allcomputersview(request):
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = True
     return render(request, 'views/allcomputers.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
+def allpeopleview(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = {'people': modelgetters.form_all_people_data()}
+    if data is None:
+        return redirect('/')            
+    data['PAGE_TITLE'] = 'All people: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
+    return render(request, 'views/allpeople.html', data, content_type='text/html')
 
 
 @login_required( login_url = 'login' )
@@ -293,6 +308,7 @@ def allticketsview(request, reqtype):
         return redirect('/')            
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = True
+    data['needquillinput'] = True
     return render(request, 'views/alltickets.html', data, content_type='text/html')
 
 
@@ -305,7 +321,35 @@ def systemupdatesview(request):
     data['PAGE_TITLE'] = 'System Updates: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = False
+    data['needquillinput'] = True
     return render(request, 'views/updates.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
+def allToolsView(request, tool_type):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    if not tool_type in ['l', 't']:
+        tool_type=''
+    try:
+        if tool_type == 'l':
+            data = modelgetters.form_all_link_tools_data()
+            data['PAGE_TITLE'] = 'Link tools: CMS Infotek'
+            data['subtittle'] = 'Link tools'
+        elif tool_type == 't':
+            data = modelgetters.form_all_file_tools_data()
+            data['PAGE_TITLE'] = 'File tools: CMS Infotek'
+            data['subtittle'] = 'File tools'
+        else:
+            data = modelgetters.form_all_tools_data()
+            data['PAGE_TITLE'] = 'All tools: CMS Infotek'
+            data['subtittle'] = 'All tools'
+    except Exception as exc:
+        print(exc)
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
+    return render(request, 'views/alltools.html', data, content_type='text/html')
 
 
 def ticketdoneview(request):

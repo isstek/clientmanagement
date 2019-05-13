@@ -10,7 +10,7 @@
             {% endif %}
             </i></div>
     </div>
-    <p>{{ comment.description|linebreaks }}</p>
+    {% include "forms/widget/maybequill.html" with obj=comment %}<br>
     {% if comment.files %}
     {% for onefile in comment.files.all %} {% include "views/components/oneuploadedfile.html" with onefile=onefile %} {% endfor %}
     {% endif %}

@@ -2,9 +2,9 @@ from django.db import models
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from django.urls import reverse
-import pytz
-import uuid
+import pytz, uuid
 from clientmanagement import sendemail
+from clientmanagement.widget import quill
 
 
 def calc_date():
@@ -67,7 +67,7 @@ class SecretNote(models.Model):
             return result
         else:
             self.close()
-            return ""  
+            return ""
 
     def text_internal(self):
         if self.is_available():
@@ -75,7 +75,13 @@ class SecretNote(models.Model):
             return result
         else:
             self.close()
-            return ""            
+            return ""
+    
+    def get_internal_object(self):
+        return quill.QuillObject(self.text_internal())
+    
+    def get_external_object(self):
+        return quill.QuillObject(self.text())
 
     def close(self):
         self.note_text = None

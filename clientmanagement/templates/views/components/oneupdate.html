@@ -1,7 +1,7 @@
 <div id='post-id-{{ post.id }}' class='post-bordered'><p><b>Posted on: </b><i>{{ post.postedon|date:"Y-m-d h:i a"}}</i></p>
 <p><b>Version: </b><i>{{ post.version }}</i></p>
 <h4>{{ post.title }}</h4>
-{{ post.newstext|linebreaks  }}
+{% include "forms/widget/maybequill.html" with obj=post.get_quill_object %}
 <br>
 <p><i>Posted by: {{ post.author }}</i></p>
 {% if post.editable %}

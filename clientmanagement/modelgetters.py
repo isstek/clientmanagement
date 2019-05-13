@@ -8,6 +8,7 @@ from models import router
 from models import updates
 from models import ticket
 from models import ticket_comment
+from models import tools
 from models import secretnote
 import uuid
 
@@ -58,6 +59,7 @@ def form_client_data(clientid):
     except Exception as err:
         return None
     data = {}
+    data['client'] = cur_client
     data['clientdescription'] = cur_client.description
     data['clientname'] = cur_client.name
     data['clientid'] = cur_client.id
@@ -127,6 +129,15 @@ def form_all_computers_data():
     return comps
 
 
+def form_all_people_data():
+    try:
+        peop = person.Person.objects.all().order_by('firstname', 'lastname')
+    
+    except Exception as err:
+        return None
+    return peop
+
+
 def form_updates_data():
     try:
         posts = updates.SystemUpdates.objects.all().order_by('-postedon')[:10]
@@ -190,3 +201,24 @@ def form_one_note_data_internal(noteid):
     except Exception as err:
         return None
     return {'note': note}
+
+def form_all_tools_data():
+    try:
+        tool = tools.MainTool.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tools': tool}
+
+def form_all_link_tools_data():
+    try:
+        tool = tools.LinkTool.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tools': tool}
+
+def form_all_file_tools_data():
+    try:
+        tool = tools.FileTool.objects.all().order_by('-createdon')
+    except Exception as err:
+        return None
+    return {'tools': tool}

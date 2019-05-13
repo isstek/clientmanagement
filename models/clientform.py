@@ -6,9 +6,11 @@ from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
 from phonenumber_field.formfields import PhoneNumberField
 import collections, copy
+from clientmanagement.widget import quill
 
 class ClientForm(forms.ModelForm):
     phone = PhoneNumberField(label="Phone number", required=False, help_text="You can add the extension after an x")
+    description = quill.QuillField(label='Additional information')
     order = ('name', 'address', 'phone', 'description')
     class Meta:
         model = client.Client
@@ -107,5 +109,6 @@ def ClientFormParse(request):
         data['PAGE_TITLE'] = 'New Client: CMS infotek'
         data['backurl'] = reverse('allclients')
     data['form'] = form
+    data['needquillinput'] = True
     data['built'] = datetime.now().strftime("%H:%M:%S")
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')

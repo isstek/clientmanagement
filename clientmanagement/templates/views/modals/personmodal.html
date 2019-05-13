@@ -8,15 +8,20 @@
     <p><b>Phone:</b> {% include "views/components/phonenumber.html" with phone=person.phone %}</p>
     {% endif %}
     <p><b>Annoyance level:</b> <span {% comment %} {% if person.annoyance> 5 %}class="alert"{% endif %} {% endcomment %}> {{ person.annoyance }}</span></p>
+    {% if fullinfo %}
+    <p><b>Company name:</b> {{ person.employedby.name }}</p>
+    {% endif %}
     {% if person.description %}
     <p><b>Description:</b> {{ person.description }}</p>
     {% endif %}
+    {% if not fullinfo %}
     <form action="{% url 'clientperson' clientid=clid %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="action" value="change">
         <input type="hidden" name="targetid" value="{{ person.id }}">
         <a id="perb{{ modalpre }}{{person.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change person info</a>
     </form>
+    {% endif %}
     <a class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </a>

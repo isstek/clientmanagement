@@ -4,9 +4,10 @@ from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
 from models import updates
+from clientmanagement.widget import quill
 
 class SystemUpdateForm(forms.ModelForm):
-
+    newstext = quill.QuillField(label="Update text*")
     class Meta:
         model = updates.SystemUpdates
         fields = ('version', 'postedon', 'title', 'newstext')
@@ -105,4 +106,5 @@ def SystemUpdateFormParse(request):
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S") 
     data['backurl'] = reverse('updates')
+    data['needquillinput'] = True
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')

@@ -31,7 +31,8 @@
 <p><b>Phone number:</b> {% include "views/components/phonenumber.html" with phone=ticket.contactphone %}</p>
 {% endif %}
 {% if ticket.description %}
-<p><b>Description:</b> {{ ticket.description|linebreaksbr }}</p>
+<p><b>Description:</b></p>
+{% include "forms/widget/maybequill.html" with obj=ticket %}<br>
 {% endif %}
 {% if can_change %}
 {% if ticket.resolved %}
