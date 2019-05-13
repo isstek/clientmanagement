@@ -10,7 +10,7 @@ class SystemUpdates(models.Model):
     postedon = models.DateTimeField('Update time', default=datetime.utcnow, null=False, blank=False)
     createdon = models.DateTimeField('Created time', auto_now_add=True, null=False, blank=False)
     author = models.CharField('Update author', max_length=120, null=True, blank=True)
-    title = models.CharField('Title', max_length=160, null=False, blank=False)
+    tittle = models.CharField('Tittle', default='', max_length=160, null=False, blank=False)
     wassent = models.BooleanField('Was sent', null=False, blank=False, default=False)
     newstext = models.TextField('News in text format')
     
@@ -27,7 +27,7 @@ class SystemUpdates(models.Model):
         if (not self.wassent):
             self.wassent = True
             self.save()
-            sendemail.sendemaileveryone('emails/newpostemail.htm', {'post':self}, "New post: " + self.title)
+            sendemail.sendemaileveryone('emails/newpostemail.htm', {'post':self}, "New post: " + self.tittle)
     
     def get_quill_object(self):
         return quill.QuillObject(self.newstext)

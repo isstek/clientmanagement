@@ -1,10 +1,9 @@
-{% load tz %} {% timezone "America/New_York" %}
-<p>Hi, {{ ticket.assignedto.first_name }}.</p>
-<p>A new ticket was assigned to you. <br>The subject is: <b>{{ ticket.title }}</b>
-    <br>Link to the ticket: <a href="{{ link }}" target="_blank">{{ link }}</a>.</p>
-<p>Contact info:
+{% extends "emails/_baseemail.htm" %}
+{% block greetingemail %}Hi, {{ ticket.assignedto.first_name }}. {% endblock greetingemail %}
+{% block contentemail %}A new ticket was assigned to you. <br>The subject is: <b>{{ ticket.title }}</b>
+    <br>Link to the ticket: <a href="{{ link }}" target="_blank">{{ link }}</a>.<br>
+<br>Contact info:
     <br>name: {{ ticket.contactname }}.{% if ticket.contactphone %}
     <br>Phone number: {{ ticket.contactphone.as_international }}{% endif %}{% if ticket.contactemail %}
-    <br>Email: {{ ticket.contactemail }}{% endif %}</p>
-<p>Have a great day!<br> Always yours,<br> Infotek
-</p>{% endtimezone %}
+    <br>Email: <a href='{{ ticket.get_email_link }}'>{{ ticket.contactemail }}</a>{% endif %}
+{% endblock contentemail %}

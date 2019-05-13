@@ -10,7 +10,7 @@ class SystemUpdateForm(forms.ModelForm):
     newstext = quill.QuillField(label="Update text*")
     class Meta:
         model = updates.SystemUpdates
-        fields = ('version', 'postedon', 'title', 'newstext')
+        fields = ('version', 'postedon', 'tittle', 'newstext')
 
 
 def SystemUpdateFormParse(request):    
@@ -30,7 +30,7 @@ def SystemUpdateFormParse(request):
             else:
                 data['action']='add'
                 data['PAGE_TITLE'] = 'Post an update: CMS infotek'
-                data['minititle'] = 'Post Update'
+                data['minitittle'] = 'Post Update'
                 data['submbutton'] = 'Post Update'
         elif (request.POST['action']=='change'):
             if('targetid' in request.POST):
@@ -47,7 +47,7 @@ def SystemUpdateFormParse(request):
                 data['action'] = 'changed'
                 data['targetid'] = request.POST['targetid']
                 data['PAGE_TITLE'] = 'Post an update: CMS infotek'
-                data['minititle'] = 'Change Posted Update'
+                data['minitittle'] = 'Change Posted Update'
                 data['submbutton'] = 'Change posted update'
                 data['deletebutton'] = 'Delete post'
             else:
@@ -71,7 +71,7 @@ def SystemUpdateFormParse(request):
                 data['action'] = 'changed'
                 data['targetid'] = request.POST['targetid']
                 data['PAGE_TITLE'] = 'Post an update: CMS infotek'
-                data['minititle'] = 'Change Posted Update'
+                data['minitittle'] = 'Change Posted Update'
                 data['submbutton'] = 'Change posted update'
                 data['deletebutton'] = 'Delete post'
             else:
@@ -101,7 +101,7 @@ def SystemUpdateFormParse(request):
         form = SystemUpdateForm(initial={'version': updates.getCurrentVersion()})
         data['action']='add'
         data['PAGE_TITLE'] = 'Post Update: CMS infotek'
-        data['minititle'] = 'Post Update'
+        data['minitittle'] = 'Post Update'
         data['submbutton'] = 'Post update'
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S") 

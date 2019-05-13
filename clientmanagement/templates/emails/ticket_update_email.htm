@@ -1,9 +1,8 @@
-{% load tz %} {% timezone "America/New_York" %}
-<p>Hi, {{ ticket.contactname }}.</p>
-<p>There is an update on your ticket from <i>{{ comment.author_name }}</i>.
+{% extends "emails/_baseemail.htm" %}
+{% block greetingemail %}Hi, {{ ticket.contactname }}.{% endblock greetingemail %}
+{% block contentemail %}There is an update on your ticket from <i>{{ comment.author_name }}</i>.
     <br>Link to the ticket: <a href="{{ link }}" target="_blank">{{ link }}</a>.{% if answerlink %}
     <br>
     <br>You can answer this using the following link:
-    <br>{{ answerlink }}{% endif %}</p>
-<p>Have a great day!<br> Always yours,<br> Infotek
-</p>{% endtimezone %}
+    <br>{{ answerlink }}{% endif %}
+{% endblock contentemail %}

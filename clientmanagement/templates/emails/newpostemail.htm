@@ -1,6 +1,5 @@
-<p>Hi, {{ user.first_name }}.</p>
-<p>There is a new system update posted by <i>{{ post.author }}</i>. Here it is:<br>
-{{ post.newstext|linebreaks }}</p>
-<p>Have a great day!<br>
-Always yours,<br>
-CMS Infotek Robot</p>
+{% extends "emails/_baseemail.htm" %}
+{% block greetingemail %}Hi, {{ user.first_name }}.{% endblock greetingemail %}
+{% block contentemail %}There is a new system update posted by <i>{{ post.author }}</i>. The subject is:<br>
+<u><b>{{ post.tittle }}</b></u>
+{% endblock contentemail %}

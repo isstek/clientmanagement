@@ -8,4 +8,5 @@ def global_settings(request):
         'URL_ADD_TO_STATIC_FILES': '?v='+settings.CLIENTMANAGEMENT_VERSION if settings.VERSION_STATIC_FILES else '',
         'needdatatables': False,
         'needquillinput': False,
+        'EMAIL_URL_FOR_LINKS': settings.EMAIL_HOST_LINK,
     }

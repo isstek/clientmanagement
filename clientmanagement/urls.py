@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include, re_path, reverse_lazy
 from django.contrib.auth import views as auth_views
+from django.shortcuts import reverse
 
 from clientmanagement import views as clientmanagement_views
 from clientmanagement import loginform as clientmanagement_loginform
@@ -64,7 +65,11 @@ urlpatterns = [
     path('usermanagement/', clientmanagement_views.usermanagement, name='usermanagement'),
     path('usermanagement/adduser', models_views.addUserForm, name='adduser'),
     path('', clientmanagement_views.homepage, name='homepage'),
-    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(form_class=clientmanagement_loginform.my_reset_password_form), {'password_reset_form':clientmanagement_loginform.my_reset_password_form, 'form_class': clientmanagement_loginform.my_reset_password_form}, 'password_reset'),
+    #path('accounts/password_reset/', auth_views.PasswordResetView.as_view(form_class=clientmanagement_loginform.my_reset_password_form, ),
+    path('accounts/password_reset/', auth_views.PasswordResetView.as_view(form_class=clientmanagement_loginform.my_reset_password_form, 
+    html_email_template_name='registration/forgot_password.htm'), 
+    {'password_reset_form':clientmanagement_loginform.my_reset_password_form, 
+    'form_class': clientmanagement_loginform.my_reset_password_form}, 'password_reset'),
     path('accounts/login/', auth_views.LoginView.as_view(authentication_form=clientmanagement_loginform.MyAuthLoginForm), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
     re_path(r'^.*$', clientmanagement_views.homepage),

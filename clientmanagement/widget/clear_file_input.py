@@ -9,7 +9,6 @@ class ClearFileInput(forms.ClearableFileInput):
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        print(context)
         if 'value' in context['widget'] and context['widget']['value']:
             context['widget']['value_file_name'] = os.path.basename(context['widget']['value'].name) + self.add_to_filename
         return context
