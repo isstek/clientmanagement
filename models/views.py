@@ -14,15 +14,14 @@ from models import computerform
 from models import printerform
 from models import personform
 from models import domainform
-from models import routerform
+from models import router, routerform
 from models import othernetequipform
 from models import updatesform
 from models import secretnoteform
 from models import userform
 from models import ticketform
 from models import ticket_commentform
-from models import tools
-from models import toolsform
+from models import tools, toolsform
 from models import uploaded_file
 # Create your views here.
 
@@ -139,6 +138,13 @@ def AddNewToolView(request, tool_type):
     if not valid:
         return response
     return toolsform.ToolFormParser(request, tool_type)
+
+@login_required( login_url = 'login' )
+def downloadRouterSettings(request, clientid):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return router.downloadSettingsFile(request, clientid)
 
 @login_required( login_url = 'login' )
 def downloadTool(request, tooluuid):    

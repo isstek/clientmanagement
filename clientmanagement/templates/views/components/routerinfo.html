@@ -9,13 +9,13 @@
 {% if router.externalip %}
 <p><b>External IP address:</b> {{ router.externalip }}</p>
 {% endif %}
-{% if router.settingslink %}
-<p><b>Link to settings:</b> <a href="{{ router.settingslink }}" target="_blank">{{ router.settingslink }}</a></p>
-{% endif %}
 {% if router.firmwareversion %}
 <p><b>Model:</b> {{ router.firmwareversion }}</p>
 {% endif %}
 {% include "views/components/networkeqinfo.html" with equipment=router %}
+{% if router.settings_file_available %}
+<p><b>Settings:</b> <a href="{{ router.get_internal_link_to_settings }}" target="_blank">{{ router.get_link_text }}</a></p>
+{% endif %}
 <form action="{% url 'clientrouter' clientid=clid %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="action" value="change">

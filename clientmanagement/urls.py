@@ -58,6 +58,7 @@ urlpatterns = [
     path('notes/o/<uuid:noteuuid>', models_views.viewSecretNoteViewOpen, name='note_open'),
     path('statistics/', clientmanagement_views.statisticsview, name='statistics'),
     path('client', models_views.clientForm, name='newclient'),
+    path('client/<int:clientid>/r', models_views.downloadRouterSettings, name='download_router_settings'),
     path('updates/', clientmanagement_views.systemupdatesview, name='updates'),
     path('updates/post', models_views.PostSystemUpdate, name='postupdate'),
     path('usermanagement/', clientmanagement_views.usermanagement, name='usermanagement'),

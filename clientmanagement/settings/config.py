@@ -6,6 +6,7 @@ CLIENTMANAGEMENT_VERSION = '1.6.1'
 
 TICKET_FILES = os.path.join(os.path.abspath("."), "uploads", "tickets")
 TOOLS_FILES = os.path.join(os.path.abspath("."), "uploads", "tools")
+CLIENT_FILES = os.path.join(os.path.abspath("."), "uploads", "clients")
 MEDIA_ROOT = os.path.join(os.path.abspath("."), "uploads")
 IMAGE_FILE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.ico', '.gif', '.bmp']
 VERSION_STATIC_FILES = False
