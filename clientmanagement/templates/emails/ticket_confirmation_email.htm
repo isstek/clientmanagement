@@ -1,11 +1,11 @@
 {% extends "emails/_baseemail.htm" %}
 {% block greetingemail %}Hi, {{ ticket.contactname }}.{% endblock greetingemail %}
 {% block contentemail %}<p>We received your ticket and will work on it now. Here is some information that we got, some of it may be used as a reference later:
-    <br>Link to the ticket: <a href="{{ link }}" target="_blank">{{ link }}</a>.
     <br>Contact name: {{ ticket.contactname }}.
     <br>Created: {{ ticket.createtime|date:"M d, Y h:i a"}}.{% if ticket.contactphone %}
     <br>Phone number: {{ ticket.contactphone.as_international }}{% endif %}{% if ticket.contactemail %}
     <br>Email: {{ ticket.contactemail }}{% endif %}{% if ticket.title %}
     <br>Subject: {{ ticket.title }}{% endif %}</p>
+{% include 'emails/_button.htm' with linkurl=link linktext='Open the ticket' %}
 <p>If anything doesn't seem correct, please contact us at (212) 754-8008 or by email <a href='mailto:support@isstek.com?subject={{ ticket.tittle }}'>support@isstek.com</a></p>
 {% endblock contentemail %}

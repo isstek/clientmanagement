@@ -1,8 +1,8 @@
 {% extends "emails/_baseemail.htm" %}
 {% block greetingemail %}Hi, {{ ticket.contactname }}.{% endblock greetingemail %}
-{% block contentemail %}There is an update on your ticket from <i>{{ comment.author_name }}</i>.
-    <br>Link to the ticket: <a href="{{ link }}" target="_blank">{{ link }}</a>.{% if answerlink %}
+{% block contentemail %}<p>There is an update on your ticket from <i>{{ comment.author_name }}</i>.</p>
+    {% include 'emails/_button.htm' with linkurl=link linktext='Open the ticket' %}
+{% if answerlink %}
     <br>
-    <br>You can answer this using the following link:
-    <br>{{ answerlink }}{% endif %}
+    {% include 'emails/_button.htm' with linkurl=answerlink linktext='Answer the ticket' %}{% endif %}
 {% endblock contentemail %}
