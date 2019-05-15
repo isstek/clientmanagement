@@ -3,6 +3,7 @@ from django.template.loader import get_template, render_to_string
 from django.utils.html import strip_tags
 from django.template import Context
 from django.contrib.auth.models import User
+import logging 
 
 logger = logging.getLogger(__name__)
 
