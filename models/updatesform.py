@@ -5,12 +5,16 @@ from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
 from models import updates
 from clientmanagement.widget import quill
+import pytz
 
 class SystemUpdateForm(forms.ModelForm):
     newstext = quill.QuillField(label="Update text*")
     class Meta:
         model = updates.SystemUpdates
         fields = ('version', 'postedon', 'tittle', 'newstext')
+        # widgets = {
+        #     'postedon':  forms.SplitDateTimeWidget
+        # }
 
 
 def SystemUpdateFormParse(request):    
@@ -41,7 +45,7 @@ def SystemUpdateFormParse(request):
                 if not curpost.editable():
                     return redirect(reverse('updates'))
                 else:
-                    curpost.createdon = datetime.now()
+                    curpost.createdon = datetime.now(pytz.utc)
                     curpost.save()
                 form = SystemUpdateForm(instance=curpost)
                 data['action'] = 'changed'
@@ -63,10 +67,10 @@ def SystemUpdateFormParse(request):
                 form = SystemUpdateForm(request.POST, instance=curpost)
                 if form.is_valid():
                     model = form.save(commit=False)
-                    model.createdon = datetime.now()
+                    model.createdon = datetime.now(pytz.utc)
                     model.save()
                     return redirect(reverse('updates'))                    
-                curpost.createdon = datetime.now()
+                curpost.createdon = datetime.now(pytz.utc)
                 curpost.save()
                 data['action'] = 'changed'
                 data['targetid'] = request.POST['targetid']
