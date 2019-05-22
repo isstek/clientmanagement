@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from django.urls import reverse
+from urllib.parse import quote, unquote
 import pytz, uuid
 from clientmanagement import sendemail
 from clientmanagement.widget import quill
@@ -40,6 +41,9 @@ class SecretNote(models.Model):
         
     def generate_link_internal(self):
         return settings.EMAIL_HOST_LINK + reverse('note_internal', kwargs={'noteid': self.id})
+
+    def get_email_link(self):
+        return "mailto:" + self.contactemail + "?subject=" + quote(self.subject)
 
     def expires(self):
         return not self.expireon is None
