@@ -109,16 +109,20 @@ def SecretNoteFormParse(request):
     return render(request, 'forms/unimodelform.html', data, content_type='text/html')
 
 
-def AllSecretNotes(request):
+def AllSecretNotes(request, reqtype):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
     data = modelgetters.form_all_notes_data()
     if data is None:
         data = {}
+    show_available = reqtype == '' or reqtype == 'a'
+    show_unavailable = reqtype == 'u' or reqtype == 'a'      
     data['needdatatables'] = True
     data['PAGE_TITLE'] = 'Secret Notes: CMS infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['show_available'] = show_available
+    data['show_unavailable'] = show_unavailable
     return render(request, 'views/allsecretnotes.html', data, content_type='text/html')
 
 

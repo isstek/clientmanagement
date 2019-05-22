@@ -112,11 +112,11 @@ def addCommentToTicketView(request, ticketuuid=None):
     return ticket_commentform.Ticket_CommentFormParse(request, ticketuuid)
 
 @login_required( login_url = 'login' )
-def allSecretNotesView(request):    
+def allSecretNotesView(request, reqtype=''):    
     valid, response = main_views.initRequest(request)
     if not valid:
         return response
-    return secretnoteform.AllSecretNotes(request)
+    return secretnoteform.AllSecretNotes(request, reqtype)
 
 @login_required( login_url = 'login' )
 def SecretNoteInternalView(request, noteid):    
