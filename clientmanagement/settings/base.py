@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'clientmanagement.widget.quill',
     'captcha',
     'models',
+    'api_app',
     'phonenumber_field',
 ]
 

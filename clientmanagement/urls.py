@@ -72,6 +72,7 @@ urlpatterns = [
     'form_class': clientmanagement_loginform.my_reset_password_form}, 'password_reset'),
     path('accounts/login/', auth_views.LoginView.as_view(authentication_form=clientmanagement_loginform.MyAuthLoginForm), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api/', include('api_app.urls')),
     re_path(r'^.*$', clientmanagement_views.homepage),
     path('testmodule/', include('clientmanagement.testmodule.urls')),
 ]
