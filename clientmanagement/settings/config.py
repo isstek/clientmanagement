@@ -2,7 +2,7 @@ import os
 from clientmanagement.settings.base import BASE_DIR
 
 LOG_ROOT = BASE_DIR +'/logs'
-CLIENTMANAGEMENT_VERSION = '1.7.0'
+CLIENTMANAGEMENT_VERSION = '2.0.0'
 USE_TZ = True
 TIME_ZONE = "America/New_York"
 TICKET_FILES = os.path.join(os.path.abspath("."), "uploads", "tickets")
