@@ -14,6 +14,9 @@ class APIKey(models.Model):
     expireon = models.DateField('Expiration date', default=expiration_date, null=True, blank=True)
     description = models.TextField('Additional information', null=True, default='', blank=True)
 
+    def expired(self):
+        return datetime.today().date() > self.expireon
+
     @staticmethod
     def create_api_key(name=None, description=None):
         api_key = secrets.token_urlsafe(settings.DEFAULT_API_KEY_LENGTH)

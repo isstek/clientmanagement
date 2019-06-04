@@ -7,7 +7,9 @@ from models import client
 from models import domain
 from clientmanagement import modelgetters
 from django.contrib.auth.decorators import login_required
-
+from api_app.actions.get_actions import get_latest_api_key
+from api_app.model_files.apikeysmodel import APIKey
+import os
 
 
 @login_required( login_url = 'login' )
@@ -26,3 +28,50 @@ def downloadConnectDomainFile(request, clientid):
     response.write(resfile['file'].getvalue())
     return response
  
+
+@login_required( login_url = 'login' )
+def downloadAddComputerSoftware(request, clientid, new_api_key="y"):
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    try:
+        cur_client = client.Client.objects.get(id=clientid)
+    except Exception as err:
+        return redirect(reverse('allclients'))
+    if new_api_key=="y":
+        api_key = APIKey.create_api_key()
+    else:
+        api_key = get_latest_api_key()
+    resfile = cur_client.create_add_computer_software(api_key)
+    response = HttpResponse(content_type='application/exe')
+    response['Content-Disposition'] = 'attachment; filename="' + os.path.basename(resfile.name) + '"'
+    response.write(resfile.read())
+    path = resfile.name
+    print(path)
+    resfile.close()
+    try:
+        os.remove(path)
+    except:
+        pass
+    return response
+ 
+ 
+@login_required( login_url = 'login' )
+def downloadAddComputerConfigFile(request, clientid, new_api_key="y"):
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    try:
+        cur_client = client.Client.objects.get(id=clientid)
+    except Exception as err:
+        return redirect(reverse('allclients'))
+    if new_api_key=="y":
+        api_key = APIKey.create_api_key()
+    else:
+        api_key = get_latest_api_key()
+    resfile = cur_client.create_add_computer_config(api_key)
+    response = HttpResponse(content_type='text/xml')
+    response['Content-Disposition'] = 'attachment; filename="' + os.path.basename(resfile['name']) + '"'
+    for line in resfile['content']:
+        response.write(line)
+    return response

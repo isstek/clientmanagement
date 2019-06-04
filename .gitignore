@@ -114,3 +114,5 @@ clientmanagement/logs/*
 !clientmanagement/logs/.keep
 uploads/*
 !uploads/.keep
+temp/*
+!temp/.keep

@@ -24,6 +24,10 @@ def computer_update_request(request, company):
             kwargs['ipaddress'] = request.POST['ipaddress']
         if 'macaddress' in request.POST:
             kwargs['macaddress'] = request.POST['macaddress']
+        if 'year' in request.POST:
+            kwargs['year'] = request.POST['year']
+        if 'month' in request.POST:
+            kwargs['month'] = request.POST['month']
         kwargs['company'] = company
         return kwargs
     else:

@@ -23,5 +23,6 @@ from api_app import views as api_views
 
 urlpatterns = [
     path('check/', api_views.check_settings, name='check_settings'),
-    path('client/<int:clientid>/computer', api_views.add_computer_to_client, name='add_computer'),
+    path('client/<uuid:clientuuid>/computer', api_views.add_computer_to_client, name='add_computer'),
+    re_path(r'^.*$', api_views.missed_request, name='missed'),
 ]

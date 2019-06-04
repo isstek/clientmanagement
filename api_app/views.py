@@ -98,19 +98,22 @@ def check_settings(request):
     return JsonResponse(data, status=200)
 
 
-def add_computer_to_client(request, clientid):
+@csrf_exempt
+def missed_request(request):
+    data = {}
+    return JsonResponse(data, status=400)
+
+
+def add_computer_to_client(request, clientuuid):
     valid, response = initRequest(request)
     if not valid:
         return response
     data = generate_default_data(request)
-    company = get_actions.get_client(clientid)
-    print(company)
+    company = get_actions.get_client(clientuuid)
     if company is not None:
         args = request_parser.computer_update_request(request, company)
-        print(args)
         if args is not None:
             success, comp = create_actions.update_computer_with_ser_number(**args)
-            print(comp)
             if success and comp is not None:
                 data['computerid'] = comp.id
                 return JsonResponse(data, status=200)

@@ -9,10 +9,16 @@ TICKET_FILES = os.path.join(os.path.abspath("."), "uploads", "tickets")
 TOOLS_FILES = os.path.join(os.path.abspath("."), "uploads", "tools")
 CLIENT_FILES = os.path.join(os.path.abspath("."), "uploads", "clients")
 MEDIA_ROOT = os.path.join(os.path.abspath("."), "uploads")
+TEMP_FOLDER = os.path.join(os.getcwd(), "temp")
 IMAGE_FILE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.ico', '.gif', '.bmp']
 VERSION_STATIC_FILES = False
 DEFAULT_API_KEY_LENGTH = None
 DEFAULT_API_EXPIRATION_PERIOD_DAYS = 7
+
+ADD_COMPUTER_SOFTWARE_BUILD = False
+
+def GET_ADD_COMPUTER_SOFTWARE(sett):
+    return None
 
 ENABLE_MAIL_CHECK = True
 SEND_EMAILS_ON_NEW_TICKET_CREATED_AUTOMATICALLY = True

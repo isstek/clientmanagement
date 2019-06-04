@@ -19,5 +19,16 @@ class Client(models.Model):
         folder_path = os.path.join(settings.CLIENT_FILES, str(self.id))
         return folder_path
 
+    def create_add_computer_software(self, api_key):
+        sett = {"api_key": api_key.secret_api_key, "clientuuid": str(self.unid), "hostname":settings.EMAIL_HOST_LINK}
+        software_file = settings.GET_ADD_COMPUTER_SOFTWARE(sett)
+        print(software_file)
+        return open(software_file, "rb")
+
+    def create_add_computer_config(self, api_key):
+        sett = {"api_key": api_key.secret_api_key, "clientuuid": str(self.unid), "hostname":settings.EMAIL_HOST_LINK}
+        config_info = settings.GET_ADD_COMPUTER_CONFIG_FILE(sett)
+        return config_info
+
     def __str__(self):
         return self.name

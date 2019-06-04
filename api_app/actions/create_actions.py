@@ -25,13 +25,12 @@ def validate_field(function, value):
         return False
 
 
-def update_computer_with_ser_number(sernumb, name, opsystem, manuf=None, model=None, contype=None, iptype=None, ipaddress=None, macaddress=None, company=None):
+def update_computer_with_ser_number(sernumb, name, opsystem, manuf=None, model=None, contype=None, iptype=None, ipaddress=None, macaddress=None, company=None, year=None, month=None):
     comp = get_actions.get_computer_by_ser_number(sernumb)
-    print(comp)
     if comp is None:
         try:
             return True, create_computer(sernumb=sernumb, name=name, opsystem=opsystem, manuf=manuf, model=model, contype=contype, 
-                            iptype=iptype, ipaddress=ipaddress, macaddress=macaddress, company=company)
+                            iptype=iptype, ipaddress=ipaddress, macaddress=macaddress, company=company, year=year, month=month)
         except Exception:
             return False, None
     comp.computername = name
@@ -51,6 +50,10 @@ def update_computer_with_ser_number(sernumb, name, opsystem, manuf=None, model=N
         comp.mac_address = macaddress
     if company is not None:
         comp.company = company
+    if year is not None:
+        comp.compyear = year
+    if month is not None:
+        comp.compmonth = month
     try:
         comp.save()
     except Exception:
@@ -58,7 +61,7 @@ def update_computer_with_ser_number(sernumb, name, opsystem, manuf=None, model=N
     return True, comp
 
 
-def create_computer(sernumb=None, name=None, opsystem=None, manuf=None, model=None, contype=None, iptype=None, ipaddress=None, macaddress=None, company=None):
+def create_computer(sernumb=None, name=None, opsystem=None, manuf=None, model=None, contype=None, iptype=None, ipaddress=None, macaddress=None, company=None, year=None, month=None):
     try:
         comp = computers.Computer(computername=name)
         comp.operatingsystem = parse_operating_system(opsystem)
@@ -79,6 +82,10 @@ def create_computer(sernumb=None, name=None, opsystem=None, manuf=None, model=No
             comp.ip_address = ipaddress
         if macaddress is not None and validate_field(EUI, macaddress):
             comp.mac_address = macaddress
+        if year is not None:
+            comp.compyear = year
+        if month is not None:
+            comp.compmonth = month
         comp.save()
         return comp
     except Exception as exc:

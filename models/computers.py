@@ -27,6 +27,7 @@ class Computer(networkequipment.NetworkEquipment):
         ('D', 'DELL'),
         ('H', 'HP'),
         ('L', 'Lenovo'),
+        ('M', 'Microsoft'),
         ('G', 'Apple'),
         ('A', 'Asus'),
         ('S', 'Sony'),

@@ -16,10 +16,20 @@
 <h5>This client has no computers entered yet</h5>
 {% endif %}
 
-<div class="row align-middle" data-equalizer>
+<div class="row align-middle">
     <div class='columns'></div>
-    <div class="columns small-9 middle-7 large-5 text-middle" data-equalizer-watch>
+    <div class="columns small-9 middle-7 large-5 text-middle">
         <a href="{% url 'clientcomputer' clientid=clid %}" class="button round centered-block-element">Add new computer</a>
+    </div>
+    <div class='columns'></div>
+</div><br>
+<div class="row align-middle">
+    <div class='columns'></div>
+    <div class="columns small-5 middle-4 large-3 text-middle">
+        <a href="{% url 'clientaddcomputersoftware' clientid=clid %}" target="_blank" class="button round centered-block-element">Download software</a>
+    </div>
+    <div class="columns small-5 middle-4 large-3 text-middle">
+        <a href="{% url 'clientaddcomputerconfig' clientid=clid %}" target="_blank" class="button round centered-block-element">Download config file</a>
     </div>
     <div class='columns'></div>
 </div>
