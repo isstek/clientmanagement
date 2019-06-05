@@ -16,6 +16,8 @@ def get_computer_by_ser_number(serial_number):
         cur_comp = computers.Computer.objects.filter(serialnumber=serial_number)
     except Exception as err:
         return None
+    if cur_comp is None or len(cur_comp) == 0:
+        return None
     return cur_comp[0]
 
 def get_latest_api_key():
