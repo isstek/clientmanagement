@@ -13,10 +13,10 @@ def get_client(clientuuid):
 
 def get_computer_by_ser_number(serial_number):
     try:
-        cur_comp = computers.Computer.objects.get(serialnumber=serial_number)
+        cur_comp = computers.Computer.objects.filter(serialnumber=serial_number)
     except Exception as err:
         return None
-    return cur_comp
+    return cur_comp[0]
 
 def get_latest_api_key():
     try:
