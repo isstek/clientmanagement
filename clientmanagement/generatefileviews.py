@@ -30,7 +30,7 @@ def downloadConnectDomainFile(request, clientid):
  
 
 @login_required( login_url = 'login' )
-def downloadAddComputerSoftware(request, clientid, new_api_key="y"):
+def downloadAddComputerSoftware(request, clientid, new_api_key="n"):
     valid, response = main_views.initRequest(request)
     if not valid:
         return response

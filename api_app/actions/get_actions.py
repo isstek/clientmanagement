@@ -22,7 +22,7 @@ def get_computer_by_ser_number(serial_number):
 
 def get_latest_api_key():
     try:
-        cur_key = apikeysmodel.APIKey.objects.all().order_by('-expireon')
+        cur_key = apikeysmodel.APIKey.objects.all().order_by('-expireon', '-id')
         if len(cur_key) > 0 and not cur_key[0].expired():
             return cur_key[0]
     except Exception as err:
