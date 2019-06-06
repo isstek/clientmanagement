@@ -20,7 +20,7 @@
     {% if widget.value %}
       {% if widget.quill_object.is_quill_content %}
         try{
-            quill.setContents({{ widget.quill_object.get_quill_content|safe }});
+            quill.setContents({{ widget.quill_object.get_quill_value|safe }});
         }catch{
             try{
                 quill.setText("{{ widget.quill_object.get_content }}");

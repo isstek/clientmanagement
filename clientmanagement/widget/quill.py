@@ -42,6 +42,14 @@ def check_quill_string(str):
         return False
 
         
+def get_quill_value(str):
+    try:
+        a=json.loads(str)
+        return str
+    except Exception:
+        return json.dumps(str)
+
+        
 def get_quill_text(str):
     try:
         a=json.loads(str)
@@ -62,6 +70,9 @@ class QuillObject():
 
     def get_quill_content(self):
         return get_quill_text(self.text)
+
+    def get_quill_value(self):
+        return get_quill_value(self.text)
 
     def get_content(self):
         return self.text
