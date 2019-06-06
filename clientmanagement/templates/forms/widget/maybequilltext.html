@@ -1,8 +1,1 @@
-<div class="ql ql-div"><script>try{
-        var result = {{ text|safe }}
-        document.write(quillGetHTML(result));
-    }
-    catch{
-        document.write("{{ text|linebreaksbr }}");
-    }
-</script></div>
+<div class="ql ql-div">{{text|safe}}</div>

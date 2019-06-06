@@ -2,6 +2,7 @@ from django import forms
 from django.db import models
 from django import template
 import json
+from clientmanagement.quill_delta_to_html import quill_to_html
 
 
 class QuillWidget(forms.Textarea):
@@ -44,7 +45,10 @@ def check_quill_string(str):
 def get_quill_text(str):
     try:
         a=json.loads(str)
-        return str
+        result = quill_to_html.quill_delta_to_html(a)
+        if result is None:
+            return str
+        return result
     except Exception:
         return json.dumps(str)
 
