@@ -118,3 +118,36 @@ def add_computer_to_client(request, clientuuid):
                 data['computerid'] = comp.id
                 return JsonResponse(data, status=200)
     return JsonResponse(data, status=400)
+
+def get_all_clients(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = generate_default_data(request)
+    data['client_list'] = get_actions.get_all_clients_unid_name()
+    if data['client_list'] is None:
+        return JsonResponse(data, status=404)
+    return JsonResponse(data, status=200)
+
+def get_domain_clients(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = generate_default_data(request)
+    data['client_list'] = get_actions.get_domain_clients_unid_name()
+    if data['client_list'] is None:
+        return JsonResponse(data, status=404)
+    return JsonResponse(data, status=200)
+
+def get_domain_info(request, clientuuid):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = generate_default_data(request)
+    company = get_actions.get_client(clientuuid)
+    if company is not None:
+        info = get_actions.get_domain_info_for_client(company)
+        if info is not None:
+            data['domain'] = info
+            return JsonResponse(data, status=200)
+    return JsonResponse(data, status=400)

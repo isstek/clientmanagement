@@ -63,7 +63,7 @@ class SecretNote(models.Model):
     def text(self):
         if self.is_available():
             result = self.note_text
-            if (self.viewlimited):
+            if (self.viewlimited()):
                 self.reads_left = self.reads_left - 1
                 self.save()
             if not self.is_available():
