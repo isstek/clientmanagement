@@ -30,6 +30,17 @@ def get_latest_api_key():
         pass
     return apikeysmodel.APIKey.create_api_key()
 
+def get_user_api_key(user):
+    if user is None:
+        return None
+    try:
+        cur_key = apikeysmodel.UserAPIKey.objects.all().filter(key_user=user).order_by('-expireon', '-id')
+        if len(cur_key) > 0 and not cur_key[0].expired():
+            return cur_key[0]
+    except Exception as err:
+        pass
+    return apikeysmodel.UserAPIKey.create_api_key(user)
+
 def get_all_clients_unid_name():
     try:
         clients = client.Client.objects.all().order_by('name')

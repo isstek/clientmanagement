@@ -1,26 +1,19 @@
 """
 Core Django views for VAR project
 """
-import json
-import logging
-
+import json, os, logging
 from datetime import datetime
 from urllib.parse import urlencode, urlparse, parse_qs
-from django.http import HttpResponse
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import forms as userforms
 from django.urls import reverse
 from django.shortcuts import render_to_response, redirect
 from django.utils.cache import patch_response_headers
 from django.contrib.auth.decorators import login_required
-import os
 from django.shortcuts import render
 from django.conf import settings
-from clientmanagement import userfunctions
-from clientmanagement import modelgetters
-from clientmanagement import loginform
-
-
+from clientmanagement import userfunctions, loginform, modelgetters
+from api_app.model_files import apikeysmodel
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -101,6 +94,29 @@ def usermanagement(request):
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = True
     return render(request, 'user/usermanagement.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
+def userpersonalpage(request, deleted=0, deletedpage=0):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = {}
+    data['deleted'] = deleted != 0
+    data['del_page'] = deletedpage != 0
+    data['PAGE_TITLE'] = 'Personal page: CMS infotek'
+    data['api_key'] = len(apikeysmodel.UserAPIKey.get_api_keys(request.user))>0
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    return render(request, 'user/personal/main.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
+def deletepersonalapikey(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    result = apikeysmodel.UserAPIKey.delete_api_key(request.user)
+    return redirect(reverse("personal_page_uri", kwargs={"deleted": 1 if result else 0, "deletedpage":"1"}))
 
 
 @login_required( login_url = 'login' )

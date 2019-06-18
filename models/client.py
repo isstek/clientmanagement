@@ -22,7 +22,6 @@ class Client(models.Model):
     def create_add_computer_software(self, api_key):
         sett = {"api_key": api_key.secret_api_key, "clientuuid": str(self.unid), "hostname":settings.EMAIL_HOST_LINK}
         software_file = settings.GET_ADD_COMPUTER_SOFTWARE(sett)
-        print(software_file)
         return open(software_file, "rb")
 
     def create_add_computer_config(self, api_key):

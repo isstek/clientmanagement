@@ -1,0 +1,40 @@
+{% extends "_basenarrow.html" %} {% load staticfiles %}{% block body %}
+<h4 class="text-center">Hi, {{ user.get_full_name }}</h4>
+<br>
+{% if del_page %}
+<div class="row text-center">
+    <div class="columns"></div>
+    <div class="columns small-8 medium-6 large-4">{% if deleted %}
+    <span style="color:green;">API key was deleted successfully.</span>
+    {% else %}
+    <span style="color:red;">Couldn't delete API key.</span>
+    {% endif %}
+    </div>
+    <div class="columns"></div>
+</div>
+<br>
+{% else %}
+{% endif %}
+<div class="row text-center">
+    <div class="columns"></div>
+    <div class="columns small-8 medium-6 large-4"> <a href="{% url 'password_change' %}" class="button round centered-block-element">Change password</a>
+    </div>
+    <div class="columns"></div>
+</div>
+<br>
+<div class="row text-center">
+    <div class="columns"></div>
+    <div class="columns small-8 medium-6 large-4"> <a href="{% url 'cms_interactive_software' %}" target="_blank" class="button round centered-block-element">CMS Interaction Software</a>
+    </div>
+    <div class="columns"></div>
+</div>
+{% if api_key %}
+<br>
+<div class="row text-center">
+    <div class="columns"></div>
+    <div class="columns small-8 medium-6 large-4"> <a href="{% url 'delete_my_api_key' %}" class="button round centered-block-element">Delete your API key</a>
+    </div>
+    <div class="columns"></div>
+</div>
+{% endif %}
+{% endblock %}
