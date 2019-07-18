@@ -3,6 +3,8 @@
     <td><a href="{{ tool.get_link }}" target="_blank">{{ tool.get_link_text }}</a></td>
     <td class="hide-for-small-only">{{ tool.description|linebreaksbr }}</td>
     <td class="show-for-large-up">{{ tool.createtime|date:"Y-m-d h:i a" }} </td>
+    {% if user.is_authenticated %}
+    <td class="show-for-large-up">{% if tool.public %}Public{% else %}Private{% endif %}</td>
     <td><form action="{% url 'new_tool' tool_type=toolt %}"  method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" name="action" value="change">
@@ -10,4 +12,5 @@
         <a id="change_tool_button_{{tool.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change tool info</a>
     </form>
     </td>
+    {% endif %}
 </tr>
