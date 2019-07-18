@@ -1,6 +1,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.http import HttpResponse, FileResponse, StreamingHttpResponse
+from django.shortcuts import redirect
 from django.utils.encoding import smart_str
 from urllib.parse import quote, unquote
 from django.conf import settings
@@ -114,7 +115,10 @@ class FileTool(MainTool):
 
     def get_link(self):
         if (os.path.exists(self.uplfile.path)):
-            return reverse("download_tool", kwargs={'tooluuid': self.unid})
+            if self.public:
+                return reverse("download_tool_public", kwargs={'tooluuid': self.unid})
+            else:
+                return reverse("download_tool", kwargs={'tooluuid': self.unid})
         else:
             return ''
 
@@ -135,9 +139,12 @@ def downloadFileFromTools(request, tooluuid):
     except Exception as exc:
         print(exc)
         return error_views.notfound(request)
-    chunk_size = 8192
-    response = StreamingHttpResponse(FileWrapper(tool.uplfile, chunk_size),
-                            content_type=mimetypes.guess_type(tool.uplfile.path)[0])
-    response['Content-Length'] = os.path.getsize(tool.uplfile.path)    
-    response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(tool.uplfile.path))
-    return response
+    if tool.public or request.user.is_authenticated:
+        chunk_size = 8192
+        response = StreamingHttpResponse(FileWrapper(tool.uplfile, chunk_size),
+                                content_type=mimetypes.guess_type(tool.uplfile.path)[0])
+        response['Content-Length'] = os.path.getsize(tool.uplfile.path)    
+        response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(tool.uplfile.path))
+        return response
+    else:
+        return redirect(reverse("download_tool", kwargs={'tooluuid': tool.unid}))

@@ -154,6 +154,13 @@ def downloadTool(request, tooluuid):
     return tools.downloadFileFromTools(request, tooluuid)
 
 
+def downloadToolPublic(request, tooluuid):    
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return tools.downloadFileFromTools(request, tooluuid)
+
+
 def submitTicketForm(request):    
     valid, response = main_views.initRequest(request)
     if not valid:
