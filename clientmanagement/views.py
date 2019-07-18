@@ -341,24 +341,24 @@ def systemupdatesview(request):
     return render(request, 'views/updates.html', data, content_type='text/html')
 
 
-@login_required( login_url = 'login' )
+#@login_required( login_url = 'login' )
 def allToolsView(request, tool_type):
     valid, response = initRequest(request)
     if not valid:
         return response
-    if not tool_type in ['l', 't']:
+    if not tool_type in ['l', 'f']:
         tool_type=''
     try:
         if tool_type == 'l':
-            data = modelgetters.form_all_link_tools_data()
+            data = modelgetters.form_all_link_tools_data(request.user)
             data['PAGE_TITLE'] = 'Link tools: CMS Infotek'
             data['subtittle'] = 'Link tools'
-        elif tool_type == 't':
-            data = modelgetters.form_all_file_tools_data()
+        elif tool_type == 'f':
+            data = modelgetters.form_all_file_tools_data(request.user)
             data['PAGE_TITLE'] = 'File tools: CMS Infotek'
             data['subtittle'] = 'File tools'
         else:
-            data = modelgetters.form_all_tools_data()
+            data = modelgetters.form_all_tools_data(request.user)
             data['PAGE_TITLE'] = 'All tools: CMS Infotek'
             data['subtittle'] = 'All tools'
     except Exception as exc:
