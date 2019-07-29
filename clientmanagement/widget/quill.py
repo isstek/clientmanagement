@@ -19,6 +19,8 @@ class QuillWidget(forms.Textarea):
             context['widget']['theme'] = attrs['theme']
         else:
             context['widget']['theme'] = 'snow'
+        if 'toolbar' in self.attrs:
+            context['widget']['toolbar'] = self.attrs['toolbar']
         if 'value' in context['widget']:
             context['widget']['quill_object']=QuillObject(context['widget']['value'])
         return context

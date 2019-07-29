@@ -10,6 +10,7 @@ from models import ticket
 from models import ticket_comment
 from models import tools
 from models import secretnote
+from models import wikiarticle
 import uuid
 
 
@@ -144,6 +145,22 @@ def form_updates_data():
     except Exception as err:
         return None
     return {'posts': posts}
+
+
+def form_all_wiki_data():
+    try:
+        wiki_art = wikiarticle.WikiArticle.objects.all().order_by('-postedon')
+    except Exception as err:
+        return None
+    return {'wiki_art': wiki_art}
+
+
+def form_one_wiki_data(unid):
+    try:
+        wiki_art = wikiarticle.WikiArticle.objects.get(unid=unid)
+    except Exception as err:
+        return None
+    return {'article': wiki_art}
 
 
 def form_open_tickets_data():

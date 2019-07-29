@@ -341,6 +341,32 @@ def systemupdatesview(request):
     return render(request, 'views/updates.html', data, content_type='text/html')
 
 
+@login_required( login_url = 'login' )
+def allWikiArticlesView(request):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = modelgetters.form_all_wiki_data()         
+    data['PAGE_TITLE'] = 'Wiki: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = True
+    data['needquillinput'] = False
+    return render(request, 'views/allwiki.html', data, content_type='text/html')
+
+
+@login_required( login_url = 'login' )
+def wikiArticleView(request, wikiuuid):
+    valid, response = initRequest(request)
+    if not valid:
+        return response
+    data = modelgetters.form_one_wiki_data(wikiuuid)         
+    data['PAGE_TITLE'] = 'Wiki: CMS Infotek'
+    data['built'] = datetime.now().strftime("%H:%M:%S")
+    data['needdatatables'] = False
+    data['needquillinput'] = False
+    return render(request, 'views/wikiview.html', data, content_type='text/html')
+
+
 #@login_required( login_url = 'login' )
 def allToolsView(request, tool_type):
     valid, response = initRequest(request)

@@ -1,0 +1,7 @@
+<tr id="{{ art.id }}">
+    <td>{{ art.title }}</td>
+    <td>{{ art.createdon|date:"Y-m-d" }}</td>
+    <td>
+        <a class="button round nomargin margin-sides" href="{{ art.get_link }}">View article</a>
+    </td>
+</tr>

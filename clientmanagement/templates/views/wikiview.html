@@ -1,0 +1,14 @@
+{% extends "_basewide.html" %}{% load staticfiles %} {% block extra_css %}{% endblock %}{% block extra_javascript %}{% endblock %}
+{% block body %}
+<div class="post-bordered">
+<h3>{{ article.title }}</h3>
+<p><b>Created on:</b> {{ article.createdon|date:"Y-m-d h:i a" }}</p>
+{% include "forms/widget/maybequill.html" with obj=article.get_quill_object %}<br>
+
+<form action="{% url 'wiki_new' %}"  method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="change">
+    <input type="hidden" name="targetid" value="{{ article.id }}">
+    <a id="change-button-{{article.id}}" class="button round inlineblock" onclick="this.parentElement.submit();">Change article</a>
+</form>
+{% endblock %}

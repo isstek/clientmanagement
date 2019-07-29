@@ -45,7 +45,16 @@ def expand_delta(delta):
                 if '\n' in text:
                     temp += read_next_operations(operation)
                 else:
-                    operation['insert']=escape(operation['insert'])
+                    if type(operation['insert']) is dict:
+                        try:
+                            if 'image' in operation['insert']:
+                                operation['insert'] = "<img src='" + operation['insert']['image'] + "'>"
+                            if 'video' in operation['insert']:
+                                operation['insert'] = "<iframe class='ql-video' frameborder='0' allowfullscreen='true' src='" + operation['insert']['video'] + "'></iframe>"
+                        except:
+                            pass
+                    else:
+                        operation['insert']=escape(operation['insert'])
                     temp.append(operation)
             else:
                 operation['insert']=escape(operation['insert'])
@@ -72,6 +81,7 @@ def quill_delta_to_html(quill_dict):
         end_of_lane_text = ''
         end_of_block_tags = ''
         exp_delta = expand_delta(quill_dict['ops'])
+        print(exp_delta)
         text_attributes = {}
         text_was_added = False
         for operation in exp_delta:

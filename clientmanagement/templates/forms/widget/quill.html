@@ -4,15 +4,15 @@
 <script>
     var quill = new Quill('#{{ widget.attrs.id }}', {
   modules: {
-    toolbar: {% if widget.toolbar %}{{ widget.toolbar }}
-    {% else %}
+    toolbar:
     [
       ['bold', 'italic', 'underline'],
       ['link', 'blockquote', 'code-block'],
       [{ list: 'ordered' }, { list: 'bullet' }],
+      {% if widget.toolbar.image %}['image'],{% endif %}
+      {% if widget.toolbar.video %}['video'],{% endif %}
       ['clean']
     ]
-    {% endif %},
   },
   {% if widget.placeholder %}placeholder: '{{ widget.placeholder }}',{% endif %}
   {% if widget.theme %}theme: '{{ widget.theme }}',{% endif %}

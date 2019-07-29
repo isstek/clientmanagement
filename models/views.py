@@ -23,6 +23,7 @@ from models import ticketform
 from models import ticket_commentform
 from models import tools, toolsform
 from models import uploaded_file
+from models import wikiarticleform
 # Create your views here.
 
 
@@ -152,6 +153,13 @@ def downloadTool(request, tooluuid):
     if not valid:
         return response
     return tools.downloadFileFromTools(request, tooluuid)
+
+@login_required( login_url = 'login' )
+def createWikiArticle(request):
+    valid, response = main_views.initRequest(request)
+    if not valid:
+        return response
+    return wikiarticleform.WikiArticleFormParse(request)
 
 
 def downloadToolPublic(request, tooluuid):    
