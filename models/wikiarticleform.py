@@ -11,7 +11,7 @@ class WikiArticleForm(forms.ModelForm):
     article = quill.QuillField(label="Article text*", widget=quill.QuillWidget({'toolbar': {'image': True, 'video': True}}))
     class Meta:
         model = wikiarticle.WikiArticle
-        fields = ('postedon', 'title', 'article')
+        fields = ('title', 'article')
         # widgets = {
         #     'postedon':  forms.SplitDateTimeWidget
         # }
@@ -90,9 +90,9 @@ def WikiArticleFormParse(request):
     else:
         form = WikiArticleForm()
         data['action']='add'
-        data['PAGE_TITLE'] = 'Post Update: CMS infotek'
-        data['minitittle'] = 'Post Update'
-        data['submbutton'] = 'Post update'
+        data['PAGE_TITLE'] = 'Post Article: CMS infotek'
+        data['minitittle'] = 'Post Article'
+        data['submbutton'] = 'Post article'
     data['form'] = form
     data['built'] = datetime.now().strftime("%H:%M:%S") 
     if not 'backurl' in data: 
