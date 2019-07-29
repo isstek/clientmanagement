@@ -81,7 +81,6 @@ def quill_delta_to_html(quill_dict):
         end_of_lane_text = ''
         end_of_block_tags = ''
         exp_delta = expand_delta(quill_dict['ops'])
-        print(exp_delta)
         text_attributes = {}
         text_was_added = False
         for operation in exp_delta:
