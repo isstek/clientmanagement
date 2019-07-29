@@ -363,7 +363,7 @@ def wikiArticleView(request, wikiuuid):
     data['PAGE_TITLE'] = 'Wiki: CMS Infotek'
     data['built'] = datetime.now().strftime("%H:%M:%S")
     data['needdatatables'] = False
-    data['needquillinput'] = False
+    data['needquillinput'] = True
     return render(request, 'views/wikiview.html', data, content_type='text/html')
 
 
