@@ -224,7 +224,7 @@ def form_all_tools_data(user):
         if user.is_authenticated:
             tool = tools.MainTool.objects.all().order_by('-createdon')
         else:
-            tool = tools.MainTool.objects.filter(public=1).order_by('-createdon')
+            tool = tools.MainTool.objects.filter(public=1, publicinlist=1).order_by('-createdon')
     except Exception as err:
         return None
     return {'tools': tool}
@@ -234,7 +234,7 @@ def form_all_link_tools_data(user):
         if user.is_authenticated:
             tool = tools.LinkTool.objects.all().order_by('-createdon')
         else:
-            tool = tools.LinkTool.objects.filter(public=1).order_by('-createdon')
+            tool = tools.LinkTool.objects.filter(public=1, publicinlist=1).order_by('-createdon')
     except Exception as err:
         return None
     return {'tools': tool}
@@ -244,7 +244,7 @@ def form_all_file_tools_data(user):
         if user.is_authenticated:
             tool = tools.FileTool.objects.all().order_by('-createdon')
         else:
-            tool = tools.FileTool.objects.filter(public=1).order_by('-createdon')
+            tool = tools.FileTool.objects.filter(public=1, publicinlist=1).order_by('-createdon')
     except Exception as err:
         return None
     return {'tools': tool}

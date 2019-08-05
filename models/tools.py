@@ -24,6 +24,7 @@ class MainTool(models.Model):
     createdon = models.DateTimeField("Created time", auto_now_add=True, null=False, blank=False)
     name = models.CharField('Tool name', max_length=80, null=False)
     public = models.BooleanField("Public tool", default=False, unique=False, blank=False)
+    publicinlist = models.BooleanField("Public tool in list", default=True, unique=False, blank=False)
     unid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     description = models.TextField('Description', null=True, default='', blank=True)
     tool_type_field = models.CharField(max_length=1, null=False, default='')

@@ -9,7 +9,7 @@ from models import tools
 from clientmanagement.widget import form_switch
 
 class FileToolForm(forms.ModelForm):
-    order = ("name", "public", "version", "uplfile", "description")
+    order = ("name", "public", "publicinlist", "version", "uplfile", "description")
     inf_page_title = "Add file tool: CMS infotek"
     inf_subm_button = "Submit"
     inf_action='add'
@@ -17,13 +17,15 @@ class FileToolForm(forms.ModelForm):
     inf_delete_button = False
 
     public = form_switch.SwitchOnOffField(label="Public link?", required=False)
+    publicinlist = form_switch.SwitchOnOffField(label="Public tool in list?", required=False)
     class Meta:
         model = tools.FileTool
-        fields = ("name", "public", "version", "uplfile", "description")
+        fields = ("name", "public", "publicinlist", "version", "uplfile", "description")
 
     def __init__(self, *args, **kwargs): 
         form = super(FileToolForm, self).__init__(*args, **kwargs) 
         self.fields['public'].label_classes = ('switch-paddle', 'class_b', )
+        self.fields['publicinlist'].label_classes = ('switch-paddle', 'class_b', )
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
             self.inf_page_title = "Change file tool: CMS infotek"
@@ -33,7 +35,7 @@ class FileToolForm(forms.ModelForm):
             self.fields.pop('uplfile')
 
 class LinkToolForm(forms.ModelForm):
-    order = ("name", "public", "url", "description")
+    order = ("name", "public", "publicinlist", "url", "description")
     inf_page_title = "Add link tool: CMS infotek"
     inf_subm_button = "Submit"
     inf_action='add'
@@ -41,12 +43,15 @@ class LinkToolForm(forms.ModelForm):
     inf_delete_button = False
 
     public = form_switch.SwitchOnOffField(label="Public link?", required=False)
+    publicinlist = form_switch.SwitchOnOffField(label="Public tool in list?", required=False)
     class Meta:
         model = tools.LinkTool
-        fields = ("name", "public", "url", "description")
+        fields = ("name", "public", "publicinlist", "url", "description")
 
     def __init__(self, *args, **kwargs): 
         super(LinkToolForm, self).__init__(*args, **kwargs)
+        self.fields['public'].label_classes = ('switch-paddle', 'class_b', )
+        self.fields['publicinlist'].label_classes = ('switch-paddle', 'class_b', ) 
 
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
