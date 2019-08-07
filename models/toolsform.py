@@ -1,6 +1,6 @@
 from django import forms
 from django.conf import settings
-import collections, copy
+import collections, copy, pytz
 from clientmanagement import views as main_views
 from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
@@ -47,6 +47,14 @@ class FileToolForm(forms.ModelForm):
                     self.fields['uplfile'].widget.add_to_filename = instance.uploaded_on_text()
                 except:
                     pass
+
+    def save(self, commit=True):
+        model = super().save(commit=False)
+        if 'uplfile' in self.changed_data:
+            model.createdon = datetime.now(pytz.utc)
+        if commit:
+            model.save()
+        return model
 
 class LinkToolForm(forms.ModelForm):
     order = ("name", "public", "publicinlist", "url", "description")
