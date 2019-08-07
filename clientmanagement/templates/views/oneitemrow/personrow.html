@@ -1,11 +1,11 @@
 <tr id="{{ person.id }}">
     <td>{{ person.name }}</td>
-    <td>{% if person.phone %}{% include "views/components/phonenumber.html" with phone=person.phone %}{% endif %}</td>
-    <td>{% if person.email %}<a href="mailto:{{ person.email }}">{{ person.email }}</a>{% endif %}</td>
-    <td class="hide-for-small-only"><span {% if person.annoyance > 5 %}class="alert"{% else %}{% endif %}> {{ person.annoyance }}</span></td>
     {% if fullinfo %}
     <td class="hide-for-small-only">{{ person.employedby.name }}</td>
     {% endif %}
+    <td>{% if person.phone %}{% include "views/components/phonenumber.html" with phone=person.phone %}{% endif %}</td>
+    <td>{% if person.email %}<a href="mailto:{{ person.email }}">{{ person.email }}</a>{% endif %}</td>
+    <td class="hide-for-small-only"><span {% if person.annoyance > 5 %}class="alert"{% else %}{% endif %}> {{ person.annoyance }}</span></td>
     <td class="hide-for-small-only">{{ person.description }}</td>
     <td>
         <button class="button round nomargin margin-sides" data-open="modal-personname-{{ person.id }}">View full info</a>
