@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.shortcuts import render, render_to_response, redirect
 from datetime import datetime
 from models import tools
+from clientmanagement.widget import clear_file_input
 from clientmanagement.widget import form_switch
 
 class FileToolForm(forms.ModelForm):
@@ -21,6 +22,9 @@ class FileToolForm(forms.ModelForm):
     class Meta:
         model = tools.FileTool
         fields = ("name", "public", "publicinlist", "version", "uplfile", "description")
+        widgets = {
+            'uplfile': clear_file_input.ClearFileInput,
+        }    
 
     def __init__(self, *args, **kwargs): 
         form = super(FileToolForm, self).__init__(*args, **kwargs) 
@@ -32,7 +36,17 @@ class FileToolForm(forms.ModelForm):
             self.inf_action='changed'
             self.inf_minititle = 'Change the file tool'
             self.inf_delete_button = "Delete tool"
-            self.fields.pop('uplfile')
+            if 'uplfile' in self.changed_data:
+                if not instance.uplfile is None:
+                    try:
+                        instance.uplfile.delete()
+                    except Exception as a:
+                        pass
+            if instance.uplfile is not None and instance.createdon is not None:
+                try:
+                    self.fields['uplfile'].widget.add_to_filename = instance.uploaded_on_text()
+                except:
+                    pass
 
 class LinkToolForm(forms.ModelForm):
     order = ("name", "public", "publicinlist", "url", "description")

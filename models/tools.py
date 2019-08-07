@@ -114,6 +114,9 @@ class FileTool(MainTool):
         else:
             return "File was deleted"
 
+    def uploaded_on_text(self):
+        return ' (Uploaded on ' + str(self.createdon.strftime("%Y-%m-%d %I:%M %p")) + ')'
+
     def get_link(self):
         if (os.path.exists(self.uplfile.path)):
             if self.public:
