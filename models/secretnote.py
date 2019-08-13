@@ -17,8 +17,12 @@ class SecretNote(models.Model):
     note_text = models.TextField("Secret note text*", null=True, blank=True)
     createdon = models.DateTimeField("Created time", auto_now_add=True, null=False, blank=False)
     expireon = models.DateField("Note expires on", null=True, blank=True, default=calc_date)
-    reads_left = models.IntegerField("Count of reads left", null=True, blank=True, default=1)
+    reads_max = models.IntegerField("Maximum number of reads left", null=True, blank=True, default=1)
+    reads_used = models.IntegerField("Number of reads used", null=True, blank=True, default=0)
     unid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    def reads_left(self):
+        return self.reads_max - self.reads_used
 
     def createtime(self):
         return self.createdon.astimezone(pytz.timezone('America/New_York'))
@@ -49,22 +53,22 @@ class SecretNote(models.Model):
         return not self.expireon is None
 
     def viewlimited(self):
-        return not self.reads_left is None
+        return not self.reads_max is None
 
     def expired(self):
         return (not self.expireon is None) and (self.expireon < datetime.today().date())
 
     def out_of_reads(self):
-        return (not self.reads_left is None) and (self.reads_left <= 0)
+        return (not self.reads_max is None) and (self.reads_max <= self.reads_used)
 
     def is_available(self):
-        return (self.expireon is None or (self.expireon >= datetime.today().date())) and (self.reads_left is None or self.reads_left > 0)
+        return (self.expireon is None or (self.expireon >= datetime.today().date())) and (self.reads_max is None or self.reads_max > self.reads_used)
 
     def text(self):
         if self.is_available():
             result = self.note_text
             if (self.viewlimited()):
-                self.reads_left = self.reads_left - 1
+                self.reads_used = self.reads_used + 1
                 self.save()
             if not self.is_available():
                 self.close()

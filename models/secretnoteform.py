@@ -11,10 +11,10 @@ import collections, copy
 
 class SecretNoteForm(forms.ModelForm):
     note_text = quill.QuillField(label="Secret note text*")
-    order = ('contactemail', 'reads_left', 'expireon', 'subject', 'note_text')
+    order = ('contactemail', 'reads_max', 'expireon', 'subject', 'note_text')
     class Meta:
         model = secretnote.SecretNote
-        fields = ('contactemail', 'reads_left', 'expireon', 'subject', 'note_text')
+        fields = ('contactemail', 'reads_max', 'expireon', 'subject', 'note_text')
         widgets = {
             'expireon': forms.SelectDateWidget,
         }   
