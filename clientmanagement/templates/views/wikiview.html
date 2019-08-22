@@ -7,7 +7,7 @@
 {% block body %}
 <div class="post-bordered">
 <h3>{{ article.title }}</h3>
-<p><b>Created on:</b> {{ article.createdon|date:"Y-m-d h:i a" }}</p>
+<p><b>Created on:</b> {{ article.updatedon|date:"Y-m-d h:i a" }}</p>
 {% include "forms/widget/maybequill.html" with obj=article.get_quill_object %}<br>
 
 <form action="{% url 'wiki_new' %}"  method="POST" enctype="multipart/form-data">

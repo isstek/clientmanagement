@@ -61,10 +61,10 @@ def WikiArticleFormParse(request):
                 form = WikiArticleForm(request.POST, instance=curpost)
                 if form.is_valid():
                     model = form.save(commit=False)
-                    model.createdon = datetime.now(pytz.utc)
+                    model.updatedon = datetime.now(pytz.utc)
                     model.save()
                     return redirect(model.get_link())                    
-                curpost.createdon = datetime.now(pytz.utc)
+                curpost.updatedon = datetime.now(pytz.utc)
                 curpost.save()
                 data['action'] = 'changed'
                 data['targetid'] = request.POST['targetid']

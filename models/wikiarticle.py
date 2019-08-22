@@ -14,8 +14,8 @@ class Keywords(models.Model):
     word = models.CharField('Word', max_length=120, null=False, blank=False)
 
 class WikiArticle(models.Model):
-    postedon = models.DateTimeField('Update time', default=time_now, null=False, blank=False)
-    createdon = models.DateTimeField('Created time', default=time_now, null=False, blank=False)
+    postedon = models.DateTimeField('Creation time', default=time_now, null=False, blank=False)
+    updatedon = models.DateTimeField('Update time', default=time_now, null=False, blank=False)
     title = models.CharField('Title', default='', max_length=160, null=False, blank=False)
     keywords = models.ManyToManyField("Keywords", verbose_name="Keywords")
     unid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -32,4 +32,7 @@ class WikiArticle(models.Model):
 
     def get_link(self):
         return reverse("wiki_art", kwargs={"wikiuuid": self.unid})
+
+    def createdon(self):
+        return self.updatedon
 

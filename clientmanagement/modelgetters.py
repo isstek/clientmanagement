@@ -149,7 +149,7 @@ def form_updates_data():
 
 def form_all_wiki_data():
     try:
-        wiki_art = wikiarticle.WikiArticle.objects.all().order_by('-postedon')
+        wiki_art = wikiarticle.WikiArticle.objects.all().order_by('-updatedon')
     except Exception as err:
         return None
     return {'wiki_art': wiki_art}
